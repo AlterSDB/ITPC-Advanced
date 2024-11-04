@@ -55,15 +55,18 @@ public class VisualFX {
 
 	public static void fadeTransition(Node element, double startValue, double endValue) {
 		int duration = 450;
-		int delay = 0;
-	//	element.setVisible(true);
-		
-		if(element.getOpacity() == endValue) {
-			return;
-		}
+		int delay = 200;
 		
 		if(startValue == 0.0) {
 			element.setOpacity(0.0);
+		}
+		
+		if(!element.isVisible()) {
+			element.setVisible(true);
+		}
+		
+		if(element.getOpacity() == endValue) {
+			return;
 		}
 		
 		FadeTransition ft = new FadeTransition(Duration.millis(duration), element);

@@ -14,14 +14,14 @@ public class Settings {
 	private static Settings instance;
 		
 	private Settings() {
-			port = "COM1";
-			autoLoad = false;
-			multipleCharts = false;
-			automaticTarget = true;
-			connectionTimeout = 1000.0;
-			timeStep = 0.15;
-			maxDeviation = 40.0;
-			shuffleValues = true;
+		port = "COM1";
+		autoLoad = false;
+		multipleCharts = false;
+		automaticTarget = true;
+		connectionTimeout = 1000.0;
+		timeStep = 0.15;
+		maxDeviation = 40.0;
+		shuffleValues = true;
 	}
 	
 	public static Settings getInstance() {

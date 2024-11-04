@@ -5,16 +5,25 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import java.io.IOException;
 
 
 public class MainApp extends Application {
+	
     private static Stage mainStage;
     private static Stage settingsStage;
     
-    @Override
+    
+    public static void main(String[] args) {
+	    launch(args);
+	    if(DeviceScanner.thread != null)
+	    	DeviceScanner.thread.interrupt();
+	}
+
+	@Override
     public void start(Stage s) throws IOException {
         mainStage = s;
         setRoot("scene1","ITPC Advanced");
@@ -27,10 +36,10 @@ public class MainApp extends Application {
     static void setRoot(String fxml, String title) throws IOException {
         Scene scene = new Scene(loadFXML(fxml));
         mainStage.setTitle(title);
+        mainStage.getIcons().add(new Image("/images/logo.png"));
         mainStage.setScene(scene);
         mainStage.setResizable(false);
         mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			
 			@Override
 			public void handle(WindowEvent event) {
 				if(settingsStage != null) {
@@ -48,18 +57,11 @@ public class MainApp extends Application {
         return fxmlLoader.load();
     }
     
-    public static void main(String[] args) {
-        launch(args);
-        if(Device.thread != null)
-        	Device.thread.interrupt();
-    }
-
-	public static void callSettingsWindow() throws IOException {
+    public static void callSettingsWindow() throws IOException {
 		if(settingsStage != null && settingsStage.isShowing()) {
 			settingsStage.close();
 			return;
 		}
-		
 		settingsStage = new Stage();
 	    Parent parent = loadFXML("settings");
 		Scene scene = new Scene(parent);

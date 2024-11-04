@@ -33,9 +33,10 @@ public class FXMLMainController {
  	@FXML private TableColumn<DataFile, String> filesColumn;
     @FXML private Text status;
     @FXML private AnchorPane circlePane;
-    @FXML private AnchorPane mainAnchorPane;
+    @FXML private AnchorPane root;
     @FXML private AnchorPane resultsPane;
     @FXML private Button copyResultsButton;
+    @FXML private Button scanBtn;
     @FXML private TextField targetTemperatureField;
     @FXML private TextField averageMaxField;
     @FXML private TextField averageMinField;
@@ -43,8 +44,17 @@ public class FXMLMainController {
     @FXML private TextField relativeMinField;
     @FXML private Rectangle tableShape;
 		  private Settings settings;
-		  private Device device;
-    
+		  private DeviceScanner deviceScanner;
+		  private static FXMLMainController instance;
+		  
+    public FXMLMainController() {
+    	instance = this;
+    }
+
+	public static FXMLMainController getInstance() {
+		return instance;
+	}
+
 
 	@FXML
 	void initialize() {
@@ -52,7 +62,7 @@ public class FXMLMainController {
 		initializeTable();
 		initializeChart();
 		initializeTextFields();
-		copyResultsButton.setVisible(false);
+		copyResultsButton.setOpacity(0.0);
 		System.out.println("Инициализация интерфейса прошла успешно.");
 	}
 	
@@ -92,7 +102,7 @@ public class FXMLMainController {
 				if(settings.isAutomaticTarget()) {
 					selectedDF.setNewTarget(Integer.parseInt(targetTemperatureField.getText()));        
 				} else {
-					for(DataFile df : device.getDataFiles()) {
+					for(DataFile df : deviceScanner.getDataFiles()) {
 						df.setNewTarget(Integer.parseInt(targetTemperatureField.getText()));
 					}}
 				VisualFX.Text.changeText(relativeMaxField, Double.toString(selectedDF.getRelativeMax()));
@@ -149,26 +159,41 @@ public class FXMLMainController {
 
 	@FXML
 	void scanBtnAction(ActionEvent event) {
-	//	showLoadScreen();
-		device = Device.getInstance();
-		table.setItems(device.getDataFiles());
-	//	VisualFX.makeCircles(circlePane);
-		hideLoadScreen();
-	}
-	
-	private void showLoadScreen() {
-		VisualFX.fadeTransition(table, 1.0, 0.0);
-		VisualFX.fadeTransition(lineChart, 1.0, 0.0);
-		VisualFX.fadeTransition(copyResultsButton, 1.0, 0.0);
-		VisualFX.fadeTransition(resultsPane, 1.0, 0.0);		
-		VisualFX.fadeTransition(tableShape, 1.0, 0.0);
-	}
-	
-
-
-	private void hideLoadScreen() {
+		if(deviceScanner == null) {
+			deviceScanner = DeviceScanner.getInstance();
+			table.setItems(deviceScanner.getDataFiles());
+		}
+		System.out.println("device is scanning: " + deviceScanner.isScanning());
+		if(!deviceScanner.isScanning()) {
+			deviceScanner.runScanner();
+		}
+		else {
+		deviceScanner.stopScanner();
+		}
 		
 	}
+	
+
+	protected void showLoadScreen(boolean state) {
+		System.out.println("Меняем лодскрин");
+		double startPoint;
+		double endPoint;
+		if(state == true) {
+			startPoint = 1.0;
+			endPoint = 0.0;
+			scanBtn.setText("Остановить");
+		}
+		else {
+			startPoint = 0.0;
+			endPoint = 1.0;
+			scanBtn.setText("Сканировать");
+		}
+		VisualFX.fadeTransition(table, startPoint, endPoint);
+		VisualFX.fadeTransition(lineChart, startPoint, endPoint);
+		VisualFX.fadeTransition(resultsPane, startPoint, endPoint);		
+		VisualFX.fadeTransition(tableShape, startPoint, endPoint);
+	}
+	
 
 	@FXML
 	void copyResultBtnAction() { 
@@ -176,7 +201,6 @@ public class FXMLMainController {
 			System.out.println("Ошибка: Файл в таблице не выбран.");
 			return;
 		}
-		
 		Clipboard clipboard = Clipboard.getSystemClipboard();
 		DataFile df = (DataFile) table.getSelectionModel().getSelectedItem();
 		clipboard.setContent(df.getFormattedHTML());
@@ -188,21 +212,6 @@ public class FXMLMainController {
 		System.out.println("Открываем настройки...");		
 		MainApp.callSettingsWindow();
 	}
-	
-	
-	@Deprecated 
-	void test(DataFile df) {
-		System.out.println(
-				df.getID() + "\n" + "средниймакс " + 
-				df.getAverageMax() + "\n" + "средниймин " + 
-				df.getAverageMin() + "\n" + "относительный макс " + 
-				df.getRelativeMax() + "\n" + "относительный мин " + 
-				df.getRelativeMin() + "\n" + "значения " + 
-				df.getValues() + "\n" + "общее количество " + 
-				DataFile.getCount()			
-				);
-	}
-	
 
 	
 }

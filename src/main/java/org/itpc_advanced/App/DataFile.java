@@ -36,7 +36,7 @@ public class DataFile {
 	private double[] upperAndLowerBounds;
 	
 	
-	DataFile(byte[] byteData) {
+	public DataFile(byte[] byteData) {
 		settings 			= Settings.getInstance();
 		fileExists 			= new SimpleBooleanProperty();
 		id 					= new SimpleIntegerProperty();
@@ -62,15 +62,15 @@ public class DataFile {
 		
 	}
 
-	DataFile(int i) {
+	public DataFile(int i) {
 		byte[] data;
 		switch(i) {
-		case 1: data = Request.DATA_EXAMPLE; break;
-		case 2: data = Request.ANOTHERDATA_EXAMPLE; break;
-		case 3: data = Request.EMPTYDATA_EXAMPLE; break;
-		case 4: data = Request.DATA_500_EXAMPLE; break;
-		case 5: data = Request.DATA_200_EXAMPLE; break;
-		default: data = Request.DATA_EXAMPLE; break;
+		case 1: data = ByteSequence.Examples.DATA_EXAMPLE; break;
+		case 2: data = ByteSequence.Examples.ANOTHERDATA_EXAMPLE; break;
+		case 3: data = ByteSequence.Examples.EMPTYDATA_EXAMPLE; break;
+		case 4: data = ByteSequence.Examples.DATA_500_EXAMPLE; break;
+		case 5: data = ByteSequence.Examples.DATA_200_EXAMPLE; break;
+		default: data = ByteSequence.Examples.DATA_EXAMPLE; break;
 		}
 		
 		settings 			= Settings.getInstance();
@@ -100,6 +100,7 @@ public class DataFile {
 	
 	private ArrayList<Double> separateValues(byte[] data) {
 		ArrayList<Double> values = new ArrayList<>();
+		try {
 			for(int i = 19; i < data.length; i += 2) {
 				if(data[i] == -35 && data[i + 1] == 125) 
 					break;	  
@@ -107,6 +108,10 @@ public class DataFile {
 					break;
 				values.add(bytesToValue(data[i], data[i + 1]));
 			}
+		}
+		catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println("Неожиданный конец файла, чтение завершено");
+		}
 		return values;
 	}
 	
@@ -317,6 +322,10 @@ public class DataFile {
 		content.putString(casualText.toString().replace(".", ","));
 		content.putHtml(htmlText.toString().replace(".", ","));
 		return content;
+	}
+	
+	public static void resetFilesCounter() {
+		filesCounter = 0;
 	}
 	
 	public int 	   			getID()				 	{	return id.get();				}
