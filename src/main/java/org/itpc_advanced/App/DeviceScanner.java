@@ -15,7 +15,9 @@ public class DeviceScanner {
 	private boolean connected;
 	private Settings settings;
 	private MySerialPort port;
+	private FXMLMainController mainController;
 	public static Thread thread;
+	
 	
 	
 	
@@ -27,6 +29,8 @@ public class DeviceScanner {
 	
 		private DeviceScanner() {
 		settings = Settings.getInstance();
+		mainController = FXMLMainController.getInstance();
+		
 		connected = false;
 		files = FXCollections.observableArrayList();
 	//	files = FXCollections.observableArrayList(new DataFile(5), new DataFile(2), new DataFile(4), new DataFile(1), new DataFile(2), new DataFile(3), new DataFile(1), new DataFile(2));		
@@ -41,9 +45,12 @@ public class DeviceScanner {
 			 			Thread.sleep(1000);
 			 			files.clear();
 			 			DataFile.resetFilesCounter();
+						VisualFX.textEllipsisAnimation(mainController.statusText, "Подключение");
 						openCOMPort();
 						connectToDevice();
-						readFiles();					
+						VisualFX.textEllipsisAnimation(mainController.statusText, "Чтение файлов");
+						readFiles();	
+						VisualFX.textEllipsisAnimation(mainController.statusText, "Порт закрывается");
 						closeCOMPort();
 						connected = false;
 						System.out.println("Работа треда завершена.");
@@ -55,11 +62,16 @@ public class DeviceScanner {
 						if(!Thread.interrupted())
 							Thread.currentThread().interrupt(); 
 						}	
+			 		finally {
+			 			VisualFX.textEllipsisAnimation(mainController.statusText, "");
+			 			mainController.statusText.setText("");
+			 			mainController.subStatusText.setText("");
+			 		}
 			 		
 			 		Platform.runLater(new Runnable() {
 			 		    @Override
 			 		    public void run() {
-			 		    	FXMLMainController.getInstance().showLoadScreen(false);
+			 		    	mainController.hideLoadScreen();
 			 		    }
 			 		});
 			 	}
@@ -67,7 +79,7 @@ public class DeviceScanner {
 		
 			thread = new Thread(task);
 			thread.start();		
-			FXMLMainController.getInstance().showLoadScreen(true);
+			mainController.showLoadScreen();
 			System.out.println("Тред начал работу.");
 		}
 
@@ -75,6 +87,7 @@ public class DeviceScanner {
 
 		private void openCOMPort() throws InterruptedException, SerialPortException {		
 			System.out.println("Открывается порт " + settings.getPort());
+			mainController.subStatusText.setText("Открывается порт " + settings.getPort());
 			port = new MySerialPort(settings.getPort());
 			port.openPort();
 			port.setParams(9600, 8, 1, 0);			
@@ -83,6 +96,7 @@ public class DeviceScanner {
 		
 		private void closeCOMPort() throws SerialPortException  {
 			System.out.println("Закрываем порт.");
+			mainController.statusText.setText("Закрываем порт...");
 			port.close();
 		}
 		
@@ -90,12 +104,14 @@ public class DeviceScanner {
 			System.out.println("Пытаемся подключить устройство...");
 				while(!connected) {
 					Thread.sleep(settings.getConnectionTimeout());
+					mainController.subStatusText.setText("Попытка соединения");
 					if(Arrays.equals(readData(), ByteSequence.DEVICE_SYNC) || 
 					   Arrays.equals(readData(), ByteSequence.DEVICE_SYNC_SHIFT)) {
 						System.out.println("Замечен прибор, подключаем...");
 						
 						if(Arrays.equals(readData(ByteSequence.CONNECTION_REQUEST), ByteSequence.CONNECTION_CONFIRM)) {
 							System.out.println("Получен ответ от устройства. Соединение установлено.");
+							mainController.subStatusText.setText("Подключение выполнено");
 							connected = true;
 							return;
 						}
@@ -138,6 +154,7 @@ public class DeviceScanner {
 			System.out.println("Начинаем чтение файлов...");
 			byte[] request = ByteSequence.FIRST_FILE_REQUEST;
 			for(int i = 1; i <= 8; i++) {
+				mainController.subStatusText.setText("Прочитано файлов " + (i-1) + " из " + 8);
 				files.add(new DataFile(readData(request)));
 				request = ByteSequence.nextFile(request);
 			}

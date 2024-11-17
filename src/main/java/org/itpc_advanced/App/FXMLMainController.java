@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -31,10 +32,12 @@ public class FXMLMainController {
 	@FXML private NumberAxis y;
 	@FXML private TableView table;
  	@FXML private TableColumn<DataFile, String> filesColumn;
-    @FXML private Text status;
-    @FXML private AnchorPane circlePane;
+    @FXML protected Text subStatusText;
+    @FXML protected Text statusText;
     @FXML private AnchorPane root;
+    @FXML private AnchorPane loadingScreen;
     @FXML private AnchorPane resultsPane;
+    @FXML private Circle loadingCircle;
     @FXML private Button copyResultsButton;
     @FXML private Button scanBtn;
     @FXML private TextField targetTemperatureField;
@@ -63,6 +66,7 @@ public class FXMLMainController {
 		initializeChart();
 		initializeTextFields();
 		copyResultsButton.setOpacity(0.0);
+		loadingScreen.setOpacity(0.0);
 		System.out.println("Инициализация интерфейса прошла успешно.");
 	}
 	
@@ -105,8 +109,8 @@ public class FXMLMainController {
 					for(DataFile df : deviceScanner.getDataFiles()) {
 						df.setNewTarget(Integer.parseInt(targetTemperatureField.getText()));
 					}}
-				VisualFX.Text.changeText(relativeMaxField, Double.toString(selectedDF.getRelativeMax()));
-		        VisualFX.Text.changeText(relativeMinField, Double.toString(selectedDF.getRelativeMin()));
+				VisualFX.changeText(relativeMaxField, Double.toString(selectedDF.getRelativeMax()));
+		        VisualFX.changeText(relativeMinField, Double.toString(selectedDF.getRelativeMin()));
 			}});
 	}
 	
@@ -133,10 +137,10 @@ public class FXMLMainController {
             				df.setNewTarget(Integer.parseInt(targetTemperatureField.getText()));  
             			}}  		
             
-            		VisualFX.Text.changeText(averageMaxField, Double.toString(df.getAverageMax()));
-            		VisualFX.Text.changeText(averageMinField, Double.toString(df.getAverageMin()));
-            		VisualFX.Text.changeText(relativeMaxField, Double.toString(df.getRelativeMax()));
-            		VisualFX.Text.changeText(relativeMinField, Double.toString(df.getRelativeMin()));       		
+            		VisualFX.changeText(averageMaxField, Double.toString(df.getAverageMax()));
+            		VisualFX.changeText(averageMinField, Double.toString(df.getAverageMin()));
+            		VisualFX.changeText(relativeMaxField, Double.toString(df.getRelativeMax()));
+            		VisualFX.changeText(relativeMinField, Double.toString(df.getRelativeMin()));       		
             		changeChart(df.getChartData(), df.getBounds(), df.getFileName());
             		df.setChartExists();  
             		VisualFX.fadeTransition(copyResultsButton, 0, 1);
@@ -153,12 +157,13 @@ public class FXMLMainController {
 	    if(settings.isMultipleCharts() == false)
 	    	lineChart.getData().clear();      
 		lineChart.getData().add(newSeries); 	
-	    VisualFX.Chart.slideTransition(newSeries.getNode());
+	    VisualFX.slideTransition(newSeries.getNode());
 	}
 	
 
 	@FXML
 	void scanBtnAction(ActionEvent event) {
+		hideButton(scanBtn, 1000);
 		if(deviceScanner == null) {
 			deviceScanner = DeviceScanner.getInstance();
 			table.setItems(deviceScanner.getDataFiles());
@@ -174,26 +179,45 @@ public class FXMLMainController {
 	}
 	
 
-	protected void showLoadScreen(boolean state) {
-		System.out.println("Меняем лодскрин");
-		double startPoint;
-		double endPoint;
-		if(state == true) {
-			startPoint = 1.0;
-			endPoint = 0.0;
-			scanBtn.setText("Остановить");
-		}
-		else {
-			startPoint = 0.0;
-			endPoint = 1.0;
-			scanBtn.setText("Сканировать");
-		}
-		VisualFX.fadeTransition(table, startPoint, endPoint);
-		VisualFX.fadeTransition(lineChart, startPoint, endPoint);
-		VisualFX.fadeTransition(resultsPane, startPoint, endPoint);		
-		VisualFX.fadeTransition(tableShape, startPoint, endPoint);
+	protected void showLoadScreen() {
+		System.out.println("показываем лодскрин");
+		double startPoint = 1.0;
+		double endPoint = 0.0;
+		scanBtn.setText("Остановить");
+		VisualFX.playLoadingAnimation(true);
+		VisualFX.fadeTransition(root, startPoint, endPoint);
+		VisualFX.fadeTransition(loadingScreen, endPoint, startPoint, 350, 500);
 	}
 	
+
+	private void hideButton(Button button, int duration) {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+				button.setVisible(false);
+				Thread.sleep((long)duration);
+				button.setVisible(true);
+				}
+				catch(InterruptedException e){
+					e.printStackTrace();
+				}
+			}
+		});
+		thread.start();
+		
+	}
+
+	protected void hideLoadScreen() {
+		System.out.println("скрываем лодскрин");
+		double startPoint = 0.0;
+		double endPoint = 1.0;
+		scanBtn.setText("Сканировать");
+		VisualFX.playLoadingAnimation(true);
+		VisualFX.fadeTransition(root, startPoint, endPoint);
+		VisualFX.fadeTransition(loadingScreen, endPoint, startPoint, 250, 300);
+		
+	}
 
 	@FXML
 	void copyResultBtnAction() { 
