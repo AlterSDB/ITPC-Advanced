@@ -4,14 +4,11 @@ public class ByteSequence {
 	
 	// TX
 	public static final byte[] CONNECTION_REQUEST = new byte[] {22, 3, -1, 0, -4, -2, 0, -2, -1};
-	
 	public static final byte[] FIRST_FILE_REQUEST = new byte[] {22, 6, -1, 0, -7, -2, 33, 0, -38, -128, -125, -2};
 	
 	// RX
-	public static final byte[] DEVICE_SYNC = new byte[] {22, 4, 0, 0, -6, -1, -128, 7, 119, -1}; 
-	
-	public static final byte[] DEVICE_SYNC_SHIFT = new byte[] {-1, 22, 4, 0, 0, -6, -1, -128, 7, 119}; 
-	
+	public static final byte[] DEVICE_SYNC = new byte[] {22, 4, 0, 0, -6, -1, -128, 7, 119, -1};	
+	public static final byte[] DEVICE_SYNC_SHIFT = new byte[] {-1, 22, 4, 0, 0, -6, -1, -128, 7, 119};	
 	public static final byte[] CONNECTION_CONFIRM = new byte[] {22, 6, 0, 0, -8, -1, -123, -48, 5, 4, -96, -2}; 
 	
 	public static byte[] nextFile(byte[] request) {
@@ -19,10 +16,7 @@ public class ByteSequence {
 		request[8] += (byte)4;
 		request[10] -= (byte) 4;
 		return result;
-	}  
-	
-	
-	
+	}  	
 	
 	public static class Examples {
 		public static final byte[] DATA_EXAMPLE = new byte[] {22, -125, 0, 0, 123, -1, -123, 5, 0, 1, 0, 1, 0, 0, 0, 0, 0, 2, 0, -60, 
