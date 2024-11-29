@@ -1,7 +1,6 @@
 package org.itpc_advanced.App;
 
 public class Settings {
-	
 	private String port;
 	private boolean automaticTarget;
 	private double connectionTimeout;
@@ -10,7 +9,6 @@ public class Settings {
 	private boolean multipleCharts;
 	private boolean autoLoad;
 	private boolean shuffleValues;
-	
 	private static Settings instance;
 		
 	private Settings() {
@@ -31,22 +29,22 @@ public class Settings {
 		return instance;
 	}
 	
-	public String 	getPort() 										{ return port; 									}
-	public long		getConnectionTimeout() 							{ return (long)connectionTimeout; 				}
-	public double 	getTimeStep() 									{ return timeStep; 								}
-	public double 	getMaxDeviation() 								{ return maxDeviation;							}
-	public boolean 	isAutomaticTarget()								{ return automaticTarget; 						}
-	public boolean 	isAutoLoad() 									{ return autoLoad;  							}
-	public boolean 	isMultipleCharts() 								{ return multipleCharts; 						}
-	public boolean 	isShuffleValues() 								{ return shuffleValues;							}
+	public String 	getPort() 		{ return port; 	}
+	public long	getConnectionTimeout() 	{ return (long)connectionTimeout; }
+	public double 	getTimeStep() 	        { return timeStep; }
+	public double 	getMaxDeviation() 	{ return maxDeviation;	}
+	public boolean 	isAutomaticTarget()	{ return automaticTarget; }
+	public boolean 	isAutoLoad() 		{ return autoLoad;  }
+	public boolean 	isMultipleCharts() 	{ return multipleCharts; }
+	public boolean 	isShuffleValues() 	{ return shuffleValues;	}
 	
-	public void 	setPort(String port) 							{ this.port = port;								}
-	public void 	setConnectionTimeout(double connectionTimeout) 	{ this.connectionTimeout = connectionTimeout; 	}
-	public void 	setTimeStep(double timeStep) 					{ this.timeStep = timeStep;						}
-	public void 	setAutomaticTarget(boolean automaticTarget)		{ this.automaticTarget = automaticTarget; 		}
-	public void 	setAutoLoad(boolean autoLoad) 					{ this.autoLoad = autoLoad;  					}
-	public void 	setMultipleCharts(boolean multipleCharts) 		{ this.multipleCharts = multipleCharts; 		}
-	public void 	setShuffleValues(boolean shuffleValues) 		{ this.shuffleValues = shuffleValues; 			}
+	public void setPort(String port) 			   { this.port = port;	}
+	public void setConnectionTimeout(double connectionTimeout) { this.connectionTimeout = connectionTimeout; }
+	public void setTimeStep(double timeStep)   		   { this.timeStep = timeStep;	}
+	public void setAutomaticTarget(boolean automaticTarget)	   { this.automaticTarget = automaticTarget; }
+	public void setAutoLoad(boolean autoLoad) 		   { this.autoLoad = autoLoad;  }
+	public void setMultipleCharts(boolean multipleCharts) 	   { this.multipleCharts = multipleCharts; }
+	public void setShuffleValues(boolean shuffleValues) 	   { this.shuffleValues = shuffleValues; }
 
 	
 }
