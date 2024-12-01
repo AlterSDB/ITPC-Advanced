@@ -17,100 +17,108 @@ import javafx.scene.input.ClipboardContent;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DataFile {
-	private static int filesCounter = 0;
-	private List<Double> values;
-	private List<Double> sortedValues;
+
+	private static int      filesCounter = 0;
+	private List<Double>    values;
+	private List<Double>    sortedValues;
 	private BooleanProperty fileExists;
 	private IntegerProperty id;
 	private IntegerProperty targetTemperature;
-	private DoubleProperty averageMax;
-	private DoubleProperty averageMin;
-	private DoubleProperty relativeMax;
-	private DoubleProperty relativeMin;
-	private boolean chartExists;
-	private Settings settings;
-	private double[] upperAndLowerBounds;	
+	private DoubleProperty  averageMax;
+	private DoubleProperty  averageMin;
+	private DoubleProperty  relativeMax;
+	private DoubleProperty  relativeMin;
+	private boolean         chartExists;
+	private Settings        settings;
+	private double[]        upperAndLowerBounds;
 	
 	public DataFile(byte[] byteData) {
-		settings = Settings.getInstance();
-		fileExists = new SimpleBooleanProperty();
-		id = new SimpleIntegerProperty();
+		settings          = Settings.getInstance();
+		fileExists        = new SimpleBooleanProperty();
+		id                = new SimpleIntegerProperty();
 		targetTemperature = new SimpleIntegerProperty();
-		averageMax = new SimpleDoubleProperty();
-		averageMin = new SimpleDoubleProperty();
-		relativeMax = new SimpleDoubleProperty();
-		relativeMin = new SimpleDoubleProperty();
+		averageMax        = new SimpleDoubleProperty();
+		averageMin        = new SimpleDoubleProperty();
+		relativeMax       = new SimpleDoubleProperty();
+		relativeMin       = new SimpleDoubleProperty();
 		filesCounter++;
 		id.set(filesCounter);
-		values 	= separateValues(byteData);
-		values	= removeParasiticValues(values);
-		sortedValues = new ArrayList<Double>(values);	
+		values            = separateValues(byteData);
+		values            = removeParasiticValues(values);
+		sortedValues      = new ArrayList<Double>(values);
 		Collections.sort(sortedValues);
 		fileExists.set(!values.isEmpty());
-		if(fileExists.get()) 
+
+		if(fileExists.get()) {
 			calculateAllDerivatives();
+		}
+
 		upperAndLowerBounds = findUpperAndLowerBounds();
 		targetTemperature.set(findTargetValue());
 		System.out.println("Чистые данные файла " + getID() + " : " + Arrays.toString(byteData));
 		System.out.println("Отделённые значения файла " + getID() + " : " + values.toString());
-		System.out.println("Таргет температура: " + targetTemperature.get());
-		
+		System.out.println("Целевая температура: " + targetTemperature.get());
 	}
 
-	public DataFile(int i) {  // mockup constructor
+	public DataFile(int i) {				// Mock Constructor
 		byte[] data;
+
 		switch(i) {
-		case 1: data = ByteSequence.Examples.DATA_EXAMPLE; break;
-		case 2: data = ByteSequence.Examples.ANOTHERDATA_EXAMPLE; break;
-		case 3: data = ByteSequence.Examples.EMPTYDATA_EXAMPLE; break;
-		case 4: data = ByteSequence.Examples.DATA_500_EXAMPLE; break;
-		case 5: data = ByteSequence.Examples.DATA_200_EXAMPLE; break;
-		default: data = ByteSequence.Examples.DATA_EXAMPLE; break;
+		case 1: data  = ByteSequence.Examples.EMPTYDATA_EXAMPLE; break;
+		case 2: data  = ByteSequence.Examples.DATA_EXAMPLE_1;    break;
+		case 3: data  = ByteSequence.Examples.DATA_EXAMPLE_2;    break;
+		case 4: data  = ByteSequence.Examples.DATA_EXAMPLE_3;    break;
+		case 5: data  = ByteSequence.Examples.DATA_EXAMPLE_4;    break;
+		default: data = ByteSequence.Examples.EMPTYDATA_EXAMPLE; break;
 		}
-		
-		settings = Settings.getInstance();
-		fileExists = new SimpleBooleanProperty();
-		id = new SimpleIntegerProperty();
+
+		settings          = Settings.getInstance();
+		fileExists        = new SimpleBooleanProperty();
+		id                = new SimpleIntegerProperty();
 		targetTemperature = new SimpleIntegerProperty();
-		averageMax = new SimpleDoubleProperty();
-		averageMin = new SimpleDoubleProperty();
-		relativeMax = new SimpleDoubleProperty();
-		relativeMin = new SimpleDoubleProperty();
-		values 	= separateValues(data);
-		values	= removeParasiticValues(values);
-		sortedValues = new ArrayList<Double>(values);
-		
+		averageMax        = new SimpleDoubleProperty();
+		averageMin        = new SimpleDoubleProperty();
+		relativeMax       = new SimpleDoubleProperty();
+		relativeMin       = new SimpleDoubleProperty();
+		values            = separateValues(data);
+		values            = removeParasiticValues(values);
+		sortedValues      = new ArrayList<Double>(values);
+
 		Collections.sort(sortedValues);
 		fileExists.set(!values.isEmpty());
-		if(fileExists.get()) 
+		if(fileExists.get()) {
 			calculateAllDerivatives();
+		}
 		upperAndLowerBounds = findUpperAndLowerBounds();
 		targetTemperature.set(findTargetValue());
 		filesCounter++;
-		id.set(filesCounter);	
+		id.set(filesCounter);
 		System.out.println("Чистые данные файла " + getID() + " : " + Arrays.toString(data));
 		System.out.println("Отделённые значения файла " + getID() + " : " + values.toString());
-		System.out.println("Таргет температура: " + targetTemperature.get());
+		System.out.println("Целевая температура: " + targetTemperature.get());
 	}
-	
+
 	private ArrayList<Double> separateValues(byte[] data) {
 		ArrayList<Double> values = new ArrayList<>();
 		try {
 			for(int i = 19; i < data.length; i += 2) {
-				if(data[i] == -35 && data[i + 1] == 125) 
-					break;	  
-				if(data[i] == -1)
+				if(data[i] == -35 && data[i + 1] == 125) {
 					break;
+				}
+
+				if(data[i] == -1) {
+					break;
+				}
+
 				values.add(bytesToValue(data[i], data[i + 1]));
 			}
-		}
-		catch(ArrayIndexOutOfBoundsException e) {
+		} catch(ArrayIndexOutOfBoundsException e) {
 			System.out.println("Неожиданный конец файла, чтение завершено");
 		}
+
 		return values;
 	}
-	
-	
+
     /**
      * Remove parasitic values from the list of values.
      * Parasitic is the values ​​that are significantly out of line 
@@ -120,25 +128,29 @@ public class DataFile {
      *
      */
 	private ArrayList<Double> removeParasiticValues(List<Double> values) {
-		if(values.isEmpty())
+		if(values.isEmpty()) {
 			return (ArrayList<Double>) values;
-		
-		System.out.println("Запущен алгоритм удаления паразитных значений...");
-		ArrayList<Double> resultValues = new ArrayList<Double>(values);
+		}
+
+		System.out.println("Алгоритм удаления паразитных значений запущен");
+		ArrayList<Double> resultValues    = new ArrayList<Double>(values);
 		ArrayList<Double> sortedRawValues = new ArrayList<Double>(values);
 		Collections.sort(sortedRawValues);
-		double middleValue = sortedRawValues.get( (sortedRawValues.size()/2) );
-		double minValue = sortedRawValues.get(0);
-		double maxValue = sortedRawValues.get(sortedRawValues.size() - 1);
+		double middleValue  = sortedRawValues.get( (sortedRawValues.size()/2) );
+		double minValue     = sortedRawValues.get(0);
+		double maxValue     = sortedRawValues.get(sortedRawValues.size() - 1);
 		double maxDeviation = Math.max(maxValue - middleValue, middleValue - minValue);	
-		
-		if(maxDeviation > settings.getMaxDeviation())  {
-			System.out.println("\u001B[31m" + "Отклонение некоторых значений превышает максимально допустимое отклонение." + "\u001B[0m");
+
+		if(maxDeviation > settings.getMaxDeviation()) {
+			System.out.println("\u001B[31m" + "Отклонение некоторых значений превышает максимально допустимое отклонение" + "\u001B[0m");
 			for(double value : values) {
 				if(Math.abs(middleValue - value) > settings.getMaxDeviation()) {
 				resultValues.remove(value);
-		} } }
-		System.out.println("Алгоритм удаления паразитных значений завершил работу.");
+				} 
+			} 
+		}
+		System.out.println("Алгоритм удаления паразитных значений завершил работу");
+
 		return resultValues;
 	}
 
@@ -163,30 +175,31 @@ public class DataFile {
 	private double[] findUpperAndLowerBounds() {
 		if(sortedValues.size() < 5) {
 			return new double[] {0, 10};
-		}	
-		double[] bounds = new double[2];
-		double lowerBound = sortedValues.get(0);
-		double upperBound = sortedValues.get(sortedValues.size() - 1);
+		}
+
+		double[] bounds     = new double[2];
+		double   lowerBound = sortedValues.get(0);
+		double   upperBound = sortedValues.get(sortedValues.size() - 1);
 		upperBound = Math.ceil(upperBound) / 10;
 		upperBound = Math.ceil(upperBound) * 10;
 		lowerBound = Math.floor(lowerBound) / 10;
 		lowerBound = Math.floor(lowerBound) * 10;
-		bounds[0] = lowerBound;
-		bounds[1] = upperBound;
+		bounds[0]  = lowerBound;
+		bounds[1]  = upperBound;
 		
 		if(bounds[1] - bounds[0] == 20) {
 			bounds[0] += 5;
 			bounds[1] -= 5;
 			while(sortedValues.get(sortedValues.size() - 1) > bounds[1]) {
-			    bounds[0] += 1;
-			    bounds[1] += 1;
+				bounds[0] += 1;
+				bounds[1] += 1;
 			}
 			while(sortedValues.get(1) < bounds[0]) {
-			    bounds[0] -= 1;
-			    bounds[1] -= 1;
-			} 
+				bounds[0] -= 1;
+				bounds[1] -= 1;
+			}
 		}
-		
+
 		return bounds;
 	}
 
@@ -194,15 +207,17 @@ public class DataFile {
 		double sum = 0;
 		for(Double value : values) {
 			value = Math.round(value) / 10.0;
-		    value = Math.round(value) * 10.0;
-		    sum += value;
+			value = Math.round(value) * 10.0;
+			sum += value;
 		}
+
 		double target = sum / values.size();
 		target = Math.round(target) / 10.0;
 		target = Math.round(target) * 10.0;
+
 		return (int) target;
 	}
-	
+
 	private double findRelative(double average, double target) {
 		double relative = average - target;
 		return Math.ceil(relative * 10) / 10;
@@ -214,15 +229,14 @@ public class DataFile {
 			average += value;
 		}
 		average /= array.length;
+
 		return Math.floor(average * 10) / 10;
 	}
 
-	
-	
 	private List<Double> getPackedValues() {
 		List<Double> packedValues = new ArrayList<Double>();
-		List<Double> minArray = new ArrayList<Double>();
-		List<Double> maxArray = new ArrayList<Double>();
+		List<Double> minArray     = new ArrayList<Double>();
+		List<Double> maxArray     = new ArrayList<Double>();
 		
 		for(int i = 0; i < 10; i++) {
 			minArray.add(sortedValues.get(i));
@@ -238,64 +252,39 @@ public class DataFile {
 		packedValues.add(averageMax.get());
 		packedValues.add(averageMin.get());
 		packedValues.add(relativeMax.get());
-		packedValues.add(relativeMin.get());	
+		packedValues.add(relativeMin.get());
+
 		return packedValues;
 	}
 
 	private double bytesToValue(byte x, byte y) {
-		int  intResult    = (y << 8) | (x & 0xFF);
+		int intResult = (y << 8) | (x & 0xFF);
 		return (double) intResult / 10;
 	}
 
 	public ObservableList<XYChart.Data> getChartData() {
-        ObservableList<XYChart.Data> chartData = FXCollections.observableArrayList();
-        double time = 0.0;
-        for(int i = 0; i < values.size(); i++){
-            chartData.add(new XYChart.Data(time, values.get(i)));
-            time += settings.getTimeStep();
-        }
-        
-        return chartData;
+		ObservableList<XYChart.Data> chartData = FXCollections.observableArrayList();
+		double time = 0.0;
+		for(int i = 0; i < values.size(); i++){
+			chartData.add(new XYChart.Data(time, values.get(i)));
+			time += settings.getTimeStep();
+		}
+
+		return chartData;
 	}
 	
 	public void setNewTarget(int target) {
 		targetTemperature.set(target);
 		calculateAllDerivatives();
 	}
-	public void setChartExists() { 
-		chartExists = true;			
+	public void setChartExists() {
+		chartExists = true;
 		}
-	
-	@Deprecated
-	public ClipboardContent getFormattedHTMLDataOld() {	
-		List<Double> values = getPackedValues();
-		String casualText = "";
-		String htmlText = "";
-		String trStyle = "<tr style=\"height:22pt\">";
-		String tdStyle = "<td style=\"border-left:solid #000000 1pt;"
-									  + "border-right:solid #000000 1pt; "
-									  + "border-bottom:solid #000000 1pt;"
-									  + "border-top:solid #000000 1pt;"
-									  + "vertical-align:top;"								  + "padding:5pt 5pt 5pt 5pt;"
-									  + "overflow:hidden;"
-									  + "overflow-wrap:break-word;\">";
-		String divStyle = "<div dir=\"ltr\" style=\"margin-left:0pt;\" align=\"center\">";
-		htmlText += "<table><tbody>";
-		for(double value : values) {
-			casualText += value + " " + "\n";
-			htmlText += trStyle + tdStyle + divStyle + value + "</div></td></tr>";			
-		}
-		htmlText += "</tbody></table>";
-		ClipboardContent content = new ClipboardContent();
-		content.putString(casualText);
-		content.putHtml(htmlText);
-		return content;
-	}
-	
-	public ClipboardContent getFormattedHTML() {	
-		List<Double> values = getPackedValues();
+
+	public ClipboardContent getFormattedHTML() {
+		List<Double> values     = getPackedValues();
 		StringBuffer casualText = new StringBuffer("");
-		StringBuffer htmlText = new StringBuffer("");
+		StringBuffer htmlText   = new StringBuffer("");
 		String trStyle = "<tr style=\"height:22pt\">";
 		String tdStyle = "<td style=\"border-left:solid #000000 1pt;"
 					   + "border-right:solid #000000 1pt; "
@@ -307,7 +296,7 @@ public class DataFile {
 					   + "overflow-wrap:break-word;\">";
 		String divStyle = "<div dir=\"ltr\" style=\"margin-left:0pt;\" align=\"center\">";
 		htmlText.append("<table><tbody>");
-		for(double value : values) {	
+		for(double value : values) {
 			casualText.append(value + " " + "\n");
 			htmlText.append(trStyle + tdStyle + divStyle + value + "</div></td></tr>");
 		}
@@ -315,33 +304,33 @@ public class DataFile {
 		ClipboardContent content = new ClipboardContent();
 		content.putString(casualText.toString().replace(".", ","));
 		content.putHtml(htmlText.toString().replace(".", ","));
+
 		return content;
 	}
-	
+
 	public static void resetFilesCounter() {
 		filesCounter = 0;
 	}
-	
-	public int 	        getID()		         {	return id.get();		}
-	public static int       getCount() 	         {	return filesCounter;		}	
-	public boolean          isFileExists()	         {	return fileExists.get();	}
-	public boolean	        isChartExists()          { 	return chartExists; 		}
-	public double           getAverageMin()	         {	return averageMin.get();	}
-	public double  	        getAverageMax()	         {	return averageMax.get();	}
-	public double  	        getRelativeMin()         {	return relativeMin.get();	}
-	public double  	        getRelativeMax()         {	return relativeMax.get();	}
-	public int 	        getTargetTemperature()   {	return targetTemperature.get();	}
-	public double[]	        getBounds() 	         {	return upperAndLowerBounds;	}
-	public List<Double>     getValues()	         {	return values; 			}
-	public List<Double>     getSortedValues()	 {	return sortedValues; 		}
-	public String 		getFileName() 		 { 	return "Файл " + id.get();	}
-	public BooleanProperty 	isFileExistsProperty()	 {	return fileExists;		}
-	public DoubleProperty  	getAverageMinProperty()  {	return averageMin;		}
-	public DoubleProperty  	getAverageMaxProperty()	 {	return averageMax;		}
-	public DoubleProperty  	getRelativeMinProperty() {	return relativeMin;		}
-	public DoubleProperty  	getRelativeMaxProperty() {	return relativeMax;		}
-	public IntegerProperty  getTargetTempProperty()  {	return targetTemperature;	}
-	public IntegerProperty 	getIDProperty()		 {	return id;			}
-	
+
+	public static int      getCount()               { return filesCounter;            }
+	public int             getID()                  { return id.get();                }
+	public int             getTargetTemperature()   { return targetTemperature.get(); }
+	public boolean         isFileExists()           { return fileExists.get();        }
+	public boolean         isChartExists()          { return chartExists;             }
+	public double          getAverageMin()          { return averageMin.get();        }
+	public double          getAverageMax()          { return averageMax.get();        }
+	public double          getRelativeMin()         { return relativeMin.get();       }
+	public double          getRelativeMax()         { return relativeMax.get();       }
+	public double[]        getBounds()              { return upperAndLowerBounds;     }
+	public List<Double>    getValues()              { return values;                  }
+	public List<Double>    getSortedValues()        { return sortedValues;            }
+	public String          getFileName()            { return "Файл " + id.get();      }
+	public BooleanProperty isFileExistsProperty()   { return fileExists;              }
+	public DoubleProperty  getAverageMinProperty()  { return averageMin;              }
+	public DoubleProperty  getAverageMaxProperty()  { return averageMax;              }
+	public DoubleProperty  getRelativeMinProperty() { return relativeMin;             }
+	public DoubleProperty  getRelativeMaxProperty() { return relativeMax;             }
+	public IntegerProperty getTargetTempProperty()  { return targetTemperature;       }
+	public IntegerProperty getIDProperty()          { return id;                      }
 
 }

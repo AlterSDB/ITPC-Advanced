@@ -4,115 +4,115 @@
  * 10.2024
  */
 
-
 /*				 MAIN SECTION			 */
-
 .root {
-     -fx-background-color: linear-gradient(#424853 65%, #35383E);
-	 -fx-text-fill: white;
-	 -fx-focus-color:rgba(0,0,0,0.2);
-	 -fx-accent: grey;
-	 -fx-focus-color: transparent;
-	 -fx-faint-focus-color: transparent;    
+	-fx-background-color:  linear-gradient(#424853 65%, #35383E);
+	-fx-text-fill:         white;
+	-fx-focus-color:       rgba(0,0,0,0.2);
+	-fx-accent:            grey;
+	-fx-focus-color:       transparent;
+	-fx-faint-focus-color: transparent;
 }
 
 .button {
 	-fx-background-radius: 10;
-	-fx-border-width: 1px;
-	-fx-border-radius: 10;
-	-fx-text-fill: white;
-	-fx-border-color: lightgray;
-	-fx-background-color: transparent;
+	-fx-border-width:      1px;
+	-fx-border-radius:     10;
+	-fx-text-fill:         white;
+	-fx-border-color:      lightgray;
+	-fx-background-color:  transparent;
 }
 
 .button:hover {
-	-fx-background-color: #464b54;
+	-fx-background-color: transparent;
+	
+}
+
+.button:pressed {
+	-fx-background-color: linear-gradient(transparent 50%, #7a7a7a);
+	-fx-scale-shape:      true;
+	-fx-scale-x:          0.98;
+	-fx-scale-y:          -fx-scale-x;
 }
 
 .text-field{
-   -fx-padding: 1,1,1,1;
-   -fx-border-color: lightgray;
-   -fx-border-width: 1;
-   -fx-border-radius: 5;
-   -fx-background-color: transparent;
-   -fx-text-fill: white;
+	-fx-padding:          1,1,1,1;
+	-fx-border-color:     lightgray;
+	-fx-border-width:     1;
+	-fx-border-radius:    5;
+	-fx-background-color: transparent;
+	-fx-text-fill:        white;
 }
 
-
-
 /*				 TABLE SECTION			 */
-
 .table-view .column-header,
 .column-header-background,
 .table-view .column-header-background .filler {
-    -fx-background-color: transparent; 
+	-fx-background-color: transparent;
 }
 
 .table-view .column-header .label {
-   -fx-text-fill: lightgray;
-   -fx-font-weight: bold; 
-   -fx-alignment: CENTER;
+	-fx-text-fill:   lightgray;
+	-fx-font-weight: bold;
+	-fx-alignment:   CENTER;
 }
+
 .placeholder .label {
-   -fx-text-fill: lightgray;
-   -fx-alignment: CENTER;
+	-fx-text-fill: lightgray;
+	-fx-alignment: CENTER;
 }
 
 .table-view .cell{
-  -fx-cell-size: 35;
-  -fx-alignment: center;
-  -fx-background-color: transparent;
-  -fx-border-color: transparent;
-  -fx-text-fill: #7789a5;
-  -fx-alignment: CENTER;
-  -fx-background-radius: 0;
+	-fx-cell-size:         35;
+	-fx-alignment:         center;
+	-fx-background-color:  transparent;
+	-fx-border-color:      transparent;
+	-fx-text-fill:         #7789a5;
+	-fx-alignment:         CENTER;
+	-fx-background-radius: 0;
 }
 
 .table-row-cell:selected .table-cell {
-   	 -fx-background-color: #464b54; 
-     -fx-border-radius: 10;
-     -fx-background-radius: 10;
-   	 -fx-text-fill: white;
+	-fx-background-color:  #464b54;
+	-fx-border-radius:     10;
+	-fx-background-radius: 10;
+	-fx-text-fill:         white;
 }
 
 .table-view {
-	-fx-background-color: transparent;
-	-fx-background-radius: 45; 
+	-fx-background-color:  transparent;
+	-fx-background-radius: 45;
 }
 
 #rect {
-	-fx-fill: linear-gradient(transparent 6.8%, #282b30 6.9%);
-	-fx-arc-height: 40;
-	-fx-arc-width: 40;
-	-fx-stroke: #d87941;
+	-fx-fill:         linear-gradient(transparent 6.8%, #282b30 6.9%);
+	-fx-arc-height:   40;
+	-fx-arc-width:    40;
+	-fx-stroke:       #d87941;
 	-fx-stroke-width: 2px;
 }
 
-
-
 /*				 CHART SECTION			 */
-
-
 .chart-plot-background {
-    -fx-background-color: transparent;
-    -fx-stroke: #00FF00;
+	-fx-background-color: transparent;
+	-fx-stroke:           #00FF00;
 }
 
 .chart-legend {
-   -fx-background-color:  transparent;
-   -fx-padding: 20px;
+	-fx-background-color: transparent;
+	-fx-padding:          20px;
 }
 
 .chart-horizontal-grid-lines,
 .chart-vertical-grid-lines {
 	-fx-stroke-dash-array: none;
-	-fx-opacity: 0.25;
+	-fx-opacity:           0.25;
 }
 
-.chart, 
-.chart-title, 
-.chart-legend-item, 
-.axis-label, 
+.chart,
+.chart-title,
+.chart-legend-item,
+.axis-label,
 .axis-title {
 	-fx-text-fill: white;
 }
@@ -120,3 +120,8 @@
 .axis {
 	-fx-tick-label-fill: white;
 }
+
+#logo {
+	-fx-background-image:url('/images/biglogo.png');
+}
+
