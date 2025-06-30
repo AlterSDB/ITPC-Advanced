@@ -1,8 +1,6 @@
-package org.itpc_advanced.App;
+package org.itpc_advanced.model;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 
 public class DataFileN {
