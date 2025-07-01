@@ -13,6 +13,8 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.itpc_advanced.service.DeviceScanner;
+
 public class ITPC_Advanced extends Application {
 
 	private static Stage mainStage;
@@ -20,9 +22,9 @@ public class ITPC_Advanced extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-	//	if (DeviceScanner.thread != null) {
-	//		DeviceScanner.thread.interrupt();
-	//	}
+		if (DeviceScanner.thread != null) {
+			DeviceScanner.thread.interrupt();
+		}
 	}
 
 	@Override

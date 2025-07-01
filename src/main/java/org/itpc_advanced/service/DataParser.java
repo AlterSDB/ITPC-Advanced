@@ -1,6 +1,6 @@
 package org.itpc_advanced.service;
 
-import org.itpc_advanced.model.DataFileN;
+import org.itpc_advanced.model.DataFile;
 
 import java.time.LocalDateTime;
 import java.nio.ByteBuffer;
@@ -14,9 +14,7 @@ public class DataParser {
 	private static final Integer  OFFSET = 7;
 	private static final Integer  STOP_BYTES = valueOf((byte)-35, (byte)125); 
 	
-	
-	
-	public static DataFileN parse(byte[] rawData) {
+	public static DataFile parse(byte[] rawData) {
 		ByteBuffer buffer = ByteBuffer.wrap(rawData);		
 		buffer.position(OFFSET); 
 		String tcType = TC_TYPES[valueOf(buffer.get(), buffer.get()) - 1];
@@ -37,7 +35,7 @@ public class DataParser {
 			values.add(new Double((double)value / 10));
 		}
 		
-		return new DataFileN(tcType, timeStamp, timeStep, values);
+		return new DataFile(tcType, timeStamp, timeStep, values);
 	}
 
 	

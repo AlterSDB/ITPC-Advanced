@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="550.0" prefWidth="1000.0" styleClass="root" stylesheets="@../styles/night_grey.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.itpc_advanced.App.FXMLMainController">
+<AnchorPane prefHeight="550.0" prefWidth="1000.0" styleClass="root" stylesheets="@../styles/night_grey.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.itpc_advanced.controller.MainController">
    <children>
       <AnchorPane fx:id="loadingScreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="1080.0">
          <children>

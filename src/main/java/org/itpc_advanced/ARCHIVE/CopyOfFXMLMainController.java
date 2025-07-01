@@ -1,7 +1,7 @@
 package org.itpc_advanced.controller;
 
 import org.itpc_advanced.ITPC_Advanced;
-import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.model.DataFileOld;
 import org.itpc_advanced.model.Settings;
 import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.utils.VisualFX;
@@ -37,7 +37,7 @@ import javafx.scene.text.Text;
 public class CopyOfFXMLMainController {
 
 	@FXML private   LineChart<Number, Number>     lineChart;
-	@FXML private   TableColumn<DataFile, String> filesColumn;
+	@FXML private   TableColumn<DataFileOld, String> filesColumn;
 	@FXML private   NumberAxis                    x;
 	@FXML private   NumberAxis                    y;
 	@FXML private   TableView                     table;
@@ -118,7 +118,7 @@ public class CopyOfFXMLMainController {
 					return;
 				}
 
-				DataFile selectedDF = (DataFile) table.getSelectionModel().getSelectedItem();
+				DataFileOld selectedDF = (DataFileOld) table.getSelectionModel().getSelectedItem();
 
 				if(!selectedDF.isFileExists()) {
 					return;
@@ -128,7 +128,7 @@ public class CopyOfFXMLMainController {
 					selectedDF.setNewTarget(Integer.parseInt(targetTemperatureField.getText()));
 				}
 				else {
-					for(DataFile df : deviceScanner.getDataFiles()) {
+					for(DataFileOld df : deviceScanner.getDataFiles()) {
 						df.setNewTarget(Integer.parseInt(targetTemperatureField.getText()));
 					}
 				}
@@ -142,14 +142,14 @@ public class CopyOfFXMLMainController {
 
 	private void initializeTable() {
 		table.setPlaceholder(new Label("Список файлов пуст"));
-		filesColumn.setCellValueFactory(new PropertyValueFactory<DataFile, String>("FileName"));
+		filesColumn.setCellValueFactory(new PropertyValueFactory<DataFileOld, String>("FileName"));
 		filesColumn.setMaxWidth(194);
 		filesColumn.setResizable(false);
 		table.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
 			@Override
 			public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
 				if(table.getSelectionModel().getSelectedItem() != null) {
-					DataFile df = (DataFile) table.getSelectionModel().getSelectedItem();
+					DataFileOld df = (DataFileOld) table.getSelectionModel().getSelectedItem();
 					System.out.println("Выбран " + df.getFileName());
 
 					if(settings.isAutomaticTarget()) {
@@ -272,7 +272,7 @@ public class CopyOfFXMLMainController {
 		}
 
 		Clipboard clipboard = Clipboard.getSystemClipboard();
-		DataFile df = (DataFile) table.getSelectionModel().getSelectedItem();
+		DataFileOld df = (DataFileOld) table.getSelectionModel().getSelectedItem();
 		clipboard.setContent(df.getFormattedHTML());
 		System.out.println("Результаты скопированы");
 	}
