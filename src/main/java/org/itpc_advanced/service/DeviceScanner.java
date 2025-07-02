@@ -3,20 +3,44 @@ package org.itpc_advanced.service;
 import org.itpc_advanced.model.ComPort;
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Request;
+
+import com.sun.marlin.ByteArrayCache;
+
+import java.io.ByteArrayInputStream;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import jssc.SerialPort;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
 public class DeviceScanner {
 	
+	private static ComPort port;
+	private static ByteBuffer buffer = ByteBuffer.wrap(new byte[] {});
+	private static byte[] stopBytes = new byte[] {-35, 125};
+	
 	public static ObservableList<DataFile> readData() {
 		ObservableList<DataFile> files = FXCollections.observableArrayList();
-		
-		try (ComPort port = new ComPort("COM1")) {
-			Thread.sleep(1000);
+		port = new ComPort("COM1");
+		try {
+			port.openPort();
+			System.out.println("Port is opened");
+			port.setParams(SerialPort.BAUDRATE_9600, 
+						   SerialPort.DATABITS_8,
+						   SerialPort.STOPBITS_1,
+						   SerialPort.PARITY_NONE);
+		//	port.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | 
+		//			                SerialPort.FLOWCONTROL_RTSCTS_OUT);
+			port.addEventListener(new PortReader(), SerialPort.MASK_RXCHAR);
+		/*	Thread.sleep(1000);
 			port.openPort();
 			port.setParams(9600, 8, 1, 0);
+			
+			port.addEventListener(SerialPortEventListener);
 			
 			
 			System.out.println("Пытаемся подключить устройство...");
@@ -42,53 +66,38 @@ public class DeviceScanner {
 				files.add(DataParser.parse(readDatas(request)));
 			}
 			port.close();
-			
+			*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return files;
 	}
+	
+	
+	private static class PortReader implements SerialPortEventListener {
+		@Override
+		public void serialEvent(SerialPortEvent event) {
+			if (event.isRXCHAR() && event.getEventValue() > 0) {
+				try {
+					byte[] receivedData = port.readBytes();
+					buffer.put(receivedData);
+					if(containsStopBytes(buffer.array())) {
+						
+					}
+					
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	@Deprecated
-	private static byte[] readDatas(byte[] request) throws SerialPortException, InterruptedException {
-		byte [] data = new byte[] {};
-		while(data.length < 1) {
-			System.out.println("Получаем байты по запросУ...");
-	//		port.purgePort(0);
-	//		port.writeBytes(request);
-			Thread.sleep(650 - 320);
-		//	data = port.readBytes(port.getInputBufferBytesCount());
-		//	System.out.println("HEX: " + port.readHexString(port.getInputBufferBytesCount() )); // test, delete previous comment
 		}
-		System.out.println("Отправленные байты: " + Arrays.toString(request));
-		System.out.println("Полученные байты: " + Arrays.toString(data));
 
-		return data;
-	}
-	
-	@Deprecated
-	private static byte[] readDatas() throws SerialPortException, InterruptedException {
-		byte [] data = new byte[] {};
-		while(data.length < 1) {
-			System.out.println("Получаем байты без запроса...");
-			Thread.sleep(650 - 320);
-		//	if(port.getInputBufferBytesCount() > 0) {
-		//		data = port.readBytes(10);
-		//	}
-		//	port.purgePort(0);
+		private boolean containsStopBytes(byte[] array) {
+			// TODO Auto-generated method stub
+			return false;
 		}
-		System.out.println("Полученные байты: " + Arrays.toString(data));
 
-		return data;
-	}
-	
+	}	
 }

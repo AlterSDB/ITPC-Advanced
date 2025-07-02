@@ -14,11 +14,11 @@ public class ComPort extends SerialPort implements AutoCloseable {
 	public void close() {
 		try {
 			if(isOpened()) {
+				this.removeEventListener();
 				closePort();
 				System.out.println("Порт закрыт");
 			}
 		} catch (SerialPortException e) {
-			System.out.println("Произошла ошибка при закрытии порта.");
 			e.printStackTrace();
 		}
 	}
