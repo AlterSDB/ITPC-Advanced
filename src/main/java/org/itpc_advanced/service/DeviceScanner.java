@@ -1,103 +1,112 @@
 package org.itpc_advanced.service;
 
-import org.itpc_advanced.model.ComPort;
-import org.itpc_advanced.model.DataFile;
-import org.itpc_advanced.model.Request;
 
-import com.sun.marlin.ByteArrayCache;
-
-import java.io.ByteArrayInputStream;
-import java.nio.ByteBuffer;
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
+import java.util.concurrent.TimeoutException;
+
+import org.itpc_advanced.model.ComPort;
+import org.itpc_advanced.model.DataFile; 
+import org.itpc_advanced.model.Request;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
 
 public class DeviceScanner {
+	private static final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	private static volatile State currentState = State.WAITING_FOR_DEVICE;
+	private static volatile int filesCounter = 1;
+	private static final int beyondFilesTimeout = 190;
+	private static volatile long timer;
 	
-	private static ComPort port;
-	private static ByteBuffer buffer = ByteBuffer.wrap(new byte[] {});
-	private static byte[] stopBytes = new byte[] {-35, 125};
-	
-	public static ObservableList<DataFile> readData() {
-		ObservableList<DataFile> files = FXCollections.observableArrayList();
-		port = new ComPort("COM1");
-		try {
-			port.openPort();
-			System.out.println("Port is opened");
-			port.setParams(SerialPort.BAUDRATE_9600, 
-						   SerialPort.DATABITS_8,
-						   SerialPort.STOPBITS_1,
-						   SerialPort.PARITY_NONE);
-		//	port.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | 
-		//			                SerialPort.FLOWCONTROL_RTSCTS_OUT);
-			port.addEventListener(new PortReader(), SerialPort.MASK_RXCHAR);
-		/*	Thread.sleep(1000);
+	private enum State {
+		WAITING_FOR_DEVICE,
+		RECEIVING_FILES,
+		DONE
+	}
+
+	public static ObservableList<DataFile> readDataFiles() {
+		ObservableList<DataFile> files  = FXCollections.observableArrayList();
+		try(ComPort port = new ComPort("COM1")){
 			port.openPort();
 			port.setParams(9600, 8, 1, 0);
-			
-			port.addEventListener(SerialPortEventListener);
-			
-			
-			System.out.println("Пытаемся подключить устройство...");
-			byte[] data;
-			while(true) {
-				Thread.sleep(1000);
-				data = readDatas();
-				if(Arrays.equals(data, Request.DEVICE_SYNC.getBytes()) || Arrays.equals(data, Request.DEVICE_SYNC_SHIFT.getBytes())) {
-				System.out.println("Замечен прибор, подключаем...");
-					if(Arrays.equals(readDatas(Request.TO_CONNECT.getBytes()), Request.CONNECTION_CONFIRM.getBytes())) {
-						System.out.println("Получен ответ от устройства. Соединение установлено.");
-						break;
+			port.addEventListener(new SerialPortEventListener() {
+
+				@Override
+				public void serialEvent(SerialPortEvent serialPortEvent) {
+					try {
+						byte[] received = port.readBytes();
+						if (received == null) return;
+						System.out.println("Received now: " + System.currentTimeMillis() + " " + Arrays.toString(received));
+						switch(currentState){
+							case WAITING_FOR_DEVICE: {
+								if (Arrays.equals(received, Request.DEVICE_SYNC.getBytes())) {
+									port.writeBytes(Request.TO_CONNECT.getBytes());
+									System.out.println("Device founded. Sended request to connect");
+								}
+								if (Arrays.equals(received, Request.CONNECTION_CONFIRM.getBytes())) {
+									System.out.println("Connection confirmed - start receiving");
+									currentState = State.RECEIVING_FILES;
+									System.out.println("Status changed to receieve");
+									System.out.println("Trying to read file " + filesCounter);
+									updateTimer();
+									System.out.println(System.currentTimeMillis());
+									port.writeBytes(Request.valueOf("FILE_1").getBytes());
+								}
+								break;
+							}
+							case RECEIVING_FILES: {
+								if(timer > System.currentTimeMillis()) {
+									buffer.write(received);
+									break;
+								}
+								System.out.println("Readed fIle: " + filesCounter + " " + Arrays.toString(buffer.toByteArray() ));
+							//	files.add(DataParser.parse(buffer.toByteArray()));
+								buffer.reset();
+								filesCounter++;
+							//	port.purgePort(0);
+								
+								if(filesCounter > 8) {
+									System.out.println("Status changed to DONE");
+									currentState = State.DONE;
+									break;
+								}
+								updateTimer();
+								System.out.println(System.currentTimeMillis());
+								port.writeBytes(Request.valueOf("FILE_" + filesCounter).getBytes());
+								break;
+							}
+							case DONE: {
+								break;
+							}
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
+				}
+
+				private void updateTimer() {
+					timer = System.currentTimeMillis() + beyondFilesTimeout;
+				}
+				
+			});
+			
+			final long timeout = System.currentTimeMillis() + 20000;
+			while(currentState != State.DONE){
+				if(System.currentTimeMillis() > timeout) {
+					throw new TimeoutException("Time is out.");
 				} else {
-					System.out.println("Не удалось установить соединение.");
+					Thread.sleep(30);
 				}
 			}
-			
-			System.out.println("Начинаем чтение файлов...");
-			byte[] request = Request.FILE_1.getBytes();
-			for(int i = 1; i <= 8; i++) {
-				request = Request.valueOf("FILE_" + i).getBytes();
-				files.add(DataParser.parse(readDatas(request)));
-			}
-			port.close();
-			*/
-		} catch (Exception e) {
+			System.out.println("Done!");
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
+		System.out.println("All files has been read: " + files.toString());
 		return files;
 	}
-	
-	
-	private static class PortReader implements SerialPortEventListener {
-		@Override
-		public void serialEvent(SerialPortEvent event) {
-			if (event.isRXCHAR() && event.getEventValue() > 0) {
-				try {
-					byte[] receivedData = port.readBytes();
-					buffer.put(receivedData);
-					if(containsStopBytes(buffer.array())) {
-						
-					}
-					
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-		}
-
-		private boolean containsStopBytes(byte[] array) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-	}	
 }

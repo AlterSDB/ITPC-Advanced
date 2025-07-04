@@ -45,7 +45,7 @@ public class MainController {
 	@FXML
 	void scanBtnAction(ActionEvent event) {
 		System.out.println("Scan pressed");
-		table.setItems(DeviceScanner.readData());
+		table.setItems(DeviceScanner.readDataFiles());
 	}
 
 }

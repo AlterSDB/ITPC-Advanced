@@ -14,10 +14,16 @@ public class DataParser {
 	private static final Integer  OFFSET = 7;
 	private static final Integer  STOP_BYTES = valueOf((byte)-35, (byte)125); 
 	
-	public static DataFile parse(byte[] rawData) {
+	public static DataFile parse(byte[] rawData) throws Exception {
+		if (rawData == null || 
+			rawData.length < 2 || 
+			rawData[0] != (byte)22 || 
+			rawData[1] !=(byte)-125) 
+				throw new Exception("Error creating DataFile: Corrupted raw data.");
+		
 		ByteBuffer buffer = ByteBuffer.wrap(rawData);		
 		buffer.position(OFFSET); 
-		String tcType = TC_TYPES[valueOf(buffer.get(), buffer.get()) - 1];
+		String tcType = TC_TYPES[valueOf(buffer.get(), buffer.get()) - 2];
 		int month = valueOf(buffer.get(), buffer.get());
 		int day = valueOf(buffer.get(), buffer.get());
 		int hours = valueOf(buffer.get(), buffer.get());
