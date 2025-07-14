@@ -7,6 +7,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.itpc_advanced.model.ComPort;
 import org.itpc_advanced.model.DataFile; 
+import org.itpc_advanced.model.ProcessedDataFile;
 import org.itpc_advanced.model.Request;
 
 import javafx.collections.FXCollections;
@@ -27,8 +28,8 @@ public class DeviceScanner {
 		DONE
 	}
 
-	public static ObservableList<DataFile> readDataFiles() {
-		ObservableList<DataFile> files  = FXCollections.observableArrayList();
+	public static ObservableList<ProcessedDataFile> readDataFiles() {
+		ObservableList<ProcessedDataFile> files  = FXCollections.observableArrayList();
 		try(ComPort port = new ComPort("COM1")){
 			port.openPort();
 			port.setParams(9600, 8, 1, 0);
@@ -63,7 +64,9 @@ public class DeviceScanner {
 									break;
 								}
 								System.out.println("Readed fIle: " + filesCounter + " " + Arrays.toString(buffer.toByteArray() ));
-							//	files.add(DataParser.parse(buffer.toByteArray()));
+								DataFile dataFile = DataParser.parse(buffer.toByteArray());
+								ProcessedDataFile processedDataFile = DataProcessor.process(dataFile);
+								files.add(processedDataFile);
 								buffer.reset();
 								filesCounter++;
 							//	port.purgePort(0);
@@ -106,7 +109,7 @@ public class DeviceScanner {
 			e.printStackTrace();
 		}
 		
-		System.out.println("All files has been read: " + files.toString());
+		System.out.println("All files has been readed: " + files.toString());
 		return files;
 	}
 }

@@ -1,11 +1,11 @@
 package org.itpc_advanced.model;
 
-import java.util.Collections;
 import java.util.List;
 
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
+@SuppressWarnings("rawtypes")
 public class ProcessedDataFile {
 	
 	private DataFile dataFile = null;
@@ -17,7 +17,7 @@ public class ProcessedDataFile {
 	private Double averageMin = null;
 	
 	
-	ProcessedDataFile(DataFile dataFile) {
+	public ProcessedDataFile(DataFile dataFile) {
 		this.dataFile = dataFile;		
 	}
 
@@ -25,6 +25,11 @@ public class ProcessedDataFile {
 	public Integer getTargetTemperature() {
 		return targetTemperature;
 	}
+	
+	public DataFile getDataFile() {
+		return this.dataFile;
+	}
+
 
 
 	public void setTargetTemperature(Integer targetTemperature) {
