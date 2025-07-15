@@ -11,12 +11,6 @@ import org.junit.jupiter.api.Assertions;
 public class DataParserTest {
 	
 	@Test
-	public void myFirstTest() {
-		int one = 5;
-		int two = 5;
-		Assertions.assertEquals(one, two);
-	}
-	@Test
 	public void testFileTPPS() {
 		final byte[] rawData = {22, -125, 0, 0, 123, -1, -123, 1, 
 				0, 24, 0, 12, 0, 15, 0, 11, 0, 4, 0, 34, 1, 34, 1, 34, 1, 34, 1, 

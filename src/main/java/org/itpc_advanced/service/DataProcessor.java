@@ -1,5 +1,8 @@
 package org.itpc_advanced.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -8,16 +11,25 @@ import javafx.scene.chart.XYChart;
 
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.ProcessedDataFile;
-@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
+@SuppressWarnings({ "unchecked", "unused", "rawtypes"})
+
 public class DataProcessor {
-	
 	
 	public static ProcessedDataFile process(DataFile dataFile) {
 		ProcessedDataFile processedDf = new ProcessedDataFile(dataFile);
 		int target = findTargetValue(dataFile.getValues());
 		ObservableList<XYChart.Data> chartData = getChartData(dataFile);
-		int[] maxTemps = null;
-		int[] minTemps = null;
+		List<Double> sortedValues = new ArrayList<Double>(dataFile.getValues());
+		Collections.sort(sortedValues);
+
+		List<Double> maxTemps = new ArrayList<Double>();
+		List<Double> minTemps = new ArrayList<Double>();
+
+		for(int i = 0; i < 10; i++) {
+			maxTemps.add(sortedValues.get(sortedValues.size() - 1 - i));
+			minTemps.add(minTemps.size() - i, sortedValues.get(i));
+		}
+		
 		double averageMax = findAverage(maxTemps);
 		double averageMin = findAverage(minTemps);
 		
@@ -31,12 +43,12 @@ public class DataProcessor {
 		return processedDf;
 	}
 	
-	private static double findAverage(double[] array) {
+	private static double findAverage(List<Double> maxTemps) {
 		double average = 0.0;
-		for(double value : array) {
+		for (double value : maxTemps) {
 			average += value;
 		}
-		average /= array.length;
+		average /= maxTemps.size();
 
 		return Math.floor(average * 10) / 10;
 	}
@@ -67,6 +79,5 @@ public class DataProcessor {
 
 		return (int) target;
 	}
-
 
 }

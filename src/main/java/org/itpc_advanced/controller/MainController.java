@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.itpc_advanced.ITPC_Advanced;
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.model.Table;
 import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.ReportBuilder;
 
@@ -14,23 +15,22 @@ import javafx.scene.input.Clipboard;
 
 
 public class MainController {
-	@FXML 
-	private TableView table;
 	
 	@FXML
 	void initialize() {	
+	//	Table.initialize();
 	}
 
 	@FXML
 	void copyResultBtnAction() {
 		System.out.println("copyResultsButton pressed");
-		if(table.getSelectionModel().getSelectedItem() == null) {
+		if(Table.getTable().getSelectionModel().getSelectedItem() == null) {
 			System.out.println("Ошибка: Файл в таблице не выбран.");
 			return;
 		}
 
 		Clipboard clipboard = Clipboard.getSystemClipboard();
-		DataFile df = (DataFile) table.getSelectionModel().getSelectedItem();
+		DataFile df = (DataFile) Table.getTable().getSelectionModel().getSelectedItem();
 		clipboard.setContent(ReportBuilder.getReport(null));
 		System.out.println("Результаты скопированы");
 	}
@@ -45,7 +45,7 @@ public class MainController {
 	@FXML
 	void scanBtnAction(ActionEvent event) {
 		System.out.println("Scan pressed");
-		table.setItems(DeviceScanner.readDataFiles());
+		Table.getTable().setItems(DeviceScanner.readDataFiles());
 	}
 
 }

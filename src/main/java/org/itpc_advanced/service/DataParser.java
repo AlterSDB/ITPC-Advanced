@@ -14,7 +14,8 @@ public class DataParser {
 	private static final Integer  OFFSET = 7;
 	private static final Integer  STOP_BYTES = valueOf((byte)-35, (byte)125); 
 	
-	public static DataFile parse(byte[] rawData) throws Exception {
+	public static DataFile parse(byte[] rawData) {
+		try{
 		if (rawData == null || 
 			rawData.length < 2 || 
 			rawData[0] != (byte)22 || 
@@ -47,6 +48,12 @@ public class DataParser {
 		}
 		
 		return new DataFile(tcType, timeStamp, timeStep, values);
+		
+	} catch(Exception e) {
+		System.out.println("Error parsing data: " + e.getMessage());
+	}
+		
+		return null;
 	}
 
 	
