@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
-
 import java.util.Properties;
+
 
 
 public class ITPC_Advanced extends Application {
@@ -21,7 +21,7 @@ public class ITPC_Advanced extends Application {
 	private static Stage settingsStage;
 
 	public static void main(String[] args) {
-		launch(args);
+		launch(args);	
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class ITPC_Advanced extends Application {
 		Properties properties = new Properties();
 		properties.load(getClass().getResourceAsStream("/version.properties"));
 		String name = "ITPC Advanced v" + properties.getProperty("version"); 
-		setRoot("scene1", name);
+		setRoot("base", name);
 	}
 
 	static void setRoot(String fxml) throws IOException {

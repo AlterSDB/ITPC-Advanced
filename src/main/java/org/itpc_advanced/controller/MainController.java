@@ -24,14 +24,18 @@ public class MainController {
 	@FXML
 	void copyResultBtnAction() {
 		System.out.println("copyResultsButton pressed");
+		if(Table.getTable() == null) {
+			System.out.println("Ошибка: Таблицы не существует.");
+			return;
+		}
 		if(Table.getTable().getSelectionModel().getSelectedItem() == null) {
 			System.out.println("Ошибка: Файл в таблице не выбран.");
 			return;
 		}
 
 		Clipboard clipboard = Clipboard.getSystemClipboard();
-		DataFile df = (DataFile) Table.getTable().getSelectionModel().getSelectedItem();
-		clipboard.setContent(ReportBuilder.getReport(null));
+	//	DataFile df = (DataFile) Table.getTable().getSelectionModel().getSelectedItem();
+	//	clipboard.setContent(ReportBuilder.getReport(null));
 		System.out.println("Результаты скопированы");
 	}
 
@@ -45,7 +49,13 @@ public class MainController {
 	@FXML
 	void scanBtnAction(ActionEvent event) {
 		System.out.println("Scan pressed");
-		Table.getTable().setItems(DeviceScanner.readDataFiles());
+		//Table.getTable().setItems(DeviceScanner.readDataFiles());
+	}
+	
+	@FXML
+	void switchLanguageAction(ActionEvent event) {
+		System.out.println("Language pressed");
+	//	Table.getTable().setItems(DeviceScanner.readDataFiles());
 	}
 
 }
