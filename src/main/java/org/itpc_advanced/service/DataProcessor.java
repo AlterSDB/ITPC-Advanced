@@ -32,6 +32,7 @@ public class DataProcessor {
 		
 		double averageMax = findAverage(maxTemps);
 		double averageMin = findAverage(minTemps);
+		double[] chartBounds = findChartBounds(sortedValues);
 		
 		processedDf.setTargetTemperature(target);
 		processedDf.setChartData(chartData);
@@ -39,6 +40,9 @@ public class DataProcessor {
 		processedDf.setMinTemps(minTemps);
 		processedDf.setAverageMax(averageMax);
 		processedDf.setAverageMin(averageMin);
+		processedDf.setRelativeMax(averageMax);
+		processedDf.setRelativeMin(averageMin);
+		processedDf.setChartBounds(chartBounds);
 		
 		return processedDf;
 	}
@@ -64,6 +68,37 @@ public class DataProcessor {
 
 		return chartData;
 	}
+	
+    private static double[] findChartBounds(List<Double> sortedValues) {
+		if(sortedValues.size() < 5) {
+			return new double[] {0, 10};
+		}
+
+		double[] bounds     = new double[2];
+		double   lowerBound = sortedValues.get(0);
+		double   upperBound = sortedValues.get(sortedValues.size() - 1);
+		upperBound = Math.ceil(upperBound) / 10;
+		upperBound = Math.ceil(upperBound) * 10;
+		lowerBound = Math.floor(lowerBound) / 10;
+		lowerBound = Math.floor(lowerBound) * 10;
+		bounds[0]  = lowerBound;
+		bounds[1]  = upperBound;
+		
+		if(bounds[1] - bounds[0] == 20) {
+			bounds[0] += 5;
+			bounds[1] -= 5;
+			while(sortedValues.get(sortedValues.size() - 1) > bounds[1]) {
+				bounds[0] += 1;
+				bounds[1] += 1;
+			}
+			while(sortedValues.get(1) < bounds[0]) {
+				bounds[0] -= 1;
+				bounds[1] -= 1;
+			}
+		}
+
+		return bounds;
+    }
 	
 	private static int findTargetValue(List<Double> values) {
 		double sum = 0;

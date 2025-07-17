@@ -72,35 +72,40 @@ public class VisualFX {
 	 */
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void changeText(TextField field, String text) {
+	public static void changeText(TextField field, String newText) {
+		if(field == null) {
+			System.out.println("Error in changeText method");
+			return;
+		}
 		Timeline timeline = new Timeline();
-		StringBuffer newText = new StringBuffer();	
-		StringBuffer oldText = new StringBuffer(field.getText());
+		String oldText = field != null && field.getText() != null ? field.getText() : " ";
+		StringBuffer newTextBuffer = new StringBuffer();	
+		StringBuffer oldTextBuffer = new StringBuffer(oldText);
 		int duration = 0;
 		int step = 50;
 
-		for(int i = 0; i < oldText.length() ; i++) {
+		for(int i = 0; i < oldTextBuffer.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
 				Duration.millis(duration), 
 				new EventHandler() {
 					@Override
 					public void handle(Event event) {
-					oldText.deleteCharAt(oldText.length() - 1);
-					field.setText(oldText.toString());
+					oldTextBuffer.deleteCharAt(oldTextBuffer.length() - 1);
+					field.setText(oldTextBuffer.toString());
 					}
 			}));
 			duration += step - 20;
 		}
 
-		for(int i = 0; i < text.length() ; i++) {
+		for(int i = 0; i < newText.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
 				Duration.millis(duration),
 				new EventHandler() {
 					@Override
 					public void handle(Event event) {
-						if (newText.length() < text.length()) {
-							newText.append(text.charAt(newText.length()));
-							field.setText(newText.toString());
+						if (newTextBuffer.length() < newText.length()) {
+							newTextBuffer.append(newText.charAt(newTextBuffer.length()));
+							field.setText(newTextBuffer.toString());
 						}
 					}
 				}));

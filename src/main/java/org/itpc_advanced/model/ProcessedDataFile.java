@@ -8,6 +8,7 @@ import javafx.scene.chart.XYChart;
 @SuppressWarnings("rawtypes")
 public class ProcessedDataFile {
 	
+	private static int counter = 1;
 	private DataFile dataFile = null;
 	private Integer targetTemperature = null;
 	private ObservableList<XYChart.Data> chartData = null;
@@ -15,6 +16,10 @@ public class ProcessedDataFile {
 	private List<Double> minTemps = null;
 	private Double averageMax = null;
 	private Double averageMin = null;
+	private Double relativeMax = null;
+	private Double relativeMin = null;
+	private String fileName = "File";
+	private double[] chartBounds = null;
 	
 	
 	public ProcessedDataFile(DataFile dataFile) {
@@ -86,6 +91,49 @@ public class ProcessedDataFile {
 		this.averageMin = averageMin;
 	}
 
-	
+
+	public String getFileName() {
+		return fileName;
+	}
+
+
+	public double[] getChartBounds() {
+		return chartBounds;
+	}
+
+
+	public void setChartBounds(double[] chartBounds) {
+		this.chartBounds = chartBounds;
+	}
+
+
+	public static int getCounter() {
+		return counter;
+	}
+
+
+	public static void resetCounter(int counter) {
+		ProcessedDataFile.counter = 1;
+	}
+
+
+	public Double getRelativeMax() {
+		return relativeMax;
+	}
+
+
+	public void setRelativeMax(Double relativeMax) {
+		this.relativeMax = relativeMax;
+	}
+
+
+	public Double getRelativeMin() {
+		return relativeMin;
+	}
+
+
+	public void setRelativeMin(Double relativeMin) {
+		this.relativeMin = relativeMin;
+	}	
 
 }
