@@ -1,6 +1,7 @@
 package org.itpc_advanced.controller;
 
 import org.itpc_advanced.model.Settings;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,12 +13,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import jssc.SerialPortList;
 
 public class SettingsController {
-
-	@FXML	private AnchorPane ap;
+	
+	@FXML	private AnchorPane pane;
 	@FXML	private MenuButton selectPortMenu;
 	@FXML	private CheckBox automaticTargetCheck;
 	@FXML	private CheckBox autoLoadCheck;
@@ -26,22 +26,18 @@ public class SettingsController {
 	@FXML	private TextField timeStepField;
 	@FXML	private TextField timeoutField;
 	@FXML	private Button saveButton;
-			private Settings settings;
-			private String   timeout;
-			private String   timeStep;
+	
+	private final Settings settings = new Settings(pane);
 
 	@FXML
 	void initialize() {
-		settings = Settings.getInstance();
-		multipleChartsCheck.setSelected(settings.isMultipleCharts());
-		automaticTargetCheck.setSelected(settings.isAutomaticTarget());
-		autoLoadCheck.setSelected(settings.isAutoLoad());
-		shuffleCheck.setSelected(settings.isShuffleValues());
-		timeStep = Double.toString(settings.getTimeStep());
-		timeStepField.setText(timeStep);
-		timeout = Double.toString(settings.getConnectionTimeout());
-		timeoutField.setText(timeout);
-		selectPortMenu.setText(settings.getPort());
+		multipleChartsCheck.setSelected(settings.getMultipleCharts().getValue());
+		automaticTargetCheck.setSelected(settings.getAutomaticTarget().getValue());
+		autoLoadCheck.setSelected(settings.getAutoLoad().getValue());
+		shuffleCheck.setSelected(settings.getShuffleValues().getValue());
+		selectPortMenu.setText(settings.getPort().getValue());
+		timeStepField.setText(settings.getTimeStep().getValue().toString());
+		timeoutField.setText(settings.getConnectionTimeout().getValue().toString());
 		System.out.println("Обнаружены порты: ");
 		for(String port : SerialPortList.getPortNames()) {
 			System.out.println(port);
@@ -81,8 +77,8 @@ public class SettingsController {
 
 
 	protected void saveSettings() {
-		timeStep = timeStepField.getText();
-		timeout = timeoutField.getText();
+		settings.setTimeStep(timeStepField.getText());
+		/*timeout = timeoutField.getText();
 		Double newTimeStep;
 		Double newConnectionTimeout;
 		
@@ -106,9 +102,7 @@ public class SettingsController {
 		settings.setConnectionTimeout(newConnectionTimeout);
 		settings.setTimeStep(newTimeStep);
 		settings.setShuffleValues(shuffleCheck.isSelected());
-		settings.setPort(selectPortMenu.getText());
-		Stage stage = (Stage) ap.getScene().getWindow();
-		stage.close();
+		settings.setPort(selectPortMenu.getText()); */
 	}
 
 }

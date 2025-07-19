@@ -121,10 +121,10 @@
                   </Text>
                </children>
             </AnchorPane>
-            <TextField editable="false" prefHeight="26.0" GridPane.columnIndex="1" />
-            <TextField editable="false" layoutX="110.0" layoutY="15.0" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField editable="false" layoutX="10.0" layoutY="15.0" prefHeight="26.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField editable="false" prefHeight="26.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="averageMaxField" editable="false" prefHeight="26.0" GridPane.columnIndex="1" />
+            <TextField fx:id="averageMinField" editable="false" layoutX="110.0" layoutY="15.0" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="relativeMaxField" editable="false" layoutX="10.0" layoutY="15.0" prefHeight="26.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="relativeMinField" editable="false" prefHeight="26.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <ImageView fitHeight="81.0" fitWidth="272.0" layoutX="14.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true">
@@ -139,7 +139,7 @@
       </Button>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#settingsBtnAction" text="Settings" />
       <Button layoutX="78.0" layoutY="15.0" mnemonicParsing="false" text="EN" />
-      <TextField editable="false" layoutX="494.0" layoutY="343.0" prefHeight="26.0" prefWidth="83.0" />
+      <TextField fx:id="tempSetField" editable="true" layoutX="494.0" layoutY="343.0" prefHeight="26.0" prefWidth="83.0" />
       <Text fill="white" layoutX="456.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="t°з">
          <font>
             <Font size="18.0" />
