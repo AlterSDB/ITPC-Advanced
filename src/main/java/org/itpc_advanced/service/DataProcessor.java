@@ -32,6 +32,8 @@ public class DataProcessor {
 		
 		double averageMax = findAverage(maxTemps);
 		double averageMin = findAverage(minTemps);
+		double relativeMax = findRelative(target, averageMax);
+		double relativeMin = findRelative(target, averageMin);
 		double[] chartBounds = findChartBounds(sortedValues);
 		
 		processedDf.setTargetTemperature(target);
@@ -47,6 +49,12 @@ public class DataProcessor {
 		return processedDf;
 	}
 	
+	public static double findRelative(double target, double average) {
+		double relative = average - target;
+		double result = Math.ceil(relative * 10) / 10;
+		return result;
+	}
+
 	private static double findAverage(List<Double> maxTemps) {
 		double average = 0.0;
 		for (double value : maxTemps) {

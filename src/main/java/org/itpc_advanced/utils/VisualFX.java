@@ -73,8 +73,8 @@ public class VisualFX {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void changeText(TextField field, String newText) {
-		if(field == null) {
-			System.out.println("Error in changeText method");
+		if(field == null ||newText.isEmpty()) {
+			System.out.println("ERROR VisualFX.changeText - null or empty");
 			return;
 		}
 		Timeline timeline = new Timeline();

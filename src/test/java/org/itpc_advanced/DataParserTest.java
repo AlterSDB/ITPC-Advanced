@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.DataParser;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 
 public class DataParserTest {

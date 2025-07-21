@@ -2,6 +2,8 @@ package org.itpc_advanced.model;
 
 import java.util.List;
 
+import org.itpc_advanced.service.DataProcessor;
+
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
@@ -18,7 +20,7 @@ public class ProcessedDataFile {
 	private Double averageMin = null;
 	private Double relativeMax = null;
 	private Double relativeMin = null;
-	private String fileName = "File";
+	private String fileName = null;
 	private double[] chartBounds = null;
 	
 	
@@ -93,8 +95,14 @@ public class ProcessedDataFile {
 
 
 	public String getFileName() {
+		if(fileName == null) {
+			return "";
+		}
 		return fileName;
 	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;		
+	}	
 
 
 	public double[] getChartBounds() {
@@ -134,6 +142,14 @@ public class ProcessedDataFile {
 
 	public void setRelativeMin(Double relativeMin) {
 		this.relativeMin = relativeMin;
-	}	
+	}
+
+
+	public void updateTargetTemperature(String textValue) {
+		double newValue = Double.parseDouble(textValue);
+		setTargetTemperature((int)newValue);
+		setRelativeMax(DataProcessor.findRelative(newValue, averageMax));
+		setRelativeMin(DataProcessor.findRelative(newValue, averageMin));		
+	}
 
 }

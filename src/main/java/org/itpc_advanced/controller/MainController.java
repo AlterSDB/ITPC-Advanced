@@ -5,6 +5,9 @@ import java.io.IOException;
 import org.itpc_advanced.ITPC_Advanced;
 import org.itpc_advanced.model.ProcessedDataFile;
 import org.itpc_advanced.model.Table;
+import org.itpc_advanced.service.ChartBuilder;
+import org.itpc_advanced.service.DeviceScanner;
+import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
 import org.itpc_advanced.utils.VisualFX;
 
@@ -12,20 +15,31 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.Clipboard;
 
 
 public class MainController {
 	
 	@FXML 
-	public TableView<ProcessedDataFile> table;
-	@FXML 
-	public TableColumn<ProcessedDataFile, String> filesColumn;
+	public TableView<ProcessedDataFile> tableView;
+	
+	@FXML
+	public TableColumn<ProcessedDataFile, String> tableColumn;
+	
+    @FXML
+    private LineChart<Number, Number> lineChart;
+    
+    @FXML
+    private NumberAxis x;
+
+    @FXML
+    private NumberAxis y;
+
 	@FXML 
 	public TextField tempSetField;
 	
@@ -40,36 +54,16 @@ public class MainController {
 
     @FXML
     public TextField relativeMinField;
+    
+    private final Table tableModel = new Table();
 
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
 	void initialize() {	
-		table.setPlaceholder(new Label("Список файлов пуст"));
-		filesColumn.setCellValueFactory(new PropertyValueFactory<ProcessedDataFile, String>("FileName"));
-		filesColumn.setMaxWidth(190);
-		filesColumn.setResizable(false);
-		table.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
-			@Override
-			public void changed(ObservableValue<?> observableValue, Object oldValue, Object newValue) {
-				if(table.getSelectionModel().getSelectedItem() != null) {
-					ProcessedDataFile df = (ProcessedDataFile) table.getSelectionModel().getSelectedItem();
-					tempSetField.clear();
-					tempSetField.setText(Integer.toString(df.getTargetTemperature()));
-					VisualFX.changeText(averageMaxField,  Double.toString(df.getAverageMax()));
-					VisualFX.changeText(averageMinField,  Double.toString(df.getAverageMin()));
-					VisualFX.changeText(relativeMaxField, Double.toString(df.getRelativeMax()));
-					VisualFX.changeText(relativeMinField, Double.toString(df.getRelativeMin()));
-				//	changeChart(df.getChartData(), df.getChartBounds(), df.getFileName());
-					//VisualFX.fadeTransition(copyResultsButton, 0, 1);
-					
-				}
-				
-				
-			}
-			
-		});
-		
+		lineChart = ChartBuilder.createChart(lineChart, x, y);
+		tableView.setItems(tableModel.getFiles());
+		tableColumn.setCellValueFactory(new PropertyValueFactory<ProcessedDataFile, String>("FileName"));
 		
 		tempSetField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -77,49 +71,35 @@ public class MainController {
 				if (!newValue.matches("\\d*")) {
 					tempSetField.setText(newValue.replaceAll("[^\\d]", ""));
 				}
+				if(tableView.getSelectionModel().getSelectedItem() == null || newValue.isEmpty()) {
+					return;
+				}
 				
-			//	if(table.getSelectionModel().getSelectedItem() == null || newValue.isEmpty()) {
-			//		return;
-			//	}
-
-			//	DataFileOld selectedDF = (DataFileOld) table.getSelectionModel().getSelectedItem();
-
-			//	if(!selectedDF.isFileExists()) {
-			//		return;
-			//	}
-				
-			//	if(settings.isAutomaticTarget()) {
-			//		selectedDF.setNewTarget(Integer.parseInt(targetTemperatureField.getText()));
-			//	}
-			//	else {
-			//		for(DataFileOld df : deviceScanner.getDataFiles()) {
-			//			df.setNewTarget(Integer.parseInt(targetTemperatureField.getText()));
-			//		}
-			//	}
-				
-			//	VisualFX.changeText(relativeMaxField, Double.toString(selectedDF.getRelativeMax()));
-			//	VisualFX.changeText(relativeMinField, Double.toString(selectedDF.getRelativeMin()));
+				ProcessedDataFile dataFile = tableView.getSelectionModel().getSelectedItem();
+				dataFile.updateTargetTemperature(tempSetField.getText());
+				updateRelativeFields(dataFile);
+		}
+			
+			
+		});
+		
+		tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+			@Override
+			public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+				if(tableView.getSelectionModel().getSelectedItem() != null) {
+					ProcessedDataFile dataFile = (ProcessedDataFile) tableView.getSelectionModel().getSelectedItem();
+					System.out.println("Выбран " + dataFile.getFileName());
+				    updateFields(dataFile);
+				    ChartBuilder.changeChart(dataFile.getChartData(), dataFile.getChartBounds(), dataFile.getFileName());
+				}
 			}
 		});
 	}
-	
 
 	@FXML
 	void copyResultBtnAction() {
 		System.out.println("copyResultsButton pressed");
-		if(Table.getTable() == null) {
-			System.out.println("Ошибка: Таблицы не существует.");
-			return;
-		}
-		if(Table.getTable().getSelectionModel().getSelectedItem() == null) {
-			System.out.println("Ошибка: Файл в таблице не выбран.");
-			return;
-		}
-
-		Clipboard clipboard = Clipboard.getSystemClipboard();
-	//	DataFile df = (DataFile) Table.getTable().getSelectionModel().getSelectedItem();
-	//	clipboard.setContent(ReportBuilder.getReport(null));
-		System.out.println("Результаты скопированы");
+		ReportBuilder.buildReport(tableView);
 	}
 
 	@FXML
@@ -128,18 +108,28 @@ public class MainController {
 		ITPC_Advanced.callSettingsWindow();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@FXML
 	void scanBtnAction(ActionEvent event) {
 		System.out.println("Scan pressed");
-		// table.setItems(DeviceScanner.readDataFiles());
-		   table.setItems(MockyDataFiles.mock());
-		
+		tableModel.clearFiles();
+		tableModel.addFiles(MockyDataFiles.mock());
+		//tableModel.addFiles(DeviceScanner.readDataFiles());
 	}
 	
 	@FXML
 	void switchLanguageAction(ActionEvent event) {
 		System.out.println("Language pressed");
+	}
+
+	void updateFields(ProcessedDataFile dataFile) {
+		tempSetField.setText(dataFile.getTargetTemperature().toString());
+		VisualFX.changeText(averageMaxField, dataFile.getAverageMax().toString());
+		VisualFX.changeText(averageMinField, dataFile.getAverageMin().toString());
+		updateRelativeFields(dataFile);
+	}
+	void updateRelativeFields(ProcessedDataFile dataFile) {
+		VisualFX.changeText(relativeMaxField, dataFile.getRelativeMax().toString());
+		VisualFX.changeText(relativeMinField, dataFile.getRelativeMin().toString());
 	}
 	
 }

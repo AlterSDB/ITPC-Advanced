@@ -26,9 +26,9 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="359.0" prefWidth="286.0">
                      <children>
-                        <TableView fx:id="table" layoutX="43.0" layoutY="14.0" prefHeight="330.0" prefWidth="200.0">
+                        <TableView fx:id="tableView" layoutX="43.0" layoutY="14.0" prefHeight="330.0" prefWidth="200.0">
                            <columns>
-                              <TableColumn fx:id="filesColumn" editable="false" maxWidth="200.0" prefWidth="200.0" sortable="false" text="Файлы" />
+                              <TableColumn fx:id="tableColumn" editable="false" maxWidth="200.0" prefWidth="200.0" sortable="false" text="Файлы" />
                            </columns>
                         </TableView>
                         <Button layoutX="31.0" layoutY="318.0" mnemonicParsing="false" onAction="#scanBtnAction" prefHeight="47.0" prefWidth="220.0" text="Scan">

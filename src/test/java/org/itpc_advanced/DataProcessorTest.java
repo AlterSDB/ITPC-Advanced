@@ -4,8 +4,8 @@ import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.ProcessedDataFile;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DataProcessor;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 
 public class DataProcessorTest {

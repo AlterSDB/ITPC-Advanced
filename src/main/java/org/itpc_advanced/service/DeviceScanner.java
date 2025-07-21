@@ -65,7 +65,7 @@ public class DeviceScanner {
 								}
 								System.out.println("Readed fIle: " + filesCounter + " " + Arrays.toString(buffer.toByteArray() ));
 								DataFile dataFile = DataParser.parse(buffer.toByteArray());
-								ProcessedDataFile processedDataFile = DataProcessor.process(dataFile);
+								ProcessedDataFile processedDataFile = DataFileProcessor.process(dataFile);
 								files.add(processedDataFile);
 								buffer.reset();
 								filesCounter++;
