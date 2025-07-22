@@ -17,10 +17,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 
 
 public class MainController {
@@ -55,6 +57,9 @@ public class MainController {
     @FXML
     public TextField relativeMinField;
     
+    @FXML
+    private Button languageBtn;
+    
     private final Table tableModel = new Table();
 
 	
@@ -68,15 +73,19 @@ public class MainController {
 		tempSetField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				System.out.println("CHANGED");
 				if (!newValue.matches("\\d*")) {
 					tempSetField.setText(newValue.replaceAll("[^\\d]", ""));
 				}
 				if(tableView.getSelectionModel().getSelectedItem() == null || newValue.isEmpty()) {
 					return;
 				}
+				if(Integer.parseInt(newValue) == 0) {
+					return;
+				}
 				
 				ProcessedDataFile dataFile = tableView.getSelectionModel().getSelectedItem();
-				dataFile.updateTargetTemperature(tempSetField.getText());
+				dataFile.updateTargetTemperature(newValue);
 				updateRelativeFields(dataFile);
 		}
 			
@@ -119,9 +128,15 @@ public class MainController {
 	@FXML
 	void switchLanguageAction(ActionEvent event) {
 		System.out.println("Language pressed");
+		if(languageBtn.getText().equals("EN")) {
+		languageBtn.setText("RU");
+		} else {
+	    languageBtn.setText("EN");
+		}
 	}
 
 	void updateFields(ProcessedDataFile dataFile) {
+		tempSetField.clear();
 		tempSetField.setText(dataFile.getTargetTemperature().toString());
 		VisualFX.changeText(averageMaxField, dataFile.getAverageMax().toString());
 		VisualFX.changeText(averageMinField, dataFile.getAverageMin().toString());

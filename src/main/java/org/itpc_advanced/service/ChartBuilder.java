@@ -12,12 +12,10 @@ import javafx.scene.chart.XYChart.Data;
 public class ChartBuilder {
 	
 	private static LineChart<Number, Number> lineChart;
-	private static NumberAxis x;
 	private static NumberAxis y;
 	
 	public static LineChart<Number, Number> createChart(LineChart<Number, Number> lineChart, NumberAxis x, NumberAxis y) {
 		ChartBuilder.lineChart = lineChart;
-		ChartBuilder.x = x;
 		ChartBuilder.y = y;
 		x.setUpperBound(15);
 		x.setMinorTickCount(2);
@@ -45,9 +43,8 @@ public class ChartBuilder {
 		y.setUpperBound(bounds[1]);
 		newSeries.setData(newChartData);
 		newSeries.setName(fileName);
-
-			lineChart.getData().clear();
-
+		
+        lineChart.getData().clear();
 		lineChart.getData().add(newSeries);
 		VisualFX.slideTransition(newSeries.getNode());
 	}

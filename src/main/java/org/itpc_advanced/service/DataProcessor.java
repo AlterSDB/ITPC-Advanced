@@ -15,8 +15,11 @@ import org.itpc_advanced.model.ProcessedDataFile;
 
 public class DataProcessor {
 	
-	public static ProcessedDataFile process(DataFile dataFile) {
+	public static ProcessedDataFile process(DataFile dataFile) {		
 		ProcessedDataFile processedDf = new ProcessedDataFile(dataFile);
+		if (dataFile.getValues().size() < 20) {
+			return processedDf;
+		}
 		int target = findTargetValue(dataFile.getValues());
 		ObservableList<XYChart.Data> chartData = getChartData(dataFile);
 		List<Double> sortedValues = new ArrayList<Double>(dataFile.getValues());
@@ -24,8 +27,9 @@ public class DataProcessor {
 
 		List<Double> maxTemps = new ArrayList<Double>();
 		List<Double> minTemps = new ArrayList<Double>();
-
+		
 		for(int i = 0; i < 10; i++) {
+			System.out.println(sortedValues.size() + "     " + i);
 			maxTemps.add(sortedValues.get(sortedValues.size() - 1 - i));
 			minTemps.add(minTemps.size() - i, sortedValues.get(i));
 		}

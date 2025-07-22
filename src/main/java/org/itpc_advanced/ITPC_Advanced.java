@@ -33,6 +33,10 @@ public class ITPC_Advanced extends Application {
 		setRoot("base", name);
 	}
 
+	static void setRoot(String fxml) throws IOException {
+		setRoot(fxml,mainStage.getTitle());
+	}
+
 	static void setRoot(String fxml, String title) throws IOException {
 		Scene scene = new Scene(loadFXML(fxml));
 		mainStage.setTitle(title);
@@ -72,5 +76,7 @@ public class ITPC_Advanced extends Application {
 		settingsStage.getIcons().add(new Image("/images/logo.png"));
 		settingsStage.show();
 	}
+	
+	
 
 }

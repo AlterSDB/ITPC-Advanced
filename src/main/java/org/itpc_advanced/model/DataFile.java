@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class DataFile {
-	private String tcType = null;
-	private LocalDateTime timeStamp = null;
-	private Double timeStep = null;
-	private List<Double> values = null;
+	private String tcType;
+	private LocalDateTime timeStamp;
+	private Double timeStep;
+	private List<Double> values;
 	
 	public DataFile(String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> values) {
 		this.tcType = tcType;

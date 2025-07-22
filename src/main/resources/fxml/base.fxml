@@ -26,10 +26,13 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="359.0" prefWidth="286.0">
                      <children>
-                        <TableView fx:id="tableView" layoutX="43.0" layoutY="14.0" prefHeight="330.0" prefWidth="200.0">
+                        <TableView fx:id="tableView" layoutX="32.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="238.0">
                            <columns>
                               <TableColumn fx:id="tableColumn" editable="false" maxWidth="200.0" prefWidth="200.0" sortable="false" text="Файлы" />
                            </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
                         <Button layoutX="31.0" layoutY="318.0" mnemonicParsing="false" onAction="#scanBtnAction" prefHeight="47.0" prefWidth="220.0" text="Scan">
                            <font>
@@ -138,7 +141,7 @@
          </font>
       </Button>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#settingsBtnAction" text="Settings" />
-      <Button layoutX="78.0" layoutY="15.0" mnemonicParsing="false" text="EN" />
+      <Button fx:id="languageBtn" layoutX="78.0" layoutY="15.0" mnemonicParsing="false" onAction="#switchLanguageAction" text="EN" />
       <TextField fx:id="tempSetField" editable="true" layoutX="494.0" layoutY="343.0" prefHeight="26.0" prefWidth="83.0" />
       <Text fill="white" layoutX="456.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="t°з">
          <font>
