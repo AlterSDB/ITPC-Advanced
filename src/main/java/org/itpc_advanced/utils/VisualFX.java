@@ -2,12 +2,15 @@ package org.itpc_advanced.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -70,9 +73,95 @@ public class VisualFX {
 	/*
 	 * Animation of fast erasing and typing text
 	 */
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void changeText(StringProperty oldTextProperty, String newTextProperty) {
+		Timeline timeline = new Timeline();
+		String oldText = oldTextProperty.getValue() != null ? oldTextProperty.getValue().toString() : "";
+		String newText = newTextProperty.toString();
+		System.out.println(oldText);
+		StringBuffer newTextBuffer = new StringBuffer();	
+		StringBuffer oldTextBuffer = new StringBuffer(oldText);
+		int duration = 0;
+		int step = 50;
+
+		for(int i = 0; i < oldTextBuffer.length() ; i++) {
+			timeline.getKeyFrames().add(new KeyFrame(
+				Duration.millis(duration), 
+				new EventHandler() {
+					@Override
+					public void handle(Event event) {
+					oldTextBuffer.deleteCharAt(oldTextBuffer.length() - 1);
+					oldTextProperty.setValue(oldTextBuffer.toString());
+					}
+			}));
+			duration += step - 20;
+		}
+
+		for(int i = 0; i < newText.length() ; i++) {
+			timeline.getKeyFrames().add(new KeyFrame(
+				Duration.millis(duration),
+				new EventHandler() {
+					@Override
+					public void handle(Event event) {
+						if (newTextBuffer.length() < newText.length()) {
+							newTextBuffer.append(newText.charAt(newTextBuffer.length()));
+							oldTextProperty.setValue(newTextBuffer.toString());
+						}
+					}
+				}));
+			duration += step;
+		}
+		timeline.setCycleCount(1);
+		timeline.play();
+	}
+	
+
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void changeText(TextField field, String newText) {
+	public static void changeText2(StringProperty oldTextProperty, DoubleProperty newTextProperty) {
+		Timeline timeline = new Timeline();
+		String oldText = oldTextProperty.getValue() != null ? oldTextProperty.getValue().toString() : "";
+		String newText = newTextProperty.getValue().toString();
+		System.out.println(oldText);
+		StringBuffer newTextBuffer = new StringBuffer();	
+		StringBuffer oldTextBuffer = new StringBuffer(oldText);
+		int duration = 0;
+		int step = 50;
+
+		for(int i = 0; i < oldTextBuffer.length() ; i++) {
+			timeline.getKeyFrames().add(new KeyFrame(
+				Duration.millis(duration), 
+				new EventHandler() {
+					@Override
+					public void handle(Event event) {
+					oldTextBuffer.deleteCharAt(oldTextBuffer.length() - 1);
+					oldTextProperty.setValue(oldTextBuffer.toString());
+					}
+			}));
+			duration += step - 20;
+		}
+
+		for(int i = 0; i < newText.length() ; i++) {
+			timeline.getKeyFrames().add(new KeyFrame(
+				Duration.millis(duration),
+				new EventHandler() {
+					@Override
+					public void handle(Event event) {
+						if (newTextBuffer.length() < newText.length()) {
+							newTextBuffer.append(newText.charAt(newTextBuffer.length()));
+							oldTextProperty.setValue(newTextBuffer.toString());
+						}
+					}
+				}));
+			duration += step;
+		}
+		timeline.setCycleCount(1);
+		timeline.play();
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void changeTextField(TextField field, String newText) {
 		if(field == null ||newText.isEmpty()) {
 			System.out.println("ERROR VisualFX.changeText - null or empty");
 			return;

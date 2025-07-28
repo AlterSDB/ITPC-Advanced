@@ -1,11 +1,11 @@
 package org.itpc_advanced;
 
 import org.itpc_advanced.model.DataFile;
-import org.itpc_advanced.model.ProcessedDataFile;
+import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DataProcessor;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 
 public class DataProcessorTest {
@@ -23,20 +23,20 @@ public class DataProcessorTest {
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -31, -25}; 
 		DataFile df = DataParser.parse(rawData);
-		ProcessedDataFile pdf = DataProcessor.process(df);
+		DataProcessor.calculate(df);
 		
-		Assertions.assertEquals(ProcessedDataFile.class, pdf.getClass());
-		Assertions.assertEquals(120, pdf.getTargetTemperature());
-		Assertions.assertEquals(121.2, pdf.getAverageMax());
-		Assertions.assertEquals(118.8, pdf.getAverageMin());
-		Assertions.assertEquals(10, pdf.getMaxTemps().size());
-		Assertions.assertEquals(10, pdf.getMinTemps().size());
-		Assertions.assertEquals(121.3, pdf.getMaxTemps().get(0));
-		Assertions.assertEquals(121.2, pdf.getMaxTemps().get(5));
-		Assertions.assertEquals(121.1, pdf.getMaxTemps().get(9));
-		Assertions.assertEquals(119.5, pdf.getMinTemps().get(0));
-		Assertions.assertEquals(118.5, pdf.getMinTemps().get(6));
-		Assertions.assertEquals(118.2, pdf.getMinTemps().get(9));
+		Assertions.assertEquals(DataFile.class, df.getClass());
+		Assertions.assertEquals(120, df.getTargetTemperature());
+		Assertions.assertEquals(121.2, df.getAverageMax());
+		Assertions.assertEquals(118.8, df.getAverageMin());
+		Assertions.assertEquals(10, df.getMaxTemps().size());
+		Assertions.assertEquals(10, df.getMinTemps().size());
+		Assertions.assertEquals(121.3, df.getMaxTemps().get(0));
+		Assertions.assertEquals(121.2, df.getMaxTemps().get(5));
+		Assertions.assertEquals(121.1, df.getMaxTemps().get(9));
+		Assertions.assertEquals(119.5, df.getMinTemps().get(0));
+		Assertions.assertEquals(118.5, df.getMinTemps().get(6));
+		Assertions.assertEquals(118.2, df.getMinTemps().get(9));
 
 	}
 	

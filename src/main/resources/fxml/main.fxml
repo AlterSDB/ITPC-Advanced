@@ -17,12 +17,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="550.0" prefWidth="1000.0" styleClass="root" stylesheets="@../styles/night_grey.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.itpc_advanced.controller.MainController">
+<AnchorPane prefHeight="550.0" prefWidth="1000.0" styleClass="root" stylesheets="@../styles/night_grey.css" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.itpc_advanced.view.MainView">
    <children>
       <TabPane id=" " layoutX="52.0" layoutY="53.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="413.0" prefWidth="286.0" rotateGraphic="true" stylesheets="@../styles/night_grey.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           
-          <Tab closable="false" text="Automatic">
+          <Tab fx:id="tabAutomatic" closable="false" text="Automatic">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="359.0" prefWidth="286.0">
                      <children>
@@ -34,7 +34,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <Button layoutX="31.0" layoutY="318.0" mnemonicParsing="false" onAction="#scanBtnAction" prefHeight="47.0" prefWidth="220.0" text="Scan">
+                        <Button fx:id="scanBtn" layoutX="31.0" layoutY="318.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="220.0" text="Scan">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -42,7 +42,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Manual">
+          <Tab fx:id="tabManual" text="Manual">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -70,12 +70,12 @@
          <children>
             <AnchorPane>
                <children>
-                  <Text fill="WHITE" layoutX="6.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T°C           =">
+                  <Text fx:id="tempText" fill="WHITE" layoutX="6.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T°C           =">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <Text fill="white" layoutX="27.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.max">
+                  <Text fx:id="averageMaxText" fill="white" layoutX="27.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.max">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -84,12 +84,12 @@
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="97.0" GridPane.rowIndex="1">
                <children>
-                  <Text fill="WHITE" layoutX="6.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T°C           =">
+                  <Text fx:id="tempText" fill="WHITE" layoutX="6.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T°C           =">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <Text fill="white" layoutX="27.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.min">
+                  <Text fx:id="averageMinText" fill="white" layoutX="27.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.min">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -98,12 +98,12 @@
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="54.0" GridPane.rowIndex="2">
                <children>
-                  <Text fill="WHITE" layoutX="6.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T°C           =">
+                  <Text fx:id="tempText" fill="WHITE" layoutX="6.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T°C           =">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <Text fill="white" layoutX="37.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.max-t°з">
+                  <Text fx:id="relativeMaxText" fill="white" layoutX="37.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.max-t°з">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -112,48 +112,48 @@
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="10.0" GridPane.rowIndex="3">
                <children>
-                  <Text fill="WHITE" layoutX="6.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T°C           =">
+                  <Text fx:id="tempText" fill="WHITE" layoutX="6.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T°C           =">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <Text fill="white" layoutX="27.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.min-t°з">
+                  <Text fx:id="relativeMinText" fill="white" layoutX="27.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.min-t°з">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Text>
                </children>
             </AnchorPane>
-            <TextField fx:id="averageMaxField" editable="false" prefHeight="26.0" GridPane.columnIndex="1" />
+            <TextField fx:id="averageMaxField" editable="true" prefHeight="26.0" text="${viewModel.averageMaxProperty}" GridPane.columnIndex="1" />
             <TextField fx:id="averageMinField" editable="false" layoutX="110.0" layoutY="15.0" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="relativeMaxField" editable="false" layoutX="10.0" layoutY="15.0" prefHeight="26.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="relativeMinField" editable="false" prefHeight="26.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <ImageView fitHeight="81.0" fitWidth="272.0" layoutX="14.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="logoImageView" fitHeight="81.0" fitWidth="272.0" layoutX="14.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../images/biglogo.png" />
          </image>
       </ImageView>
-      <Button layoutX="681.0" layoutY="464.0" mnemonicParsing="false" onAction="#copyResultBtnAction" prefHeight="75.0" prefWidth="250.0" text="Get Report Table" textOverrun="CLIP">
+      <Button fx:id="copyResultBtn" layoutX="681.0" layoutY="464.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="250.0" text="Get Report Table" textOverrun="CLIP">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#settingsBtnAction" text="Settings" />
-      <Button fx:id="languageBtn" layoutX="78.0" layoutY="15.0" mnemonicParsing="false" onAction="#switchLanguageAction" text="EN" />
+      <Button fx:id="settingsBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Settings" />
+      <Button fx:id="languageBtn" layoutX="78.0" layoutY="15.0" mnemonicParsing="false" text="EN" />
       <TextField fx:id="tempSetField" editable="true" layoutX="494.0" layoutY="343.0" prefHeight="26.0" prefWidth="83.0" />
-      <Text fill="white" layoutX="456.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="t°з">
+      <Text fx:id="tempSetText" fill="white" layoutX="456.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="t°з">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <LineChart fx:id="lineChart" layoutX="391.0" layoutY="8.0" prefHeight="300.0" prefWidth="600.0">
+      <LineChart fx:id="tempLineChart" layoutX="391.0" layoutY="8.0" prefHeight="300.0" prefWidth="600.0">
          <xAxis>
-            <NumberAxis side="BOTTOM" fx:id="x" />
+            <NumberAxis side="BOTTOM" fx:id="xAxis" />
          </xAxis>
          <yAxis>
-            <NumberAxis fx:id="y" side="LEFT" />
+            <NumberAxis fx:id="yAxis" side="LEFT" />
          </yAxis>
       </LineChart>
    </children>

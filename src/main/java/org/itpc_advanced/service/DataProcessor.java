@@ -10,15 +10,24 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 import org.itpc_advanced.model.DataFile;
-import org.itpc_advanced.model.ProcessedDataFile;
+import org.itpc_advanced.model.DataFile;
 @SuppressWarnings({ "unchecked", "unused", "rawtypes"})
 
 public class DataProcessor {
 	
-	public static ProcessedDataFile process(DataFile dataFile) {		
-		ProcessedDataFile processedDf = new ProcessedDataFile(dataFile);
+	public static void calculate(DataFile dataFile) {		
 		if (dataFile.getValues().size() < 20) {
-			return processedDf;
+			dataFile.setTargetTemperature(0.0);
+			dataFile.setChartData(FXCollections.observableArrayList());
+			dataFile.setMaxTemps(new ArrayList<Double>());
+			dataFile.setMinTemps(new ArrayList<Double>());
+			dataFile.setAverageMax(0.0);
+			dataFile.setAverageMin(0.0);
+			dataFile.setRelativeMax(0.0);
+			dataFile.setRelativeMin(0.0);
+			dataFile.setChartBounds(new double[] { 0.0, 0.0 });
+			
+			return;
 		}
 		int target = findTargetValue(dataFile.getValues());
 		ObservableList<XYChart.Data> chartData = getChartData(dataFile);
@@ -40,17 +49,17 @@ public class DataProcessor {
 		double relativeMin = findRelative(target, averageMin);
 		double[] chartBounds = findChartBounds(sortedValues);
 		
-		processedDf.setTargetTemperature(target);
-		processedDf.setChartData(chartData);
-		processedDf.setMaxTemps(maxTemps);
-		processedDf.setMinTemps(minTemps);
-		processedDf.setAverageMax(averageMax);
-		processedDf.setAverageMin(averageMin);
-		processedDf.setRelativeMax(averageMax);
-		processedDf.setRelativeMin(averageMin);
-		processedDf.setChartBounds(chartBounds);
+		dataFile.setTargetTemperature((double)target);
+		dataFile.setChartData(chartData);
+		dataFile.setMaxTemps(maxTemps);
+		dataFile.setMinTemps(minTemps);
+		dataFile.setAverageMax(averageMax);
+		dataFile.setAverageMin(averageMin);
+		dataFile.setRelativeMax(averageMax);
+		dataFile.setRelativeMin(averageMin);
+		dataFile.setChartBounds(chartBounds);
 		
-		return processedDf;
+		return;
 	}
 	
 	public static double findRelative(double target, double average) {

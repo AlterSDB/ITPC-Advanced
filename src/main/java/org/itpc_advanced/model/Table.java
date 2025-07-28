@@ -12,15 +12,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class Table {
 	
-	private final ObservableList<ProcessedDataFile> files = FXCollections.observableArrayList();
+	private final ObservableList<DataFile> files;
 	private final AtomicInteger fileCounter = new AtomicInteger(1);
 	
-	public ObservableList<ProcessedDataFile> getFiles() {
+	public Table(ObservableList<DataFile> fileList) {
+		this.files = fileList;
+		// TODO Auto-generated constructor stub
+	}
+
+	public ObservableList<DataFile> getFiles() {
 		return files;
 	}
 	
-	public void addFile(ProcessedDataFile file) {
-		file.setFileName("Файл " + fileCounter.getAndIncrement());
+	public void addFile(DataFile file) {
+		file.setFileId(fileCounter.getAndIncrement());
 		files.add(file);
 	}
 	
@@ -32,17 +37,17 @@ public class Table {
 		}
 	}
 	
-	public void initialize(TableView<ProcessedDataFile> table) {
+	public void initialize(TableView<DataFile> table) {
 		table.getColumns().clear();
-		final TableColumn<ProcessedDataFile, String> filesColumn = new TableColumn<ProcessedDataFile, String>();
+		final TableColumn<DataFile, String> filesColumn = new TableColumn<DataFile, String>();
 		table.setPlaceholder(new Label("Список файлов пуст"));
-		filesColumn.setCellValueFactory(new PropertyValueFactory<ProcessedDataFile, String>("FileName"));
+		filesColumn.setCellValueFactory(new PropertyValueFactory<DataFile, String>("FileName"));
 		filesColumn.setMaxWidth(194);
 		filesColumn.setResizable(false);
 	}
 
-	public void addFiles(ObservableList<ProcessedDataFile> files) {
-		for(ProcessedDataFile dataFile : files) {
+	public void addFiles(ObservableList<DataFile> files) {
+		for(DataFile dataFile : files) {
 			addFile(dataFile);
 		}
 		
