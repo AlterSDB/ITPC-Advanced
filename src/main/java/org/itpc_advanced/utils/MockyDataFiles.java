@@ -3,7 +3,7 @@ package org.itpc_advanced.utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import org.itpc_advanced.model.ProcessedDataFile;
+import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DataProcessor;
 
@@ -16,12 +16,14 @@ public class MockyDataFiles {
 		new byte[] { 22, -125, 0, 0, 123, -1, -123, 5, 0, 1, 0, 1, 0, 0, 0, 0, 0, 2, 0, 7, 46, 11, 46, 5, 46, 0, 46, 5, 46, 2, 46, 6, 46, 12, 46, 15, 46, 8, 46, -5, 45, -1, 45, 1, 46, 1, 46, 1, 46, 3, 46, -3, 45, 3, 46, 0, 46, -6, 45, -4, 45, 3, 46, 0, 46, -8, 45, -4, 45, -4, 45, -4, 45, 0, 46, -2, 45, 0, 46, -7, 45, -13, 45, -6, 45, -7, 45, -9, 45, -10, 45, -35, 125, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -30, -37  },
 		new byte[] {22, -125, 0, 0, 123, -1, -123, 5, 0, 1, 0, 1, 0, 0, 0, 0, 0, 2, 0, -100, 42, -100, 42, -100, 42, -102, 42, -101, 42, -105, 24, -35, 125, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -14, -79},
 	};
-	public static ObservableList<ProcessedDataFile> mock() {
-		ObservableList<ProcessedDataFile> files  = FXCollections.observableArrayList();
+	public static ObservableList<DataFile> mock() {
+		ObservableList<DataFile> files  = FXCollections.observableArrayList();
 		
-		
+	DataProcessor.resetFilesCounter();	
 	for(byte[] rawData : rawDatas) {
-		files.add(DataProcessor.process(DataParser.parse(rawData)));
+		DataFile df = DataParser.parse(rawData);
+		DataProcessor.calculate(df);
+		files.add(df);
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {

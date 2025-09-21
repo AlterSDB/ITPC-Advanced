@@ -16,7 +16,7 @@ public class ComPort extends SerialPort implements AutoCloseable {
 			if(isOpened()) {
 				this.removeEventListener();
 				closePort();
-				System.out.println("Порт закрыт");
+				System.out.println("Port is closed");
 			}
 		} catch (SerialPortException e) {
 			e.printStackTrace();

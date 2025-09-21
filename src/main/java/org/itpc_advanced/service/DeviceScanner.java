@@ -7,7 +7,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.itpc_advanced.model.ComPort;
 import org.itpc_advanced.model.DataFile; 
-import org.itpc_advanced.model.ProcessedDataFile;
+import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Request;
 
 import javafx.collections.FXCollections;
@@ -16,20 +16,18 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 
 public class DeviceScanner {
-	private static final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-	private static volatile State currentState = State.WAITING_FOR_DEVICE;
-	private static volatile int filesCounter = 1;
-	private static final int beyondFilesTimeout = 190;
-	private static volatile long timer;
-	
 	private enum State {
 		WAITING_FOR_DEVICE,
 		RECEIVING_FILES,
 		DONE
 	}
+	private static final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	private static volatile State currentState = State.WAITING_FOR_DEVICE;
+	private static volatile int filesCounter = 1;
+	private static final int timeout = 5000;
 	
-	public static ObservableList<ProcessedDataFile> readDataFiles() {
-		ObservableList<ProcessedDataFile> files  = FXCollections.observableArrayList();
+	public static ObservableList<DataFile> readDataFiles() {
+		ObservableList<DataFile> files  = FXCollections.observableArrayList();
 		
 		try (ComPort port = new ComPort("COM1")){
 			port.openPort();
@@ -66,7 +64,9 @@ public class DeviceScanner {
 						    }
 						    case RECEIVING_FILES: {
 								System.out.println("Readed fIle: " + filesCounter + " " + Arrays.toString(buffer.toByteArray() ));
-								files.add(DataProcessor.process(DataParser.parse(buffer.toByteArray())));
+								DataFile df = DataParser.parse(buffer.toByteArray());
+								DataProcessor.calculate(df);
+								files.add(df);
 								buffer.reset();
 								port.purgePort(0);
 								filesCounter++;
@@ -90,10 +90,10 @@ public class DeviceScanner {
 				}
 			});
 			
-			final long timeout = System.currentTimeMillis() + 10000; // 10 seconds
+			final long deadline = System.currentTimeMillis() + timeout; // 10 seconds
 			
 			while (currentState != State.DONE){
-				if(System.currentTimeMillis() > timeout) {
+				if(System.currentTimeMillis() > deadline) {
 					throw new TimeoutException("Time Out!");
 				}
 				

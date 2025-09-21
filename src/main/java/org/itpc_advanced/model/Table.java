@@ -17,7 +17,7 @@ public class Table {
 	
 	public Table(ObservableList<DataFile> fileList) {
 		this.files = fileList;
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public ObservableList<DataFile> getFiles() {
@@ -39,9 +39,10 @@ public class Table {
 	
 	public void initialize(TableView<DataFile> table) {
 		table.getColumns().clear();
+		System.out.println("Initialising table");
 		final TableColumn<DataFile, String> filesColumn = new TableColumn<DataFile, String>();
-		table.setPlaceholder(new Label("Список файлов пуст"));
-		filesColumn.setCellValueFactory(new PropertyValueFactory<DataFile, String>("FileName"));
+		table.setPlaceholder(new Label("Files list is empty"));
+		filesColumn.setCellValueFactory(new PropertyValueFactory<DataFile, String>("FileId"));
 		filesColumn.setMaxWidth(194);
 		filesColumn.setResizable(false);
 	}

@@ -37,12 +37,11 @@ public class ChartBuilder {
 	
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	public static void changeChart(ObservableList<Data> newChartData, double[] bounds, String fileName) {
+	public static void changeChart(ObservableList<Data> newChartData, double[] bounds) {
 		XYChart.Series newSeries = new XYChart.Series();
 		y.setLowerBound(bounds[0]);
 		y.setUpperBound(bounds[1]);
 		newSeries.setData(newChartData);
-		newSeries.setName(fileName);
 		
         lineChart.getData().clear();
 		lineChart.getData().add(newSeries);

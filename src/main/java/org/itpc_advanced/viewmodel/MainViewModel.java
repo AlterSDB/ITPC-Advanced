@@ -23,43 +23,25 @@ import javafx.util.converter.NumberStringConverter;
 public class MainViewModel {
 	private final ObservableList<DataFile> fileList = FXCollections.observableArrayList();   
 	private final ObjectProperty<DataFile> selectedDataFile = new SimpleObjectProperty<DataFile>();
-	private final Table tableModel = new Table(fileList);
 	private StringProperty averageMaxProperty = new SimpleStringProperty();
 	private StringProperty averageMinProperty = new SimpleStringProperty();
-	private StringProperty relativeMaxProperty = new SimpleStringProperty();
+	private final StringProperty relativeMaxProperty = new SimpleStringProperty();
 	private StringProperty relativeMinProperty = new SimpleStringProperty();
 	private StringProperty tempSetProperty = new SimpleStringProperty();
 	
 	public MainViewModel(){	
-		relativeMaxProperty.addListener(new ChangeListener<String>() {
-
-			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
-			//	VisualFX.changeText(relativeMaxProperty, newValue);
-				
-			}
-			
-		});
 		selectedDataFile.addListener(new ChangeListener<DataFile>() {
 			@Override
 			public void changed(ObservableValue<? extends DataFile> observable,
 					DataFile oldDataFile, DataFile newDataFile) {
 				if(newDataFile != null) {
 					System.out.println("CHANGED");
-					averageMaxProperty.bind(Bindings.concat(newDataFile.getAverageMax()));
-					averageMinProperty.bind(Bindings.concat(newDataFile.getAverageMin()));
-					relativeMaxProperty.bind(Bindings.concat(newDataFile.getRelativeMax()));
-					relativeMinProperty.bind(Bindings.concat(newDataFile.getRelativeMin()));
-					
-				//	VisualFX.changeText(averageMaxProperty, newDataFile.getAverageMax());
-				//	VisualFX.changeText(averageMinProperty, newDataFile.getAverageMin());
-				//	VisualFX.changeText(relativeMaxProperty, newDataFile.getRelativeMax());
-				//	VisualFX.changeText(relativeMinProperty, newDataFile.getRelativeMin());
-					if(!newDataFile.getTargetTemperature().getValue().equals(tempSetProperty.getValue())) {
-					tempSetProperty.setValue(newDataFile.getTargetTemperature().getValue().toString());
-					}
-				//	Bindings.bindBidirectional(averageMinProperty, newDataFile.getAverageMin(), new NumberStringConverter());
+					tempSetProperty.bind(newDataFile.getTargetTemperature().asString());
+					newDataFile.setTargetTemperature(Double.parseDouble(tempSetProperty.getValue()));
+					relativeMaxProperty.bind(newDataFile.getRelativeMax().asString());
+					relativeMinProperty.bind(newDataFile.getRelativeMin().asString());
+					averageMaxProperty.bind(newDataFile.getAverageMax().asString());
+					averageMinProperty.bind(newDataFile.getAverageMin().asString());
 				}
 			}
 		});
@@ -68,7 +50,7 @@ public class MainViewModel {
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
-				System.out.println("CHANGED TARGET");
+				System.out.println("CHANGED TARGET to " + Double.parseDouble(newValue));
 				if(selectedDataFile.getValue() != null && !newValue.isEmpty()) {		
 				selectedDataFile.getValue().setTargetTemperature(Double.parseDouble(newValue));
 				}
@@ -87,8 +69,10 @@ public class MainViewModel {
 	}
 
 	public void readDataFiles() {
-		tableModel.clearFiles();
-		tableModel.addFiles(MockyDataFiles.mock());
+		fileList.clear();
+		fileList.addAll(MockyDataFiles.mock());
+		//tableModel.clearFiles();
+		//tableModel.addFiles(MockyDataFiles.mock());
 	}
 
 	public StringProperty averageMaxProperty() {
@@ -110,5 +94,6 @@ public class MainViewModel {
 	public StringProperty tempSetProperty() {
 		return tempSetProperty;
 	}
+
 	
 }

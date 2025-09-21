@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +16,11 @@ import org.itpc_advanced.model.DataFile;
 
 public class DataProcessor {
 	
+	private static final AtomicInteger fileCounter = new AtomicInteger(1);
+
 	public static void calculate(DataFile dataFile) {		
+		dataFile.setFileId(fileCounter.getAndIncrement());
+		
 		if (dataFile.getValues().size() < 20) {
 			dataFile.setTargetTemperature(0.0);
 			dataFile.setChartData(FXCollections.observableArrayList());
@@ -38,7 +43,7 @@ public class DataProcessor {
 		List<Double> minTemps = new ArrayList<Double>();
 		
 		for(int i = 0; i < 10; i++) {
-			System.out.println(sortedValues.size() + "     " + i);
+		//	System.out.println(sortedValues.size() + "     " + i);
 			maxTemps.add(sortedValues.get(sortedValues.size() - 1 - i));
 			minTemps.add(minTemps.size() - i, sortedValues.get(i));
 		}
@@ -134,6 +139,10 @@ public class DataProcessor {
 		target = Math.round(target) * 10.0;
 
 		return (int) target;
+	}
+
+	public static void resetFilesCounter() {
+		fileCounter.set(1);	
 	}
 
 }

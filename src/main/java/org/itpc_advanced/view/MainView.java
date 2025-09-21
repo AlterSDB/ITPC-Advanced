@@ -11,53 +11,25 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 public class MainView {
 	
-	
-	public void setViewModel(MainViewModel viewModel) {
-		this.averageMaxField.textProperty().bind(viewModel.averageMaxProperty());
-		this.averageMinField.textProperty().bind(viewModel.averageMinProperty());
-		this.relativeMaxField.textProperty().bind(viewModel.relativeMaxProperty());
-		this.relativeMinField.textProperty().bind(viewModel.relativeMinProperty());
-		this.tempSetField.textProperty().bindBidirectional(viewModel.tempSetProperty());
-		this.tableView.setItems(viewModel.getFileList());
-		this.tableColumn.setCellValueFactory(new PropertyValueFactory<DataFile, String>("FileId"));
-		this.tableView.getSelectionModel().selectedItemProperty()
-		.addListener(
-				new ChangeListener<DataFile>() {
-					@Override
-					public void changed(
-							ObservableValue<? extends DataFile> obs,
-							DataFile oldValue, DataFile newValue) {
-						viewModel.selectedDataFileProperty().set(newValue);
-					}
-				} );
-		
-		this.scanBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				viewModel.readDataFiles();
-			}
-		});		
-	}
-		
 	@FXML
-	void initialize(){
-		tempSetField.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue != null && !newValue.matches("[0-9.]+")) {
-					tempSetField.setText(newValue.replaceAll("[^\\d]", ""));
-				}
-		}});
+	private MainViewModel viewModel;
+	
+	@FXML
+	private void onScanBtnAction() {
+		viewModel.readDataFiles();
 	}
 	
     @FXML
@@ -219,6 +191,64 @@ public class MainView {
 
 	public NumberAxis getyAxis() {
 		return yAxis;
+	}
+	
+	private boolean updatingFromViewModel = false;
+	
+	public void setViewModel(MainViewModel viewModel) {
+		this.viewModel = viewModel;
+		tableView.setItems(viewModel.getFileList());
+		tableView.setPlaceholder(new Label("Files list is empty"));
+		TableColumn<DataFile, Integer> filesColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
+	//	filesColumn.setCellValueFactory(new PropertyValueFactory<DataFile, Integer>("FileId"));
+		filesColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
+		filesColumn.setCellFactory(new Callback<TableColumn<DataFile, Integer>, TableCell<DataFile, Integer>>() {
+			@Override
+			public TableCell<DataFile, Integer> call(
+					TableColumn<DataFile, Integer> column) {
+				return new TableCell<DataFile, Integer>() {
+					@Override
+					protected void updateItem(Integer fileId, boolean empty) {
+						super.updateItem(fileId, empty);
+						if (empty || fileId == null) {
+							setText(null);
+						} else {
+							setText("Файл " + fileId);
+						}
+					}
+				};
+			}
+		});
+		filesColumn.setMaxWidth(194);
+		filesColumn.setResizable(false);
+		
+		tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DataFile>() {
+			@Override
+			public void changed(ObservableValue<? extends DataFile> obs,
+					DataFile oldValue, DataFile newValue) {
+						if(!updatingFromViewModel) {
+						viewModel.selectedDataFileProperty().set(newValue);
+						}
+					}
+		});
+		
+		viewModel.selectedDataFileProperty().addListener(new ChangeListener<DataFile>() {
+			@Override
+			public void changed(ObservableValue<? extends DataFile> obs,
+					DataFile oldValue, DataFile newValue) {
+						updatingFromViewModel = true;
+						tableView.getSelectionModel().select(newValue);
+						updatingFromViewModel = false;
+					}
+		});
+		
+		relativeMaxField.textProperty().bind(this.viewModel.relativeMaxProperty());
+		relativeMinField.textProperty().bind(this.viewModel.relativeMinProperty());
+		averageMaxField.textProperty().bind(this.viewModel.averageMaxProperty());
+		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
+		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
+		
+		
 	}
 
 }

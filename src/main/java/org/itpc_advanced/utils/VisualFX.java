@@ -79,7 +79,7 @@ public class VisualFX {
 		Timeline timeline = new Timeline();
 		String oldText = oldTextProperty.getValue() != null ? oldTextProperty.getValue().toString() : "";
 		String newText = newTextProperty.toString();
-		System.out.println(oldText);
+//		System.out.println(oldText);
 		StringBuffer newTextBuffer = new StringBuffer();	
 		StringBuffer oldTextBuffer = new StringBuffer(oldText);
 		int duration = 0;
@@ -123,7 +123,7 @@ public class VisualFX {
 		Timeline timeline = new Timeline();
 		String oldText = oldTextProperty.getValue() != null ? oldTextProperty.getValue().toString() : "";
 		String newText = newTextProperty.getValue().toString();
-		System.out.println(oldText);
+//		System.out.println(oldText);
 		StringBuffer newTextBuffer = new StringBuffer();	
 		StringBuffer oldTextBuffer = new StringBuffer(oldText);
 		int duration = 0;
