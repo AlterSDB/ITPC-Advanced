@@ -76,14 +76,19 @@ public class MainViewModel {
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
+				if (!validateInput(newValue)) {
+					return;			
+				}			
+				
 				System.out.println("CHANGED TARGET to " + Double.parseDouble(newValue));
 				if(selectedDataFile.getValue() != null && !newValue.isEmpty()) {		
 				selectedDataFile.getValue().setTargetTemperature(Double.parseDouble(newValue));
+				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().getValue().toString());
+				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().getValue().toString());
 				}
 			}
 			
-		});
-		
+		});	
 		
 		this.chartTitle.set("Температурная характеристика");
 		this.xAxisLabel.set("Время, мин.");
@@ -91,6 +96,27 @@ public class MainViewModel {
 		this.yAxisLowerBoundProperty.set(0);
 		this.yAxisUpperBoundProperty.set(10);		
 	}
+		
+	private boolean validateInput(String input) {
+		if (input.length() > 4) {
+			return false;
+		}
+		if (!input.matches("\\d+")) {
+			return false;
+		}
+		
+		try {
+			int value = Integer.parseInt(input);
+			if (value <= 99999) {
+				return true;
+			}
+			
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
+		return false;
+		}	
 
 	public ObservableList<DataFile> getFileList() {
 		return fileList;

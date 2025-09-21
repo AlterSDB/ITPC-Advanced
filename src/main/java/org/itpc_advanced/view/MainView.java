@@ -266,10 +266,26 @@ public class MainView {
 		averageMaxField.textProperty().bind(this.viewModel.averageMaxProperty());
 		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
 		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
+		
+		tempSetField.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> obs,
+					String oldValue, String newValue) {
+						if(!newValue.matches("\\d*")) {
+						tempSetField.setText(newValue.replaceAll("[^\\d]", ""));
+						}
+						if(newValue.length() > 5) {
+						//	tempSetField.setText("0");							
+						}
+					}
+		});
+		
+		
+		
+		
+		
 		yAxis.lowerBoundProperty().bind(this.viewModel.yAxisLowerBoundProperty());
-		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());
-		
-		
+		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());		
 		series = new XYChart.Series<>();
 		series.setData(viewModel.getChartData());
 		lineChart.getData().add(series);
