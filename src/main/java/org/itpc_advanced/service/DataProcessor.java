@@ -30,12 +30,12 @@ public class DataProcessor {
 			dataFile.setAverageMin(0.0);
 			dataFile.setRelativeMax(0.0);
 			dataFile.setRelativeMin(0.0);
-			dataFile.setChartBounds(new double[] { 0.0, 0.0 });
+			dataFile.setChartBounds(new double[] { 0.0, 10.0 });
 			
 			return;
 		}
 		int target = findTargetValue(dataFile.getValues());
-		ObservableList<XYChart.Data> chartData = getChartData(dataFile);
+		ObservableList<XYChart.Data<Number,Number>> chartData = getChartData(dataFile);
 		List<Double> sortedValues = new ArrayList<Double>(dataFile.getValues());
 		Collections.sort(sortedValues);
 
@@ -83,8 +83,8 @@ public class DataProcessor {
 		return Math.floor(average * 10) / 10;
 	}
 
-	private static ObservableList<XYChart.Data> getChartData(DataFile df) {
-		ObservableList<XYChart.Data> chartData = FXCollections.observableArrayList();
+	private static ObservableList<XYChart.Data<Number,Number>> getChartData(DataFile df) {
+		ObservableList<XYChart.Data<Number,Number>> chartData = FXCollections.observableArrayList();
 		double time = 0.0;
 		
 		for (int i = 0; i < df.getValues().size(); i++){

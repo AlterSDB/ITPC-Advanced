@@ -1,6 +1,7 @@
 package org.itpc_advanced.view;
 
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
 import javafx.beans.value.ChangeListener;
@@ -8,8 +9,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -23,14 +26,6 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 public class MainView {
-	
-	@FXML
-	private MainViewModel viewModel;
-	
-	@FXML
-	private void onScanBtnAction() {
-		viewModel.readDataFiles();
-	}
 	
     @FXML
     private Tab tabAutomatic;
@@ -93,13 +88,37 @@ public class MainView {
     private Text tempSetText;
 
     @FXML
-    private LineChart<?, ?> tempLineChart;
+    private LineChart<Number, Number> lineChart;
 
     @FXML
     private NumberAxis xAxis;
 
     @FXML
     private NumberAxis yAxis;
+    
+    private XYChart.Series<Number, Number> series;
+	
+	private MainViewModel viewModel;
+
+	//@FXML
+	//public void initialize() {
+	//	chartViewModel = new ChartViewModel();
+	//	series = new XYChart.Series<>();
+	//	series.setName("LFLF");
+	//	series.setData(chartViewModel.getChartData());
+	//	lineChart.getData().add(series);
+	//	lineChart.titleProperty().bind(chartViewModel.chartTitleProperty());
+	//	xAxis.labelProperty().bind(chartViewModel.chartTitleProperty());
+	//	lineChart.titleProperty().bind(chartViewModel.chartTitleProperty());
+	//}
+	
+	
+	@FXML
+	private void onScanBtnAction() {
+		viewModel.readDataFiles();
+	}
+	
+    
     
     public Tab getTabAutomatic() {
 		return tabAutomatic;
@@ -181,8 +200,8 @@ public class MainView {
 		return tempSetText;
 	}
 
-	public LineChart<?, ?> getTempLineChart() {
-		return tempLineChart;
+	public LineChart<Number, Number> getTempLineChart() {
+		return lineChart;
 	}
 
 	public NumberAxis getxAxis() {
@@ -200,7 +219,6 @@ public class MainView {
 		tableView.setItems(viewModel.getFileList());
 		tableView.setPlaceholder(new Label("Files list is empty"));
 		TableColumn<DataFile, Integer> filesColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
-	//	filesColumn.setCellValueFactory(new PropertyValueFactory<DataFile, Integer>("FileId"));
 		filesColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
 		filesColumn.setCellFactory(new Callback<TableColumn<DataFile, Integer>, TableCell<DataFile, Integer>>() {
 			@Override
@@ -238,6 +256,7 @@ public class MainView {
 					DataFile oldValue, DataFile newValue) {
 						updatingFromViewModel = true;
 						tableView.getSelectionModel().select(newValue);
+						VisualFX.slideTransition(series.getNode());
 						updatingFromViewModel = false;
 					}
 		});
@@ -247,6 +266,29 @@ public class MainView {
 		averageMaxField.textProperty().bind(this.viewModel.averageMaxProperty());
 		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
 		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
+		yAxis.lowerBoundProperty().bind(this.viewModel.yAxisLowerBoundProperty());
+		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());
+		
+		
+		series = new XYChart.Series<>();
+		series.setData(viewModel.getChartData());
+		lineChart.getData().add(series);
+		lineChart.titleProperty().bind(viewModel.chartTitleProperty());
+		xAxis.labelProperty().bind(viewModel.chartTitleProperty());
+		lineChart.titleProperty().bind(viewModel.chartTitleProperty());
+	
+		
+		xAxis.setUpperBound(15);
+		xAxis.setMinorTickCount(2);
+		yAxis.setAutoRanging(false);
+		//yAxis.setLowerBound(0);
+		//yAxis.setUpperBound(10);
+		yAxis.setTickUnit(1);
+		yAxis.setMinorTickCount(0);
+		lineChart.setCreateSymbols(false);
+		lineChart.setLegendVisible(false);
+		lineChart.setAnimated(false);
+		lineChart.setLegendSide(Side.LEFT);
 		
 		
 	}

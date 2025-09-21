@@ -23,7 +23,7 @@ public class DataFile {
 	private final List<Double> values;
 	
 	// Derivatives
-	private ObservableList<XYChart.Data> chartData = null;
+	private ObservableList<XYChart.Data<Number, Number>> chartData = null;
 	private List<Double> maxTemps = null;
 	private List<Double> minTemps = null;
 	private Integer fileId = null;
@@ -76,7 +76,7 @@ public class DataFile {
 		return timeStep;
 	}
 
-	public ObservableList<XYChart.Data> getChartData() {
+	public ObservableList<XYChart.Data<Number, Number>> getChartData() {
 		return chartData;
 	}
 
@@ -121,7 +121,7 @@ public class DataFile {
 		this.fileId = fileId;		
 	}
 
-	public void setChartData(ObservableList<XYChart.Data> chartData) {
+	public void setChartData(ObservableList<XYChart.Data<Number, Number>> chartData) {
 		this.chartData = chartData;
 	}
 
@@ -133,7 +133,6 @@ public class DataFile {
 		if(targetTemperature == null) {
 			targetTemperature = 0.0;
 		}
-		
 		this.targetTemperature.set(targetTemperature);
 		setRelativeMax(DataProcessor.findRelative(targetTemperature, averageMax.get()));
 		setRelativeMin(DataProcessor.findRelative(targetTemperature, averageMin.get()));		
