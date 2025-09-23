@@ -295,8 +295,8 @@ public class MainView {
 		series.setData(viewModel.getChartData());
 		lineChart.getData().add(series);
 		lineChart.titleProperty().bind(viewModel.chartTitleProperty());
-		xAxis.labelProperty().bind(viewModel.chartTitleProperty());
-		lineChart.titleProperty().bind(viewModel.chartTitleProperty());
+		xAxis.labelProperty().bind(viewModel.xAxisLabelProperty());
+		yAxis.labelProperty().bind(viewModel.yAxisLabelProperty());
 	
 		
 		xAxis.setUpperBound(15);

@@ -74,7 +74,7 @@ public class MainViewModel {
 		
 		this.chartTitle.set("Температурная характеристика");
 		this.xAxisLabel.set("Время, мин.");
-		this.yAxisLabel.set("Температура, Т°С");
+		this.yAxisLabel.set("Темпераатура, Т°С");
 		this.yAxisLowerBoundProperty.set(0);
 		this.yAxisUpperBoundProperty.set(10);		
 	}

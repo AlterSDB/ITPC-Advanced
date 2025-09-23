@@ -13,7 +13,6 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.itpc_advanced.view.ChartViewModel;
 import org.itpc_advanced.view.MainView;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
@@ -35,7 +34,6 @@ public class ITPC_Advanced extends Application {
 		
 		MainView controller = loader.getController();
 		MainViewModel viewModel = new MainViewModel();
-		ChartViewModel chartViewModel = new ChartViewModel();
 		controller.setViewModel(viewModel);
 		
 		Properties properties = new Properties();
