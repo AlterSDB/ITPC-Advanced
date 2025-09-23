@@ -20,7 +20,6 @@ import org.itpc_advanced.viewmodel.MainViewModel;
 
 public class ITPC_Advanced extends Application {
 
-	private static Stage mainStage;
 	private static Stage settingsStage;
 
 	public static void main(String[] args) {
@@ -56,7 +55,7 @@ public class ITPC_Advanced extends Application {
 	}
 	
 	public void callSettingsWindow() throws IOException {
-		if(settingsStage != null && settingsStage.isShowing()) {
+		if (settingsStage != null && settingsStage.isShowing()) {
 			settingsStage.close();
 			return;
 		}
@@ -72,45 +71,5 @@ public class ITPC_Advanced extends Application {
 		settingsStage.getIcons().add(new Image("/images/logo.png"));
 		settingsStage.show();
 	}
-
-	/*@Override
-	public void start(Stage s) throws IOException {
-		mainStage = s;
-		Properties properties = new Properties();
-		properties.load(getClass().getResourceAsStream("/version.properties"));
-		String name = "ITPC Advanced v" + properties.getProperty("version"); 
-		setRoot("main", name);
-	}
-
-	static void setRoot(String fxml) throws IOException {
-		setRoot(fxml, mainStage.getTitle());
-	}
-
-	static void setRoot(String fxml, String title) throws IOException {
-		Scene scene = new Scene(loadFXML(fxml));
-		mainStage.setTitle(title);
-		mainStage.getIcons().add(new Image("/images/logo.png"));
-		mainStage.setScene(scene);
-		mainStage.setResizable(false);
-		mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent event) {
-				if(settingsStage != null) {
-					settingsStage.close();
-				}
-			}
-		});
-		mainStage.show();
-	}
-
-	private static Parent loadFXML(String fxml) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(ITPC_Advanced.class.getResource("/fxml/"+fxml + ".fxml"));
-		///Parent) new FXMLLoader(ITPC_Advanced.class.getResource("/fxml/"+fxml + ".fxml")).load();
-		return fxmlLoader.load();
-	}
-	
-	*/
-	
-	
 
 }

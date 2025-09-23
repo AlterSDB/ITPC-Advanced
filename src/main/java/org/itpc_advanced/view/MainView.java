@@ -98,18 +98,6 @@ public class MainView {
 	
 	private MainViewModel viewModel;
 
-	//@FXML
-	//public void initialize() {
-	//	chartViewModel = new ChartViewModel();
-	//	series = new XYChart.Series<>();
-	//	series.setName("LFLF");
-	//	series.setData(chartViewModel.getChartData());
-	//	lineChart.getData().add(series);
-	//	lineChart.titleProperty().bind(chartViewModel.chartTitleProperty());
-	//	xAxis.labelProperty().bind(chartViewModel.chartTitleProperty());
-	//	lineChart.titleProperty().bind(chartViewModel.chartTitleProperty());
-	//}
-	
 	
 	@FXML
 	private void onScanBtnAction() {
@@ -118,12 +106,8 @@ public class MainView {
 	
 	@FXML
 	private void onCopyResultsBtnAction() {
-		System.out.println("SSS s");
 		viewModel.copyResults();
-		System.out.println("DDal");
 	}
-	
-    
     
     public Tab getTabAutomatic() {
 		return tabAutomatic;
@@ -223,6 +207,7 @@ public class MainView {
 		this.viewModel = viewModel;
 		tableView.setItems(viewModel.getFileList());
 		tableView.setPlaceholder(new Label("Files list is empty"));
+		@SuppressWarnings("unchecked")
 		TableColumn<DataFile, Integer> filesColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
 		filesColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
 		filesColumn.setCellFactory(new Callback<TableColumn<DataFile, Integer>, TableCell<DataFile, Integer>>() {
@@ -242,7 +227,7 @@ public class MainView {
 				};
 			}
 		});
-		filesColumn.setMaxWidth(194);
+		filesColumn.setMaxWidth(200);
 		filesColumn.setResizable(false);
 		
 		tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DataFile>() {
@@ -276,19 +261,12 @@ public class MainView {
 			@Override
 			public void changed(ObservableValue<? extends String> obs,
 					String oldValue, String newValue) {
-						if(!newValue.matches("\\d*")) {
+						if (!newValue.matches("\\d*")) {
 						tempSetField.setText(newValue.replaceAll("[^\\d]", ""));
-						}
-						if(newValue.length() > 5) {
-						//	tempSetField.setText("0");							
 						}
 					}
 		});
-		
-		
-		
-		
-		
+			
 		yAxis.lowerBoundProperty().bind(this.viewModel.yAxisLowerBoundProperty());
 		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());		
 		series = new XYChart.Series<>();
@@ -297,21 +275,16 @@ public class MainView {
 		lineChart.titleProperty().bind(viewModel.chartTitleProperty());
 		xAxis.labelProperty().bind(viewModel.xAxisLabelProperty());
 		yAxis.labelProperty().bind(viewModel.yAxisLabelProperty());
-	
 		
 		xAxis.setUpperBound(15);
 		xAxis.setMinorTickCount(2);
 		yAxis.setAutoRanging(false);
-		//yAxis.setLowerBound(0);
-		//yAxis.setUpperBound(10);
 		yAxis.setTickUnit(1);
 		yAxis.setMinorTickCount(0);
 		lineChart.setCreateSymbols(false);
 		lineChart.setLegendVisible(false);
 		lineChart.setAnimated(false);
-		lineChart.setLegendSide(Side.LEFT);
-		
-		
+		lineChart.setLegendSide(Side.LEFT);		
 	}
 
 }

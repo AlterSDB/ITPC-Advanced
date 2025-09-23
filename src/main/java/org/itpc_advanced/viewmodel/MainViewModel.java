@@ -200,16 +200,5 @@ public class MainViewModel {
 		}
 		ReportBuilder.buildReport(selectedDataFile.get());
 	}
-
-	/*public void setData(ObservableList<XYChart.Data<Number, Number>> data) {
-		y.setLowerBound(bounds[0]);
-		y.setUpperBound(bounds[1]);
-		newSeries.setData(newChartData);
-		
-        lineChart.getData().clear();
-		lineChart.getData().add(newSeries);
-		VisualFX.slideTransition(newSeries.getNode());
-	} */
-
 	
 }
