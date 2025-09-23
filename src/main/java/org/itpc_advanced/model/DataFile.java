@@ -9,7 +9,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
 
 @SuppressWarnings("rawtypes")
 public class DataFile {

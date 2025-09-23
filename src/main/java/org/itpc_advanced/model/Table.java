@@ -2,7 +2,6 @@ package org.itpc_advanced.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;

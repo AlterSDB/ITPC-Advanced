@@ -7,7 +7,6 @@ import java.util.concurrent.TimeoutException;
 
 import org.itpc_advanced.model.ComPort;
 import org.itpc_advanced.model.DataFile; 
-import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Request;
 
 import javafx.collections.FXCollections;

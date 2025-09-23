@@ -6,8 +6,6 @@ import org.itpc_advanced.viewmodel.MainViewModel;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.chart.LineChart;

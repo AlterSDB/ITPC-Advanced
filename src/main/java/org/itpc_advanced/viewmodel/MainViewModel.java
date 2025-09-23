@@ -1,19 +1,11 @@
 package org.itpc_advanced.viewmodel;
 
 import org.itpc_advanced.model.DataFile;
-import org.itpc_advanced.model.Table;
-import org.itpc_advanced.service.DataParser;
-import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
-import org.itpc_advanced.utils.VisualFX;
-import org.itpc_advanced.view.ChartViewModel;
-import org.itpc_advanced.view.MainView;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,11 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
-import javafx.util.converter.NumberStringConverter;
 
 public class MainViewModel {
 	private final ObservableList<DataFile> fileList = FXCollections.observableArrayList();   
@@ -62,13 +50,6 @@ public class MainViewModel {
 					yAxisUpperBoundProperty.set(newDataFile.getChartBounds()[1]);
 					chartData.clear();
 					chartData.setAll(newDataFile.getChartData());
-				
-					
-					
-					//	relativeMaxProperty.bind(newDataFile.getRelativeMax().asString());
-					//	relativeMinProperty.bind(newDataFile.getRelativeMin().asString());
-					//	averageMaxProperty.bind(newDataFile.getAverageMax().asString());
-					//	averageMinProperty.bind(newDataFile.getAverageMin().asString());					
 				}
 			}
 		});
