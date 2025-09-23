@@ -23,6 +23,11 @@ public class ReportBuilder {
 		clipboard.setContent(ReportBuilder.getReport(df));
 		
 	}
+	
+	public static void buildReport(DataFile df) {
+		Clipboard clipboard = Clipboard.getSystemClipboard();
+		clipboard.setContent(ReportBuilder.getReport(df));
+	}
 
 	public static ClipboardContent getReport(DataFile df) {
 		StringBuffer casualText = new StringBuffer("");

@@ -118,6 +118,13 @@ public class MainView {
 		viewModel.readDataFiles();
 	}
 	
+	@FXML
+	private void onCopyResultsBtnAction() {
+		System.out.println("SSS s");
+		viewModel.copyResults();
+		System.out.println("DDal");
+	}
+	
     
     
     public Tab getTabAutomatic() {

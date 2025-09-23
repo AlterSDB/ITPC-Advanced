@@ -135,7 +135,7 @@
             <Image url="@../images/biglogo.png" />
          </image>
       </ImageView>
-      <Button fx:id="copyResultBtn" layoutX="681.0" layoutY="464.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="250.0" text="Get Report Table" textOverrun="CLIP">
+      <Button fx:id="copyResultBtn" onAction="#onCopyResultsBtnAction" layoutX="681.0" layoutY="464.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="250.0" text="Get Report Table" textOverrun="CLIP">
          <font>
             <Font size="18.0" />
          </font>

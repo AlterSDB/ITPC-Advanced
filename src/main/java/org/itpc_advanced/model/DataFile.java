@@ -84,28 +84,28 @@ public class DataFile {
 		return chartBounds;
 	}
 
-	public DoubleProperty getTargetTemperature() {
-		return targetTemperature;
+	public Double getTargetTemperature() {
+		return targetTemperature.get();
 	}
 	
 	public LocalDateTime getTimeStamp() {
 		return timeStamp;
 	}
 	
-	public DoubleProperty getAverageMax() {
-		return averageMax;
+	public Double getAverageMax() {
+		return averageMax.get();
 	}
 
-	public DoubleProperty getAverageMin() {
-		return averageMin;
+	public Double getAverageMin() {
+		return averageMin.get();
 	}
 
-	public DoubleProperty getRelativeMax() {
-		return relativeMax;
+	public Double getRelativeMax() {
+		return relativeMax.get();
 	}
 
-	public DoubleProperty getRelativeMin() {
-		return relativeMin;
+	public Double getRelativeMin() {
+		return relativeMin.get();
 	}
 
 	public List<Double> getMaxTemps() {

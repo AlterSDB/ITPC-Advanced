@@ -4,6 +4,7 @@ import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Table;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DeviceScanner;
+import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
 import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.view.ChartViewModel;
@@ -50,12 +51,12 @@ public class MainViewModel {
 					DataFile oldDataFile, DataFile newDataFile) {
 				if(newDataFile != null) {
 					System.out.println("CHANGED");
-					tempSetProperty.setValue(newDataFile.getTargetTemperature().getValue().toString());
+					tempSetProperty.setValue(newDataFile.getTargetTemperature().toString());
 					newDataFile.setTargetTemperature(Double.parseDouble(tempSetProperty.getValue()));
-					relativeMaxProperty.setValue(newDataFile.getRelativeMax().getValue().toString());
-					relativeMinProperty.setValue(newDataFile.getRelativeMin().getValue().toString());
-					averageMaxProperty.setValue(newDataFile.getAverageMax().getValue().toString());
-					averageMinProperty.setValue(newDataFile.getAverageMin().getValue().toString());
+					relativeMaxProperty.setValue(newDataFile.getRelativeMax().toString());
+					relativeMinProperty.setValue(newDataFile.getRelativeMin().toString());
+					averageMaxProperty.setValue(newDataFile.getAverageMax().toString());
+					averageMinProperty.setValue(newDataFile.getAverageMin().toString());
 					
 					yAxisLowerBoundProperty.set(newDataFile.getChartBounds()[0]);
 					yAxisUpperBoundProperty.set(newDataFile.getChartBounds()[1]);
@@ -83,8 +84,8 @@ public class MainViewModel {
 				System.out.println("CHANGED TARGET to " + Double.parseDouble(newValue));
 				if(selectedDataFile.getValue() != null && !newValue.isEmpty()) {		
 				selectedDataFile.getValue().setTargetTemperature(Double.parseDouble(newValue));
-				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().getValue().toString());
-				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().getValue().toString());
+				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
+				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
 				}
 			}
 			
@@ -209,6 +210,14 @@ public class MainViewModel {
 	}
 	public DoubleProperty yAxisUpperBoundProperty() {
 		return yAxisUpperBoundProperty;
+	}
+
+	public void copyResults() {
+		if(selectedDataFile.get() == null) {
+			System.out.println("File is not choosen");
+			return;
+		}
+		ReportBuilder.buildReport(selectedDataFile.get());
 	}
 
 	/*public void setData(ObservableList<XYChart.Data<Number, Number>> data) {
