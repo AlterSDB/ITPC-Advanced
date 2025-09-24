@@ -73,7 +73,7 @@ public class DataProcessor {
 		return result;
 	}
 
-	private static double findAverage(List<Double> maxTemps) {
+	public static double findAverage(List<Double> maxTemps) {
 		double average = 0.0;
 		for (double value : maxTemps) {
 			average += value;
@@ -140,9 +140,18 @@ public class DataProcessor {
 
 		return (int) target;
 	}
+	
 
 	public static void resetFilesCounter() {
 		fileCounter.set(1);	
+	}
+
+	public static List<Double> setLinearOffset(List<Double> values, Integer linearOffset) {
+		List<Double> result = new ArrayList<Double>(values);
+		for (int i = 0; i < values.size(); i++) {
+			result.set(i, values.get(i) + linearOffset); 
+		}
+		return result;
 	}
 
 }

@@ -1,6 +1,7 @@
 package org.itpc_advanced.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.itpc_advanced.service.DataProcessor;
@@ -24,12 +25,14 @@ public class DataFile {
 	private final List<Double> values;
 	
 	// Derivatives
+	private List<Double> processedValues = new ArrayList<Double>();
 	private ObservableList<XYChart.Data<Number, Number>> chartData = null;
 	private List<Double> maxTemps = null;
 	private List<Double> minTemps = null;
 	private Integer fileId = null;
 	private double[] chartBounds = null;
 	private IntegerProperty targetTemperature = new SimpleIntegerProperty();
+	private IntegerProperty linearOffset = new SimpleIntegerProperty();
 	private DoubleProperty averageMax = new SimpleDoubleProperty();
 	private DoubleProperty averageMin = new SimpleDoubleProperty();
 	private DoubleProperty relativeMax = new SimpleDoubleProperty();
@@ -118,6 +121,10 @@ public class DataFile {
 	}
 
 
+	public Integer getLinearOffset() {
+		return linearOffset.get();
+	}
+
 	public void setFileId(Integer fileId) {
 		this.fileId = fileId;		
 	}
@@ -137,6 +144,27 @@ public class DataFile {
 		this.targetTemperature.set(targetTemperature);
 		setRelativeMax(DataProcessor.findRelative(targetTemperature, averageMax.get()));
 		setRelativeMin(DataProcessor.findRelative(targetTemperature, averageMin.get()));		
+	}
+	
+	public void setLinearOffset(Integer linearOffset) {
+		if(linearOffset == null) {
+			linearOffset = 0;
+		}
+		this.linearOffset.set(linearOffset);
+		processedValues = DataProcessor.setLinearOffset(values, linearOffset);
+		this.maxTemps.clear();
+		this.minTemps.clear();
+		for(int i = 0; i < 10; i++) {
+			//	System.out.println(sortedValues.size() + "     " + i);
+				this.maxTemps.add(processedValues.get(processedValues.size() - 1 - i));
+				this.minTemps.add(this.minTemps.size() - i, processedValues.get(i));
+			}
+		setAverageMax(DataProcessor.findAverage(this.maxTemps));
+		setAverageMin(DataProcessor.findAverage(this.minTemps));
+		setRelativeMax(DataProcessor.findRelative(this.targetTemperature.get(), averageMax.get()));
+		setRelativeMin(DataProcessor.findRelative(this.targetTemperature.get(), averageMin.get()));	
+		System.out.println("DONEd");
+				
 	}
 
 	public void setAverageMax(Double averageMax) {

@@ -84,6 +84,12 @@ public class MainView {
 
     @FXML
     private Text tempSetText;
+    
+    @FXML
+    private TextField linearOffsetField;
+
+    @FXML
+    private Text linearOffsetText;
 
     @FXML
     private LineChart<Number, Number> lineChart;
@@ -256,6 +262,7 @@ public class MainView {
 		averageMaxField.textProperty().bind(this.viewModel.averageMaxProperty());
 		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
 		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
+		linearOffsetField.textProperty().bindBidirectional(this.viewModel.linearOffsetProperty());
 		
 		tempSetField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -267,6 +274,20 @@ public class MainView {
 						
 						if (tempSetField.getText().length() > 7) {
 						tempSetField.setText(oldValue);
+						}
+					}
+		});
+		
+		linearOffsetField.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> obs,
+					String oldValue, String newValue) {
+						if (!newValue.matches("\\d*")) {
+							linearOffsetField.setText(newValue.replaceAll("[^\\d]", ""));
+						}
+						
+						if (linearOffsetField.getText().length() > 7) {
+							linearOffsetField.setText(oldValue);
 						}
 					}
 		});

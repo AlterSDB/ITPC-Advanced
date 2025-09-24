@@ -1,6 +1,7 @@
 package org.itpc_advanced.viewmodel;
 
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
 
@@ -24,6 +25,7 @@ public class MainViewModel {
 	private final StringProperty relativeMaxProperty = new SimpleStringProperty();
 	private StringProperty relativeMinProperty = new SimpleStringProperty();
 	private StringProperty tempSetProperty = new SimpleStringProperty();
+	private StringProperty linearOffsetProperty = new SimpleStringProperty();
 	
 	private final ObservableList<XYChart.Data<Number, Number>> chartData = FXCollections.observableArrayList();
 	private final StringProperty chartTitle = new SimpleStringProperty();
@@ -67,9 +69,25 @@ public class MainViewModel {
 				selectedDataFile.getValue().setTargetTemperature(Integer.parseInt(newValue));
 				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
 				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
+				linearOffsetProperty.setValue(selectedDataFile.getValue().getLinearOffset().toString());
 				}
 			}
 			
+		});	
+		linearOffsetProperty.addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue.equals("")) {
+					return;
+				}
+				selectedDataFile.getValue().setLinearOffset(Integer.parseInt(newValue));;
+				System.out.println("SSS'SS'S");
+				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
+				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
+				averageMaxProperty.setValue(selectedDataFile.getValue().getAverageMax().toString());
+				averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());
+			}			
 		});	
 		
 		this.chartTitle.set("Температурная характеристика");
@@ -111,7 +129,7 @@ public class MainViewModel {
 	public void readDataFiles() {
 		fileList.clear();
 		fileList.addAll(MockyDataFiles.mock());
-		//fileList.addAll(DeviceScanner.readDataFiles());
+	//	fileList.addAll(DeviceScanner.readDataFiles());
 	}
 
 	public StringProperty averageMaxProperty() {
@@ -132,6 +150,10 @@ public class MainViewModel {
 
 	public StringProperty tempSetProperty() {
 		return tempSetProperty;
+	}
+	
+	public StringProperty linearOffsetProperty() {
+		return linearOffsetProperty;
 	}
 	
 	
