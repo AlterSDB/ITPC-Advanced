@@ -6,7 +6,9 @@ import java.util.List;
 import org.itpc_advanced.service.DataProcessor;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
@@ -27,7 +29,7 @@ public class DataFile {
 	private List<Double> minTemps = null;
 	private Integer fileId = null;
 	private double[] chartBounds = null;
-	private DoubleProperty targetTemperature = new SimpleDoubleProperty();
+	private IntegerProperty targetTemperature = new SimpleIntegerProperty();
 	private DoubleProperty averageMax = new SimpleDoubleProperty();
 	private DoubleProperty averageMin = new SimpleDoubleProperty();
 	private DoubleProperty relativeMax = new SimpleDoubleProperty();
@@ -83,7 +85,7 @@ public class DataFile {
 		return chartBounds;
 	}
 
-	public Double getTargetTemperature() {
+	public Integer getTargetTemperature() {
 		return targetTemperature.get();
 	}
 	
@@ -128,9 +130,9 @@ public class DataFile {
 		this.chartBounds = chartBounds;
 	}
 
-	public void setTargetTemperature(Double targetTemperature) {
+	public void setTargetTemperature(Integer targetTemperature) {
 		if(targetTemperature == null) {
-			targetTemperature = 0.0;
+			targetTemperature = 0;
 		}
 		this.targetTemperature.set(targetTemperature);
 		setRelativeMax(DataProcessor.findRelative(targetTemperature, averageMax.get()));

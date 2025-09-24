@@ -40,7 +40,7 @@ public class MainViewModel {
 				if(newDataFile != null) {
 					System.out.println("CHANGED");
 					tempSetProperty.setValue(newDataFile.getTargetTemperature().toString());
-					newDataFile.setTargetTemperature(Double.parseDouble(tempSetProperty.getValue()));
+					newDataFile.setTargetTemperature(Integer.parseInt(tempSetProperty.getValue()));
 					relativeMaxProperty.setValue(newDataFile.getRelativeMax().toString());
 					relativeMinProperty.setValue(newDataFile.getRelativeMin().toString());
 					averageMaxProperty.setValue(newDataFile.getAverageMax().toString());
@@ -64,7 +64,7 @@ public class MainViewModel {
 				
 				System.out.println("CHANGED TARGET to " + Double.parseDouble(newValue));
 				if(selectedDataFile.getValue() != null && !newValue.isEmpty()) {		
-				selectedDataFile.getValue().setTargetTemperature(Double.parseDouble(newValue));
+				selectedDataFile.getValue().setTargetTemperature(Integer.parseInt(newValue));
 				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
 				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
 				}

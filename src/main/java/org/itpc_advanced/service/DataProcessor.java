@@ -22,7 +22,7 @@ public class DataProcessor {
 		dataFile.setFileId(fileCounter.getAndIncrement());
 		
 		if (dataFile.getValues().size() < 20) {
-			dataFile.setTargetTemperature(0.0);
+			dataFile.setTargetTemperature(0);
 			dataFile.setChartData(FXCollections.observableArrayList());
 			dataFile.setMaxTemps(new ArrayList<Double>());
 			dataFile.setMinTemps(new ArrayList<Double>());
@@ -54,7 +54,7 @@ public class DataProcessor {
 		double relativeMin = findRelative(target, averageMin);
 		double[] chartBounds = findChartBounds(sortedValues);
 		
-		dataFile.setTargetTemperature((double)target);
+		dataFile.setTargetTemperature(target);
 		dataFile.setChartData(chartData);
 		dataFile.setMaxTemps(maxTemps);
 		dataFile.setMinTemps(minTemps);

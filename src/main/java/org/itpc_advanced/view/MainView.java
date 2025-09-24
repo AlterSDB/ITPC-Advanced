@@ -264,6 +264,10 @@ public class MainView {
 						if (!newValue.matches("\\d*")) {
 						tempSetField.setText(newValue.replaceAll("[^\\d]", ""));
 						}
+						
+						if (tempSetField.getText().length() > 7) {
+						tempSetField.setText(oldValue);
+						}
 					}
 		});
 			
