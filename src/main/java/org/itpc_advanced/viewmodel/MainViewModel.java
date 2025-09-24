@@ -78,7 +78,7 @@ public class MainViewModel {
 
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.equals("")) {
+				if (!newValue.matches("\\d*") || newValue.equals("")) {
 					return;
 				}
 				selectedDataFile.getValue().setLinearOffset(Integer.parseInt(newValue));;
