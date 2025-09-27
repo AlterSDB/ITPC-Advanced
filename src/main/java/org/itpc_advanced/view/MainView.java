@@ -106,6 +106,11 @@ public class MainView {
 	private void onScanBtnAction() {
 		viewModel.readDataFiles();
 	}
+	
+	@FXML
+	private void onLanguageBtnAction() {
+		viewModel.changeLanguage();
+	}
 
 	@FXML
 	private void onCopyResultsBtnAction() {

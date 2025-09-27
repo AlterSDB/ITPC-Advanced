@@ -232,4 +232,9 @@ public class MainViewModel {
 		ReportBuilder.buildReport(selectedDataFile.get());
 	}
 
+	public void changeLanguage() {
+		System.out.println("DUDHDU");
+		
+	}
+
 }
