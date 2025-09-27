@@ -117,6 +117,10 @@ public class MainView {
 		LocalTextBinder.bindButton(settingsBtn, "buttonSettings");
 		LocalTextBinder.bindButton(copyResultBtn, "buttonGetReport");
 		LocalTextBinder.bindButton(languageBtn, "buttonLang");
+		
+		LocalManager.getInstance().resourceBundleProperty().addListener((obs, oldVal, newVal) -> {
+			tableView.getColumns().get(0).setText(LocalManager.getInstance().getString("table.header"));
+		});
 	}
 
 	@FXML

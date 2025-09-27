@@ -34,7 +34,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <Button onAction="#onScanBtnAction" layoutX="31.0" layoutY="318.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="220.0" text="Scan">
+                        <Button fx:id="scanBtn" onAction="#onScanBtnAction" layoutX="31.0" layoutY="318.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="220.0" text="Scan">
                            <font>
                               <Font size="24.0" />
                            </font>
