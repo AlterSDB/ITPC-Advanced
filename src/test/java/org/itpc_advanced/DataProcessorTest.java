@@ -1,15 +1,13 @@
 package org.itpc_advanced;
 
 import org.itpc_advanced.model.DataFile;
-import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DataProcessor;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
-
 public class DataProcessorTest {
-	
+
 	@Test
 	public void testFile() {
 		final byte[] rawData = {22, -125, 0, 0, 123, -1, -123, 5, 
@@ -24,7 +22,7 @@ public class DataProcessorTest {
 				-1, -1, -1, -1, -1, -1, -1, -31, -25}; 
 		DataFile df = DataParser.parse(rawData);
 		DataProcessor.calculate(df);
-		
+
 		Assertions.assertEquals(DataFile.class, df.getClass());
 		Assertions.assertEquals(120, df.getTargetTemperature());
 		Assertions.assertEquals(121.2, df.getAverageMax());
@@ -37,7 +35,6 @@ public class DataProcessorTest {
 		Assertions.assertEquals(119.5, df.getMinTemps().get(0));
 		Assertions.assertEquals(118.5, df.getMinTemps().get(6));
 		Assertions.assertEquals(118.2, df.getMinTemps().get(9));
-
 	}
-	
+
 }

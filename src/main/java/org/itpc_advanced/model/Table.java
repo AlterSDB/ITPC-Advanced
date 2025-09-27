@@ -10,10 +10,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 
 public class Table {
-	
+
 	private final ObservableList<DataFile> files;
 	private final AtomicInteger fileCounter = new AtomicInteger(1);
-	
+
 	public Table(ObservableList<DataFile> fileList) {
 		this.files = fileList;
 		
@@ -22,20 +22,19 @@ public class Table {
 	public ObservableList<DataFile> getFiles() {
 		return files;
 	}
-	
+
 	public void addFile(DataFile file) {
 		file.setFileId(fileCounter.getAndIncrement());
 		files.add(file);
 	}
-	
-	
+
 	public void clearFiles() {
 		if(!files.isEmpty()) {
 			files.clear();
 		    fileCounter.set(1);
 		}
 	}
-	
+
 	public void initialize(TableView<DataFile> table) {
 		table.getColumns().clear();
 		System.out.println("Initialising table");
@@ -50,9 +49,6 @@ public class Table {
 		for(DataFile dataFile : files) {
 			addFile(dataFile);
 		}
-		
 	}
-	
-	
-}
 
+}

@@ -7,23 +7,21 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
 public class ReportBuilder {
-	
+
 	public static void buildReport(TableView<DataFile> table) {
-		if(table == null) {
-			System.out.println("Ошибка: Таблицы не существует.");
+		if (table == null) {
 			return;
 		}
-		if(table.getSelectionModel().getSelectedItem() == null) {
-			System.out.println("Ошибка: Файл в таблице не выбран.");
+
+		if (table.getSelectionModel().getSelectedItem() == null) {
 			return;
 		}
 
 		Clipboard clipboard = Clipboard.getSystemClipboard();
 		DataFile df = (DataFile) table.getSelectionModel().getSelectedItem();
 		clipboard.setContent(ReportBuilder.getReport(df));
-		
 	}
-	
+
 	public static void buildReport(DataFile df) {
 		Clipboard clipboard = Clipboard.getSystemClipboard();
 		clipboard.setContent(ReportBuilder.getReport(df));

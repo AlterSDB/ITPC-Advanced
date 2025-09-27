@@ -13,10 +13,10 @@ public class Settings {
 
 	private AnchorPane  pane;
 	private StringProperty  port = new SimpleStringProperty();
-	private BooleanProperty automaticTarget = new SimpleBooleanProperty();
 	private DoubleProperty  connectionTimeout = new SimpleDoubleProperty();
 	private DoubleProperty  timeStep = new SimpleDoubleProperty();
 	private DoubleProperty  maxDeviation = new SimpleDoubleProperty();
+	private BooleanProperty automaticTarget = new SimpleBooleanProperty();
 	private BooleanProperty multipleCharts = new SimpleBooleanProperty();
 	private BooleanProperty autoLoad = new SimpleBooleanProperty();
 	private BooleanProperty shuffleValues = new SimpleBooleanProperty();
@@ -32,7 +32,7 @@ public class Settings {
 		maxDeviation.setValue(40.0);
 		shuffleValues.setValue(true);
 	}
-	
+
 	public StringProperty getPort() {
 		return port;
 	}
@@ -64,9 +64,12 @@ public class Settings {
 	}
 
 	public void setTimeStep(String timeStep) {
-		if(timeStep.isEmpty()) return;
-		if(Double.valueOf(timeStep) != null) {
-		this.timeStep.setValue(Double.valueOf(timeStep));
+		if (timeStep.isEmpty()) {
+			return;
+		}
+		
+		if (Double.valueOf(timeStep) != null) {
+			this.timeStep.setValue(Double.valueOf(timeStep));
 		}
 	}
 
@@ -101,11 +104,10 @@ public class Settings {
 	public void setShuffleValues(BooleanProperty shuffleValues) {
 		this.shuffleValues = shuffleValues;
 	}
-	
+
 	public void close() {
 		Stage stage = (Stage) pane.getScene().getWindow();
-		stage.close();
-		
+		stage.close();		
 	}
 
 }

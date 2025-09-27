@@ -12,7 +12,6 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -28,18 +27,20 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 public class VisualFX {
-	
+
 	public static void fadeTransition(Node element, double startValue, double endValue, int duration, int delay) {
-		if(startValue == 0.0) {
+		if (startValue == 0.0) {
 			element.setOpacity(0.0);
 		}
-		if(!element.isVisible()) {
+
+		if (!element.isVisible()) {
 			element.setVisible(true);
 		}
-		if(element.getOpacity() == endValue) {
+
+		if (element.getOpacity() == endValue) {
 			return;
 		}
-		
+
 		FadeTransition ft = new FadeTransition(Duration.millis(duration), element);
 		ft.setFromValue(startValue);
 		ft.setToValue(endValue);
@@ -47,18 +48,20 @@ public class VisualFX {
 		ft.setCycleCount(0);
 		ft.play();
 	}
-	
+
 	public static void fadeTransition(Node element, double startValue, double endValue) {
 		int duration = 450;
 		int delay = 200;
 
-		if(startValue == 0.0) {
+		if (startValue == 0.0) {
 			element.setOpacity(0.0);
 		}
-		if(!element.isVisible()) {
+
+		if (!element.isVisible()) {
 			element.setVisible(true);
 		}
-		if(element.getOpacity() == endValue) {
+
+		if (element.getOpacity() == endValue) {
 			return;
 		}
 
@@ -73,85 +76,64 @@ public class VisualFX {
 	/*
 	 * Animation of fast erasing and typing text
 	 */
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	public static void changeText(StringProperty oldTextProperty, String newTextProperty) {
 		Timeline timeline = new Timeline();
 		String oldText = oldTextProperty.getValue() != null ? oldTextProperty.getValue().toString() : "";
 		String newText = newTextProperty.toString();
-//		System.out.println(oldText);
 		StringBuffer newTextBuffer = new StringBuffer();	
 		StringBuffer oldTextBuffer = new StringBuffer(oldText);
 		int duration = 0;
 		int step = 50;
 
-		for(int i = 0; i < oldTextBuffer.length() ; i++) {
+		for (int i = 0; i < oldTextBuffer.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
-				Duration.millis(duration), 
-				new EventHandler() {
-					@Override
-					public void handle(Event event) {
+				Duration.millis(duration), (event) -> {
 					oldTextBuffer.deleteCharAt(oldTextBuffer.length() - 1);
 					oldTextProperty.setValue(oldTextBuffer.toString());
-					}
-			}));
+				}));
 			duration += step - 20;
 		}
 
-		for(int i = 0; i < newText.length() ; i++) {
+		for (int i = 0; i < newText.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
-				Duration.millis(duration),
-				new EventHandler() {
-					@Override
-					public void handle(Event event) {
+				Duration.millis(duration), (event) -> {
 						if (newTextBuffer.length() < newText.length()) {
 							newTextBuffer.append(newText.charAt(newTextBuffer.length()));
 							oldTextProperty.setValue(newTextBuffer.toString());
 						}
-					}
 				}));
+
 			duration += step;
 		}
 		timeline.setCycleCount(1);
 		timeline.play();
 	}
-	
 
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void changeText2(StringProperty oldTextProperty, DoubleProperty newTextProperty) {
 		Timeline timeline = new Timeline();
 		String oldText = oldTextProperty.getValue() != null ? oldTextProperty.getValue().toString() : "";
 		String newText = newTextProperty.getValue().toString();
-//		System.out.println(oldText);
 		StringBuffer newTextBuffer = new StringBuffer();	
 		StringBuffer oldTextBuffer = new StringBuffer(oldText);
 		int duration = 0;
 		int step = 50;
 
-		for(int i = 0; i < oldTextBuffer.length() ; i++) {
+		for (int i = 0; i < oldTextBuffer.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
-				Duration.millis(duration), 
-				new EventHandler() {
-					@Override
-					public void handle(Event event) {
+				Duration.millis(duration), (event) -> {
 					oldTextBuffer.deleteCharAt(oldTextBuffer.length() - 1);
 					oldTextProperty.setValue(oldTextBuffer.toString());
-					}
 			}));
 			duration += step - 20;
 		}
 
-		for(int i = 0; i < newText.length() ; i++) {
+		for (int i = 0; i < newText.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
-				Duration.millis(duration),
-				new EventHandler() {
-					@Override
-					public void handle(Event event) {
-						if (newTextBuffer.length() < newText.length()) {
-							newTextBuffer.append(newText.charAt(newTextBuffer.length()));
-							oldTextProperty.setValue(newTextBuffer.toString());
-						}
+				Duration.millis(duration),(event) -> {
+					if (newTextBuffer.length() < newText.length()) {
+						newTextBuffer.append(newText.charAt(newTextBuffer.length()));
+						oldTextProperty.setValue(newTextBuffer.toString());
 					}
 				}));
 			duration += step;
@@ -159,13 +141,13 @@ public class VisualFX {
 		timeline.setCycleCount(1);
 		timeline.play();
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	public static void changeTextField(TextField field, String newText) {
-		if(field == null ||newText.isEmpty()) {
+		if (field == null ||newText.isEmpty()) {
 			System.out.println("ERROR VisualFX.changeText - null or empty");
 			return;
 		}
+
 		Timeline timeline = new Timeline();
 		String oldText = field != null && field.getText() != null ? field.getText() : " ";
 		StringBuffer newTextBuffer = new StringBuffer();	
@@ -173,37 +155,29 @@ public class VisualFX {
 		int duration = 0;
 		int step = 50;
 
-		for(int i = 0; i < oldTextBuffer.length() ; i++) {
+		for (int i = 0; i < oldTextBuffer.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
-				Duration.millis(duration), 
-				new EventHandler() {
-					@Override
-					public void handle(Event event) {
+				Duration.millis(duration), (event) -> {
 					oldTextBuffer.deleteCharAt(oldTextBuffer.length() - 1);
 					field.setText(oldTextBuffer.toString());
-					}
-			}));
+				}));
 			duration += step - 20;
 		}
 
-		for(int i = 0; i < newText.length() ; i++) {
+		for (int i = 0; i < newText.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
-				Duration.millis(duration),
-				new EventHandler() {
-					@Override
-					public void handle(Event event) {
+				Duration.millis(duration), (event) -> {
 						if (newTextBuffer.length() < newText.length()) {
 							newTextBuffer.append(newText.charAt(newTextBuffer.length()));
 							field.setText(newTextBuffer.toString());
 						}
-					}
-				}));
+					}));
 			duration += step;
 		}
 		timeline.setCycleCount(1);
 		timeline.play();
 	}
-	
+
 	public static void slideTransition(Node element) {
 		Rectangle mask = new Rectangle(600, 200, Color.AQUA);
 		mask.setX(-610);
@@ -213,7 +187,7 @@ public class VisualFX {
 		ts.setToX(550);
 		ts.play();
 	}
-	
+
 	public static Animation pulsatingText(Text text) {
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames().clear();
@@ -267,7 +241,6 @@ public class VisualFX {
 		return animations;
 	}
 
-
 	public static void hideSpinnerAnimation(Circle circle) {
 		Timeline timeline = new Timeline();
 		double duration = 200;
@@ -290,7 +263,6 @@ public class VisualFX {
 
 		timeline.play();
 	}
-
 
 	public static Button setButtonAnimation(Button button) {   // Undone
 		button.setOnMouseEntered(new EventHandler<MouseEvent>() {

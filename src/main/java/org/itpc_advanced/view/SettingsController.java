@@ -1,4 +1,4 @@
-package org.itpc_advanced.controller;
+package org.itpc_advanced.view;
 
 import org.itpc_advanced.model.Settings;
 
@@ -16,7 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import jssc.SerialPortList;
 
 public class SettingsController {
-	
+
 	@FXML	private AnchorPane pane;
 	@FXML	private MenuButton selectPortMenu;
 	@FXML	private CheckBox automaticTargetCheck;
@@ -26,7 +26,7 @@ public class SettingsController {
 	@FXML	private TextField timeStepField;
 	@FXML	private TextField timeoutField;
 	@FXML	private Button saveButton;
-	
+
 	private final Settings settings = new Settings(pane);
 
 	@FXML
@@ -39,11 +39,12 @@ public class SettingsController {
 		timeStepField.setText(settings.getTimeStep().getValue().toString());
 		timeoutField.setText(settings.getConnectionTimeout().getValue().toString());
 		System.out.println("Обнаружены порты: ");
-		for(String port : SerialPortList.getPortNames()) {
+		for (String port : SerialPortList.getPortNames()) {
 			System.out.println(port);
 			MenuItem item = new MenuItem(port);
 			selectPortMenu.getItems().add(item);
 		}
+
 		for (MenuItem item : selectPortMenu.getItems()) {
 			item.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -52,29 +53,21 @@ public class SettingsController {
 				}
 			});
 		}
-		saveButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
+		saveButton.setOnAction((event) -> {
 				saveSettings();
-			}
 		});
 		
 		timeoutField.setOnKeyPressed(saveOnEnterKey());
 		timeStepField.setOnKeyPressed(saveOnEnterKey());
 	}
 
-
 	private EventHandler<KeyEvent> saveOnEnterKey() {
-		return new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent key) {
+		return (key) -> {
 				if (key.getCode().equals(KeyCode.ENTER)) {
 					saveSettings();
 				}
-			}
 		};
-		}
-
+	}
 
 	protected void saveSettings() {
 		settings.setTimeStep(timeStepField.getText());

@@ -12,13 +12,13 @@ import javafx.scene.chart.XYChart;
 public class DataFile {
 
 	private static int counter = 1;
-	
+
 	// Raw
 	private final String tcType;
 	private final LocalDateTime timeStamp;
 	private final Double timeStep;
 	private final List<Double> values;
-	
+
 	// Derivatives
 	private List<Double> processedValues = new ArrayList<Double>();
 	private List<XYChart.Data<Number, Number>> chartData = new ArrayList<XYChart.Data<Number, Number>>();
@@ -32,22 +32,21 @@ public class DataFile {
 	private Double relativeMax = 0.0;
 	private Double relativeMin = 0.0;
 	private double[] chartBounds = null;
-	
-	
+
 	public DataFile(String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> values) {
 		this.tcType = tcType;
 		this.timeStamp = timeStamp;
 		this.timeStep = timeStep;
 		this.values = values;		
 	}
-	
+
 	public DataFile() {
 		this.tcType = null;
 		this.timeStamp = null;
 		this.timeStep = null;
 		this.values = null;	
 	}
-	
+
 	public static int getCounter() {
 		return counter;
 	}
@@ -55,14 +54,15 @@ public class DataFile {
 	public static void resetCounter(int counter) {
 		DataFile.counter = 1;
 	}
-	
+
 	public Integer getFileId() {
-		if(fileId == null) {
+		if (fileId == null) {
 			return 0;
 		}
+		
 		return fileId;
 	}
-	
+
 	public List<Double> getValues() {
 		return values;
 	}
@@ -86,11 +86,11 @@ public class DataFile {
 	public Integer getTargetTemperature() {
 		return targetTemperature;
 	}
-	
+
 	public LocalDateTime getTimeStamp() {
 		return timeStamp;
 	}
-	
+
 	public Double getAverageMax() {
 		return averageMax;
 	}
@@ -115,7 +115,6 @@ public class DataFile {
 		return minTemps;
 	}
 
-
 	public Integer getLinearOffset() {
 		return linearOffset;
 	}
@@ -133,14 +132,14 @@ public class DataFile {
 	}
 
 	public void setTargetTemperature(Integer targetTemperature) {
-		if(targetTemperature == null) {
+		if (targetTemperature == null) {
 			targetTemperature = 0;
 		}
 		this.targetTemperature = targetTemperature;
 		setRelativeMax(DataProcessor.findRelative(targetTemperature, averageMax));
 		setRelativeMin(DataProcessor.findRelative(targetTemperature, averageMin));		
 	}
-	
+
 	public void setLinearOffset(Integer linearOffset) {
 		if (linearOffset == null) {
 			this.linearOffset = 0;
@@ -156,7 +155,7 @@ public class DataFile {
 			return;
 		}
 		
-		for(int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) {
 				this.maxTemps.add(processedValues.get(processedValues.size() - 1 - i));
 				this.minTemps.add(this.minTemps.size() - i, processedValues.get(i));
 			}

@@ -7,9 +7,8 @@ import org.itpc_advanced.service.DataParser;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
-
 public class DataParserTest {
-	
+
 	@Test
 	public void testFileTPPS() {
 		final byte[] rawData = {22, -125, 0, 0, 123, -1, -123, 1, 
@@ -21,23 +20,22 @@ public class DataParserTest {
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 				-1, -1, -1, -1, 74, -66}; 
-		
 		DataFile df = null;
+
 		try {
 			df = DataParser.parse(rawData);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		Assertions.assertEquals(DataFile.class, df.getClass());
 		Assertions.assertEquals("ТПП(S)", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 12, 24, 15, 11), df.getTimeStamp());
 		Assertions.assertEquals(0.5, df.getTimeStep());
 		Assertions.assertEquals(20, df.getValues().size());
 		Assertions.assertEquals(29.0, df.getValues().get(2));
-
 	}
-	
+
 	@Test
 	public void testFileXA() {
 		final byte[] rawData = {22, -125, 0, 0, 123, -1, -123, 5, 
@@ -50,14 +48,13 @@ public class DataParserTest {
 				4, -72, 4, -72, 4, -72, 4, -73, 4, -73, 4, -35, 125, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -31, -25}; 
-		
 		DataFile df = null;
 		try {
 			df = DataParser.parse(rawData);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		Assertions.assertEquals(DataFile.class, df.getClass());
 		Assertions.assertEquals("ТХА(K)", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 01, 01, 00, 00), df.getTimeStamp());
@@ -65,9 +62,8 @@ public class DataParserTest {
 		Assertions.assertEquals(45, df.getValues().size());
 		Assertions.assertEquals(118.4, df.getValues().get(2));
 		Assertions.assertEquals(120.4, df.getValues().get(16));
-
 	}
-	
+
 	@Test
 	public void testFile1() {
 		final byte[] rawData = {22, -125, 0, 0, 123, -1, -123, 1, 0, 1, 0, 1, 
@@ -79,14 +75,14 @@ public class DataParserTest {
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 13, -40}; 
-		
 		DataFile df = null;
+
 		try {
 			df = DataParser.parse(rawData);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		Assertions.assertEquals(DataFile.class, df.getClass());
 		Assertions.assertEquals("ТХК(L)", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 01, 01, 00, 00), df.getTimeStamp());
@@ -94,27 +90,27 @@ public class DataParserTest {
 		Assertions.assertEquals(24, df.getValues().size());
 		Assertions.assertEquals(2000, df.getValues().get(7));
 		Assertions.assertEquals(2000, df.getValues().get(23));
-
 	}
-	
+
 	@Test
 	public void testFile2() {
 		final byte[] rawData = {22, -125, 0, 0, 123, -1, -123, 2, 0, 4, 
 				0, 3, 0, 5, 0, 6, 0, 2, 0, 32, 78, 32, 78, 32, 78, 32, 78,
-32, 78, 32, 78, 32, 78, 32, 78, 32, 78, 32, 78, 32, 78, -35, 125, -1, -1,
--1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
--1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
--1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
--1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
--1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -85, -65}; 
-		
+				32, 78, 32, 78, 32, 78, 32, 78, 32, 78, 32, 78, 32, 78, -35, 125, -1, -1,
+				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -85, -65}; 
+
 		DataFile df = null;
+
 		try {
 			df = DataParser.parse(rawData);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		Assertions.assertEquals(DataFile.class, df.getClass());
 		Assertions.assertEquals("ТХА(K)", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 03, 04, 05, 06), df.getTimeStamp());
@@ -122,9 +118,8 @@ public class DataParserTest {
 		Assertions.assertEquals(11, df.getValues().size());
 		Assertions.assertEquals(2000, df.getValues().get(10));
 		Assertions.assertEquals(2000, df.getValues().get(2));
-
 	}
-	
+
 	@Test
 	public void testFile3() {
 		final byte[] rawData = {22, -125, 0, 0, 123, -1, -123, 3, 0, 1, 0, 5, 0, 0, 
@@ -170,7 +165,6 @@ public class DataParserTest {
 		DataFile df = null;
 		try {
 			df = DataParser.parse(rawData);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -199,7 +193,6 @@ public class DataParserTest {
 		DataFile df = null;
 		try {
 			df = DataParser.parse(rawData);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -223,30 +216,19 @@ public class DataParserTest {
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -7, -111};
-		
 		DataFile df = null;
+
 		try {
 			df = DataParser.parse(rawData);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		Assertions.assertEquals(DataFile.class, df.getClass());
 		Assertions.assertEquals("-", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.MIN, df.getTimeStamp());
 		Assertions.assertEquals(0.0, df.getTimeStep());
 		Assertions.assertEquals(0, df.getValues().size());
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

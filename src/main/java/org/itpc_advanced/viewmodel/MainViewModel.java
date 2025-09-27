@@ -1,7 +1,6 @@
 package org.itpc_advanced.viewmodel;
 
 import org.itpc_advanced.model.DataFile;
-import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
 
@@ -11,13 +10,12 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 public class MainViewModel {
+
 	private final ObservableList<DataFile> fileList = FXCollections.observableArrayList();   
 	private final ObjectProperty<DataFile> selectedDataFile = new SimpleObjectProperty<DataFile>();
 	private StringProperty averageMaxProperty = new SimpleStringProperty();
@@ -26,95 +24,108 @@ public class MainViewModel {
 	private StringProperty relativeMinProperty = new SimpleStringProperty();
 	private StringProperty tempSetProperty = new SimpleStringProperty();
 	private StringProperty linearOffsetProperty = new SimpleStringProperty();
-	
+
 	private final ObservableList<XYChart.Data<Number, Number>> chartData = FXCollections.observableArrayList();
 	private final StringProperty chartTitle = new SimpleStringProperty();
 	private final StringProperty xAxisLabel = new SimpleStringProperty();
 	private final StringProperty yAxisLabel = new SimpleStringProperty();
 	private final DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty();
 	private final DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty();
-	
+
 	public MainViewModel(){	
-		selectedDataFile.addListener(new ChangeListener<DataFile>() {
-			@Override
-			public void changed(ObservableValue<? extends DataFile> observable,
-					DataFile oldDataFile, DataFile newDataFile) {
-				if(newDataFile != null) {
-					System.out.println("CHANGED");
+
+		selectedDataFile.addListener((observable, oldDataFile, newDataFile) -> {
+				if (newDataFile != null) {
+					System.out.println("CHANGED FILE");
 					tempSetProperty.setValue(newDataFile.getTargetTemperature().toString());
 					newDataFile.setTargetTemperature(Integer.parseInt(tempSetProperty.getValue()));
 					relativeMaxProperty.setValue(newDataFile.getRelativeMax().toString());
 					relativeMinProperty.setValue(newDataFile.getRelativeMin().toString());
 					averageMaxProperty.setValue(newDataFile.getAverageMax().toString());
 					averageMinProperty.setValue(newDataFile.getAverageMin().toString());
-					
+					linearOffsetProperty.setValue(newDataFile.getLinearOffset().toString());
+
 					yAxisLowerBoundProperty.set(newDataFile.getChartBounds()[0]);
 					yAxisUpperBoundProperty.set(newDataFile.getChartBounds()[1]);
 					chartData.clear();
 					chartData.setAll(newDataFile.getChartData());
 				}
-			}
 		});
-		tempSetProperty.addListener(new ChangeListener<String>() {
 
-			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
+		tempSetProperty.addListener((observable, oldValue, newValue) -> {
 				if (!validateInput(newValue)) {
-					return;			
-				}			
-				
+					return;
+				}
+
 				System.out.println("CHANGED TARGET to " + Double.parseDouble(newValue));
-				if(selectedDataFile.getValue() != null && !newValue.isEmpty()) {		
+				if (selectedDataFile.getValue() != null && !newValue.isEmpty()) {		
 				selectedDataFile.getValue().setTargetTemperature(Integer.parseInt(newValue));
 				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
 				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
 				linearOffsetProperty.setValue(selectedDataFile.getValue().getLinearOffset().toString());
 				}
-			}
-			
-		});	
-		linearOffsetProperty.addListener(new ChangeListener<String>() {
+			});	
 
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (!newValue.matches("\\d*") || newValue.equals("")) {
+		linearOffsetProperty.addListener((observable, oldValue, newValue) -> {
+				if (selectedDataFile.getValue() == null) {
 					return;
 				}
-				selectedDataFile.getValue().setLinearOffset(Integer.parseInt(newValue));;
-				System.out.println("SSS'SS'S");
+
+				if (newValue == null || newValue.isEmpty() || newValue.equals("-")) {
+					selectedDataFile.getValue().setLinearOffset(0);
+					relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
+					relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
+					averageMaxProperty.setValue(selectedDataFile.getValue().getAverageMax().toString());
+					averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());
+
+					return;
+				}
+
+				if (!newValue.matches("-?\\d+")) {
+					return;
+				}
+
+				int parsed = 0;
+
+				try {
+					parsed = Integer.parseInt(newValue);
+				} catch (NumberFormatException e) {
+					return;
+				}
+
+				selectedDataFile.getValue().setLinearOffset(parsed);
 				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
 				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
 				averageMaxProperty.setValue(selectedDataFile.getValue().getAverageMax().toString());
-				averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());
-			}			
+				averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());		
 		});	
-		
+
 		this.chartTitle.set("Температурная характеристика");
 		this.xAxisLabel.set("Время, мин.");
 		this.yAxisLabel.set("Темпераатура, Т°С");
 		this.yAxisLowerBoundProperty.set(0);
 		this.yAxisUpperBoundProperty.set(10);		
 	}
-		
+
 	private boolean validateInput(String input) {
 		if (input.length() > 4) {
 			return false;
 		}
+
 		if (!input.matches("\\d+")) {
 			return false;
 		}
-		
+
 		try {
 			int value = Integer.parseInt(input);
 			if (value <= 99999) {
 				return true;
 			}
-			
+
 		} catch (NumberFormatException e) {
 			return false;
 		}
-		
+
 		return false;
 		}	
 
@@ -155,13 +166,10 @@ public class MainViewModel {
 	public StringProperty linearOffsetProperty() {
 		return linearOffsetProperty;
 	}
-	
-	
-	
+
 	public ObservableList<XYChart.Data<Number, Number>> getChartData() {
 		return chartData;
 	}
-
 
 	public StringProperty chartTitleProperty() {
 		return chartTitle;
@@ -198,11 +206,11 @@ public class MainViewModel {
 	public void setyAxisLabel(String yAxisLabel) {
 		this.yAxisLabel.set(yAxisLabel);
 	}
-	
+
 	public void addDataPoint(Number x, Number y) {
 		chartData.add(new XYChart.Data<>(x, y));
 	}
-	
+
 	public void clearData() {
 		chartData.clear();
 		
@@ -211,6 +219,7 @@ public class MainViewModel {
 	public DoubleProperty yAxisLowerBoundProperty() {
 		return yAxisLowerBoundProperty;
 	}
+
 	public DoubleProperty yAxisUpperBoundProperty() {
 		return yAxisUpperBoundProperty;
 	}
@@ -222,5 +231,5 @@ public class MainViewModel {
 		}
 		ReportBuilder.buildReport(selectedDataFile.get());
 	}
-	
+
 }

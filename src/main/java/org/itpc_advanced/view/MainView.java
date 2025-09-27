@@ -4,8 +4,6 @@ import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.chart.LineChart;
@@ -18,13 +16,13 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 
 public class MainView {
-	
+
     @FXML
     private Tab tabAutomatic;
 
@@ -104,17 +102,16 @@ public class MainView {
 	
 	private MainViewModel viewModel;
 
-	
 	@FXML
 	private void onScanBtnAction() {
 		viewModel.readDataFiles();
 	}
-	
+
 	@FXML
 	private void onCopyResultsBtnAction() {
 		viewModel.copyResults();
 	}
-    
+
     public Tab getTabAutomatic() {
 		return tabAutomatic;
 	}
@@ -138,7 +135,7 @@ public class MainView {
 	public Text getTempText() {
 		return tempText;
 	}
-	
+
 	public Text getAverageMaxText() {
 		return averageMaxText;
 	}
@@ -206,20 +203,17 @@ public class MainView {
 	public NumberAxis getyAxis() {
 		return yAxis;
 	}
-	
+
 	private boolean updatingFromViewModel = false;
-	
+
+	@SuppressWarnings("unchecked")
 	public void setViewModel(MainViewModel viewModel) {
 		this.viewModel = viewModel;
 		tableView.setItems(viewModel.getFileList());
 		tableView.setPlaceholder(new Label("Files list is empty"));
-		@SuppressWarnings("unchecked")
 		TableColumn<DataFile, Integer> filesColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
 		filesColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
-		filesColumn.setCellFactory(new Callback<TableColumn<DataFile, Integer>, TableCell<DataFile, Integer>>() {
-			@Override
-			public TableCell<DataFile, Integer> call(
-					TableColumn<DataFile, Integer> column) {
+		filesColumn.setCellFactory((column) -> {
 				return new TableCell<DataFile, Integer>() {
 					@Override
 					protected void updateItem(Integer fileId, boolean empty) {
@@ -231,67 +225,62 @@ public class MainView {
 						}
 					}
 				};
-			}
 		});
+
 		filesColumn.setMaxWidth(200);
 		filesColumn.setResizable(false);
-		
-		tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DataFile>() {
-			@Override
-			public void changed(ObservableValue<? extends DataFile> obs,
-					DataFile oldValue, DataFile newValue) {
-						if(!updatingFromViewModel) {
-						viewModel.selectedDataFileProperty().set(newValue);
-						}
-					}
+
+		tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
+			if(!updatingFromViewModel) {
+				viewModel.selectedDataFileProperty().set(newValue);
+			}
 		});
-		
-		viewModel.selectedDataFileProperty().addListener(new ChangeListener<DataFile>() {
-			@Override
-			public void changed(ObservableValue<? extends DataFile> obs,
-					DataFile oldValue, DataFile newValue) {
-						updatingFromViewModel = true;
-						tableView.getSelectionModel().select(newValue);
-						VisualFX.slideTransition(series.getNode());
-						updatingFromViewModel = false;
-					}
+
+		viewModel.selectedDataFileProperty().addListener((obs, oldValue, newValue) -> {
+			updatingFromViewModel = true;
+			tableView.getSelectionModel().select(newValue);
+			VisualFX.slideTransition(series.getNode());
+			updatingFromViewModel = false;
 		});
-		
+
 		relativeMaxField.textProperty().bind(this.viewModel.relativeMaxProperty());
 		relativeMinField.textProperty().bind(this.viewModel.relativeMinProperty());
 		averageMaxField.textProperty().bind(this.viewModel.averageMaxProperty());
 		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
 		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
 		linearOffsetField.textProperty().bindBidirectional(this.viewModel.linearOffsetProperty());
-		
-		tempSetField.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> obs,
-					String oldValue, String newValue) {
-						if (!newValue.matches("\\d*")) {
-						tempSetField.setText(newValue.replaceAll("[^\\d]", ""));
-						}
-						
-						if (tempSetField.getText().length() > 7) {
-						tempSetField.setText(oldValue);
-						}
-					}
+
+		TextFormatter<String> digitsMax7Formatter = new TextFormatter<>(change -> {
+			String newText = change.getControlNewText();
+
+			if (!newText.matches("\\d*")) {
+				return null;
+			}
+
+			if (newText.length() > 7) {
+				return null;
+			}
+
+			return change;
 		});
-		
-		linearOffsetField.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> obs,
-					String oldValue, String newValue) {
-						if (!newValue.matches("\\d*")) {
-							linearOffsetField.setText(newValue.replaceAll("[^\\d]", ""));
-						}
-						
-						if (linearOffsetField.getText().length() > 7) {
-							linearOffsetField.setText(oldValue);
-						}
-					}
+
+		tempSetField.setTextFormatter(digitsMax7Formatter);
+
+		TextFormatter<String> signedDigitsMax7 = new TextFormatter<>(change -> {
+			String newText = change.getControlNewText();
+
+			if (newText.isEmpty() || newText.equals("-")) {
+				return change;
+			}
+
+			if (!newText.matches("-?\\d{0,7}")) {
+				return null;
+			}
+
+			return change;
 		});
-			
+
+		linearOffsetField.setTextFormatter(signedDigitsMax7);
 		yAxis.lowerBoundProperty().bind(this.viewModel.yAxisLowerBoundProperty());
 		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());		
 		series = new XYChart.Series<>();
@@ -300,7 +289,7 @@ public class MainView {
 		lineChart.titleProperty().bind(viewModel.chartTitleProperty());
 		xAxis.labelProperty().bind(viewModel.xAxisLabelProperty());
 		yAxis.labelProperty().bind(viewModel.yAxisLabelProperty());
-		
+
 		xAxis.setUpperBound(15);
 		xAxis.setMinorTickCount(2);
 		yAxis.setAutoRanging(false);

@@ -145,7 +145,13 @@
       <TextField fx:id="tempSetField" editable="true" layoutX="494.0" layoutY="343.0" prefHeight="26.0" prefWidth="83.0" />
       <Text fx:id="tempSetText" fill="white" layoutX="456.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="t°з">
          <font>
-            <Font size="18.0" />
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField fx:id="linearOffsetField" editable="true" layoutX="494.0" layoutY="383.0" prefHeight="26.0" prefWidth="83.0" />
+      <Text fx:id="linearOffsetText" fill="white" layoutX="414.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Лин.смещ.">
+         <font>
+            <Font size="14.0" />
          </font>
       </Text>
       <LineChart fx:id="lineChart" layoutX="391.0" layoutY="8.0" prefHeight="300.0" prefWidth="600.0">
