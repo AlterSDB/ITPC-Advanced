@@ -1,6 +1,8 @@
 package org.itpc_advanced.view;
 
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.service.LocalManager;
+import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
@@ -101,6 +103,21 @@ public class MainView {
     private XYChart.Series<Number, Number> series;
 	
 	private MainViewModel viewModel;
+	
+	@FXML
+	void initialize() {
+		System.out.println("Init...");
+		LocalTextBinder.bindText(tempSetText, "tempSet");
+		LocalTextBinder.bindText(linearOffsetText, "linearOffset");
+		LocalTextBinder.bindText(averageMaxText, "averageMax");
+		LocalTextBinder.bindText(averageMinText, "averageMin");
+		LocalTextBinder.bindText(relativeMaxText, "relativeMax");
+		LocalTextBinder.bindText(relativeMinText, "relativeMin");
+		LocalTextBinder.bindButton(scanBtn, "buttonScan");
+		LocalTextBinder.bindButton(settingsBtn, "buttonSettings");
+		LocalTextBinder.bindButton(copyResultBtn, "buttonGetReport");
+		LocalTextBinder.bindButton(languageBtn, "buttonLang");
+	}
 
 	@FXML
 	private void onScanBtnAction() {

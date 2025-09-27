@@ -24,14 +24,14 @@ public class LocalManager {
 	}
 
 
-	private void setLocale(Locale locale) {
+	public void setLocale(Locale locale) {
 		ResourceBundle bundle = ResourceBundle.getBundle("lang", locale );
 		resources.set(bundle);
 		currentLocale.set(locale);
 		
 	}
 	
-	private String getString(String key) {
+	public String getString(String key) {
 		ResourceBundle bundle = resources.get();
 		if (bundle != null) {
 			try {
@@ -57,6 +57,10 @@ public class LocalManager {
 
 	public ObjectProperty<Locale> currentLocaleProperty() {
 		return currentLocale;
+	}
+
+	public boolean isEnglish() {
+		return currentLocale.get().getLanguage().equals(Locale.ENGLISH.getLanguage());
 	}
 	
 

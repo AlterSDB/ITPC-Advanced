@@ -141,7 +141,7 @@
          </font>
       </Button>
       <Button fx:id="settingsBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Settings" />
-      <Button fx:id="languageBtn" layoutX="78.0" layoutY="15.0" mnemonicParsing="false" text="EN" />
+      <Button onAction="#onLanguageBtnAction" fx:id="languageBtn" layoutX="78.0" layoutY="15.0" mnemonicParsing="false" text="EN" />
       <TextField fx:id="tempSetField" editable="true" layoutX="494.0" layoutY="343.0" prefHeight="26.0" prefWidth="83.0" />
       <Text fx:id="tempSetText" fill="white" layoutX="456.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="t°з">
          <font>

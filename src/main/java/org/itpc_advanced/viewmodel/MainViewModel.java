@@ -1,6 +1,9 @@
 package org.itpc_advanced.viewmodel;
 
+import java.util.Locale;
+
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
 
@@ -233,8 +236,12 @@ public class MainViewModel {
 	}
 
 	public void changeLanguage() {
-		System.out.println("DUDHDU");
-		
+		LocalManager localization = LocalManager.getInstance();
+		if (localization.isEnglish()) {
+			localization.setLocale(new Locale("ru"));
+		} else {
+			localization.setLocale(Locale.ENGLISH);
+		}	
 	}
 
 }
