@@ -2,33 +2,28 @@ package org.itpc_advanced.service;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.text.Text;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
 
 public class LocalTextBinder {
 	
-	public static void bindLabel(Label label, String key) {
+	public static void bindText(ObjectProperty<String> text, String key) {
 		StringBinding binding = Bindings.createStringBinding(
 				() -> LocalManager.getInstance().getString(key), 
 				LocalManager.getInstance().resourceBundleProperty());
-		label.textProperty().bind(binding);
-	}
-	
-	public static void bindText(Text text, String key) {
-		StringBinding binding = Bindings.createStringBinding(
-				() -> LocalManager.getInstance().getString(key), 
-				LocalManager.getInstance().resourceBundleProperty());
-		text.textProperty().bind(binding);
-	}
-	
-	public static void bindButton(Button button, String key) {
-		StringBinding binding = Bindings.createStringBinding(
-				() -> LocalManager.getInstance().getString(key), 
-				LocalManager.getInstance().resourceBundleProperty());
-		if(button != null) {
-			button.textProperty().bind(binding);
+		if(text != null) {
+			text.bind(binding);
 		}
+	}
+
+	public static void bindText(StringProperty text, String key) {
+		StringBinding binding = Bindings.createStringBinding(
+				() -> LocalManager.getInstance().getString(key), 
+				LocalManager.getInstance().resourceBundleProperty());
+		if(text != null) {
+			text.bind(binding);
+		}
+		
 	}
 
 }

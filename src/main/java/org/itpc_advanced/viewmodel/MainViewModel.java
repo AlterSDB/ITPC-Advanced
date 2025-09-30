@@ -103,9 +103,6 @@ public class MainViewModel {
 				averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());		
 		});	
 
-		this.chartTitle.set("Температурная характеристика");
-		this.xAxisLabel.set("Время, мин.");
-		this.yAxisLabel.set("Темпераатура, Т°С");
 		this.yAxisLowerBoundProperty.set(0);
 		this.yAxisUpperBoundProperty.set(10);		
 	}

@@ -1,13 +1,18 @@
 package org.itpc_advanced.view;
 
+import javax.swing.text.SimpleAttributeSet;
+
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -107,17 +112,26 @@ public class MainView {
 	@FXML
 	void initialize() {
 		System.out.println("Init...");
-		LocalTextBinder.bindText(tempSetText, "tempSet");
-		LocalTextBinder.bindText(linearOffsetText, "linearOffset");
-		LocalTextBinder.bindText(averageMaxText, "averageMax");
-		LocalTextBinder.bindText(averageMinText, "averageMin");
-		LocalTextBinder.bindText(relativeMaxText, "relativeMax");
-		LocalTextBinder.bindText(relativeMinText, "relativeMin");
-		LocalTextBinder.bindButton(scanBtn, "buttonScan");
-		LocalTextBinder.bindButton(settingsBtn, "buttonSettings");
-		LocalTextBinder.bindButton(copyResultBtn, "buttonGetReport");
-		LocalTextBinder.bindButton(languageBtn, "buttonLang");
+		LocalTextBinder.bindText(tempSetText.textProperty(), "field.set.target");
+		LocalTextBinder.bindText(linearOffsetText.textProperty(), "field.linear.offset");
+		LocalTextBinder.bindText(averageMaxText.textProperty(), "field.average.max");
+		LocalTextBinder.bindText(averageMinText.textProperty(), "field.average.min");
+		LocalTextBinder.bindText(relativeMaxText.textProperty(), "field.relative.max");
+		LocalTextBinder.bindText(relativeMinText.textProperty(), "field.relative.min");
+		LocalTextBinder.bindText(scanBtn.textProperty(), "button.scan");
+		LocalTextBinder.bindText(settingsBtn.textProperty(), "button.settings");
+		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
+		LocalTextBinder.bindText(languageBtn.textProperty(), "button.set.lang");
+		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
+		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
+		LocalTextBinder.bindText(lineChart.titleProperty(), "chart.label");
+		LocalTextBinder.bindText(tabAutomatic.textProperty(), "tab.auto");
+		LocalTextBinder.bindText(tabManual.textProperty(), "tab.manual");
 		
+		Label label = new Label();
+		tableView.setPlaceholder(label);
+		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");
+
 		LocalManager.getInstance().resourceBundleProperty().addListener((obs, oldVal, newVal) -> {
 			tableView.getColumns().get(0).setText(LocalManager.getInstance().getString("table.header"));
 		});
@@ -236,7 +250,7 @@ public class MainView {
 	public void setViewModel(MainViewModel viewModel) {
 		this.viewModel = viewModel;
 		tableView.setItems(viewModel.getFileList());
-		tableView.setPlaceholder(new Label("Files list is empty"));
+		//tableView.setPlaceholder(new Label("Files list is empty"));
 		TableColumn<DataFile, Integer> filesColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
 		filesColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
 		filesColumn.setCellFactory((column) -> {
@@ -312,9 +326,9 @@ public class MainView {
 		series = new XYChart.Series<>();
 		series.setData(viewModel.getChartData());
 		lineChart.getData().add(series);
-		lineChart.titleProperty().bind(viewModel.chartTitleProperty());
-		xAxis.labelProperty().bind(viewModel.xAxisLabelProperty());
-		yAxis.labelProperty().bind(viewModel.yAxisLabelProperty());
+	//	lineChart.titleProperty().bind(viewModel.chartTitleProperty());
+	//	xAxis.labelProperty().bind(viewModel.xAxisLabelProperty());
+	//	yAxis.labelProperty().bind(viewModel.yAxisLabelProperty());
 
 		xAxis.setUpperBound(15);
 		xAxis.setMinorTickCount(2);
