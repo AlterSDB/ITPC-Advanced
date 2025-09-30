@@ -3,6 +3,7 @@ package org.itpc_advanced.viewmodel;
 import java.util.Locale;
 
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.service.DataProcessor;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
@@ -80,7 +81,6 @@ public class MainViewModel {
 					relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
 					averageMaxProperty.setValue(selectedDataFile.getValue().getAverageMax().toString());
 					averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());
-
 					return;
 				}
 
@@ -101,6 +101,12 @@ public class MainViewModel {
 				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
 				averageMaxProperty.setValue(selectedDataFile.getValue().getAverageMax().toString());
 				averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());		
+				
+				
+				yAxisLowerBoundProperty.set(selectedDataFile.get().getChartBounds()[0]);
+				yAxisUpperBoundProperty.set(selectedDataFile.get().getChartBounds()[1]);
+				chartData.clear();
+				chartData.setAll(selectedDataFile.get().getChartData());
 		});	
 
 		this.yAxisLowerBoundProperty.set(0);

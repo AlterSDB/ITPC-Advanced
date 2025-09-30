@@ -33,6 +33,8 @@ public class DataProcessor {
 		}
 
 		int target = findTargetValue(dataFile.getValues());
+		
+		dataFile.setProcessedValues(new ArrayList<Double>(dataFile.getValues()));
 		ObservableList<XYChart.Data<Number,Number>> chartData = getChartData(dataFile);
 		List<Double> sortedValues = new ArrayList<Double>(dataFile.getValues());
 		Collections.sort(sortedValues);
@@ -79,19 +81,19 @@ public class DataProcessor {
 		return Math.floor(average * 10) / 10;
 	}
 
-	private static ObservableList<XYChart.Data<Number,Number>> getChartData(DataFile df) {
+	public static ObservableList<XYChart.Data<Number,Number>> getChartData(DataFile df) {
 		ObservableList<XYChart.Data<Number,Number>> chartData = FXCollections.observableArrayList();
 		double time = 0.0;
 
 		for (int i = 0; i < df.getValues().size(); i++){
-			chartData.add(new XYChart.Data<Number, Number>(time, df.getValues().get(i)));
+			chartData.add(new XYChart.Data<Number, Number>(time, df.getProcessedValues().get(i)));
 			time += df.getTimeStep();
 		}
 
 		return chartData;
 	}
 
-    private static double[] findChartBounds(List<Double> sortedValues) {
+    public static double[] findChartBounds(List<Double> sortedValues) {
 		if(sortedValues.size() < 5) {
 			return new double[] {0, 10};
 		}
@@ -123,7 +125,7 @@ public class DataProcessor {
 		return bounds;
     }
 
-	private static int findTargetValue(List<Double> values) {
+	public static int findTargetValue(List<Double> values) {
 		double sum = 0;
 		for (double value : values) {
 			value = Math.round(value) / 10.0;

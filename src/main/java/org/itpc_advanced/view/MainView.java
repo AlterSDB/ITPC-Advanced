@@ -26,53 +26,29 @@ import javafx.scene.text.Text;
 public class MainView {
 
     @FXML private Tab tabAutomatic;
-
 	@FXML private TableView<DataFile> tableView;
-
     @FXML private TableColumn<DataFile, String> tableColumn;
-
     @FXML private Button scanBtn;
-
     @FXML private Tab tabManual;
-
     @FXML private Text tempText;
-
     @FXML private Text averageMaxText;
-
     @FXML private Text averageMinText;
-
     @FXML private Text relativeMaxText;
-
     @FXML private Text relativeMinText;
-
     @FXML private TextField averageMaxField;
-
     @FXML private TextField averageMinField;
-
     @FXML private TextField relativeMaxField;
-
     @FXML private TextField relativeMinField;
-
     @FXML private ImageView logoImageView;
-
     @FXML private Button copyResultBtn;
-
     @FXML private Button settingsBtn;
-
     @FXML private Button languageBtn;
-
     @FXML private TextField tempSetField;
-
     @FXML private Text tempSetText;
-    
     @FXML private TextField linearOffsetField;
-
     @FXML private Text linearOffsetText;
-
     @FXML private LineChart<Number, Number> lineChart;
-
     @FXML private NumberAxis xAxis;
-
     @FXML private NumberAxis yAxis;
 
 	@FXML

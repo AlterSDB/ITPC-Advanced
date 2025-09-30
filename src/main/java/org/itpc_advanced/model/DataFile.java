@@ -66,6 +66,10 @@ public class DataFile {
 	public List<Double> getValues() {
 		return values;
 	}
+	
+	public List<Double> getProcessedValues() {
+		return processedValues;
+	}
 
 	public String getTcType() {
 		return tcType;
@@ -126,6 +130,11 @@ public class DataFile {
 	public void setChartData(ObservableList<XYChart.Data<Number, Number>> chartData) {
 		this.chartData = chartData;
 	}
+	
+	public void setProcessedValues(List<Double> processedValues) {
+		this.processedValues = processedValues;
+	}
+
 
 	public void setChartBounds(double[] chartBounds) {
 		this.chartBounds = chartBounds;
@@ -162,7 +171,10 @@ public class DataFile {
 		setAverageMax(DataProcessor.findAverage(this.maxTemps));
 		setAverageMin(DataProcessor.findAverage(this.minTemps));
 		setRelativeMax(DataProcessor.findRelative(this.targetTemperature, averageMax));
-		setRelativeMin(DataProcessor.findRelative(this.targetTemperature, averageMin));					
+		setRelativeMin(DataProcessor.findRelative(this.targetTemperature, averageMin));
+		setChartBounds(DataProcessor.findChartBounds(processedValues));
+		setChartData(DataProcessor.getChartData(this));
+		
 	}
 
 	public void setAverageMax(Double averageMax) {
