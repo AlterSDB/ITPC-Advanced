@@ -1,18 +1,13 @@
 package org.itpc_advanced.view;
 
-import javax.swing.text.SimpleAttributeSet;
-
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -30,112 +25,55 @@ import javafx.scene.text.Text;
 
 public class MainView {
 
-    @FXML
-    private Tab tabAutomatic;
+    @FXML private Tab tabAutomatic;
 
-	@FXML
-    private TableView<DataFile> tableView;
+	@FXML private TableView<DataFile> tableView;
 
-    @FXML
-    private TableColumn<DataFile, String> tableColumn;
+    @FXML private TableColumn<DataFile, String> tableColumn;
 
-    @FXML
-    private Button scanBtn;
+    @FXML private Button scanBtn;
 
-    @FXML
-    private Tab tabManual;
+    @FXML private Tab tabManual;
 
-    @FXML
-    private Text tempText;
+    @FXML private Text tempText;
 
-    @FXML
-    private Text averageMaxText;
+    @FXML private Text averageMaxText;
 
-    @FXML
-    private Text averageMinText;
+    @FXML private Text averageMinText;
 
-    @FXML
-    private Text relativeMaxText;
+    @FXML private Text relativeMaxText;
 
-    @FXML
-    private Text relativeMinText;
+    @FXML private Text relativeMinText;
 
-    @FXML
-    private TextField averageMaxField;
+    @FXML private TextField averageMaxField;
 
-    @FXML
-    private TextField averageMinField;
+    @FXML private TextField averageMinField;
 
-    @FXML
-    private TextField relativeMaxField;
+    @FXML private TextField relativeMaxField;
 
-    @FXML
-    private TextField relativeMinField;
+    @FXML private TextField relativeMinField;
 
-    @FXML
-    private ImageView logoImageView;
+    @FXML private ImageView logoImageView;
 
-    @FXML
-    private Button copyResultBtn;
+    @FXML private Button copyResultBtn;
 
-    @FXML
-    private Button settingsBtn;
+    @FXML private Button settingsBtn;
 
-    @FXML
-    private Button languageBtn;
+    @FXML private Button languageBtn;
 
-    @FXML
-    private TextField tempSetField;
+    @FXML private TextField tempSetField;
 
-    @FXML
-    private Text tempSetText;
+    @FXML private Text tempSetText;
     
-    @FXML
-    private TextField linearOffsetField;
+    @FXML private TextField linearOffsetField;
 
-    @FXML
-    private Text linearOffsetText;
+    @FXML private Text linearOffsetText;
 
-    @FXML
-    private LineChart<Number, Number> lineChart;
+    @FXML private LineChart<Number, Number> lineChart;
 
-    @FXML
-    private NumberAxis xAxis;
+    @FXML private NumberAxis xAxis;
 
-    @FXML
-    private NumberAxis yAxis;
-    
-    private XYChart.Series<Number, Number> series;
-	
-	private MainViewModel viewModel;
-	
-	@FXML
-	void initialize() {
-		System.out.println("Init...");
-		LocalTextBinder.bindText(tempSetText.textProperty(), "field.set.target");
-		LocalTextBinder.bindText(linearOffsetText.textProperty(), "field.linear.offset");
-		LocalTextBinder.bindText(averageMaxText.textProperty(), "field.average.max");
-		LocalTextBinder.bindText(averageMinText.textProperty(), "field.average.min");
-		LocalTextBinder.bindText(relativeMaxText.textProperty(), "field.relative.max");
-		LocalTextBinder.bindText(relativeMinText.textProperty(), "field.relative.min");
-		LocalTextBinder.bindText(scanBtn.textProperty(), "button.scan");
-		LocalTextBinder.bindText(settingsBtn.textProperty(), "button.settings");
-		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
-		LocalTextBinder.bindText(languageBtn.textProperty(), "button.set.lang");
-		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
-		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
-		LocalTextBinder.bindText(lineChart.titleProperty(), "chart.label");
-		LocalTextBinder.bindText(tabAutomatic.textProperty(), "tab.auto");
-		LocalTextBinder.bindText(tabManual.textProperty(), "tab.manual");
-		
-		Label label = new Label();
-		tableView.setPlaceholder(label);
-		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");
-
-		LocalManager.getInstance().resourceBundleProperty().addListener((obs, oldVal, newVal) -> {
-			tableView.getColumns().get(0).setText(LocalManager.getInstance().getString("table.header"));
-		});
-	}
+    @FXML private NumberAxis yAxis;
 
 	@FXML
 	private void onScanBtnAction() {
@@ -151,6 +89,10 @@ public class MainView {
 	private void onCopyResultsBtnAction() {
 		viewModel.copyResults();
 	}
+	
+    private XYChart.Series<Number, Number> series;
+	
+	private MainViewModel viewModel;
 
     public Tab getTabAutomatic() {
 		return tabAutomatic;
@@ -245,15 +187,36 @@ public class MainView {
 	}
 
 	private boolean updatingFromViewModel = false;
-
+	
+	@FXML
 	@SuppressWarnings("unchecked")
-	public void setViewModel(MainViewModel viewModel) {
-		this.viewModel = viewModel;
-		tableView.setItems(viewModel.getFileList());
-		//tableView.setPlaceholder(new Label("Files list is empty"));
-		TableColumn<DataFile, Integer> filesColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
-		filesColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
-		filesColumn.setCellFactory((column) -> {
+	void initialize() {
+		System.out.println("Init...");
+		TableColumn<DataFile, Integer> tableColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
+
+		LocalTextBinder.bindText(tempSetText.textProperty(), "field.set.target");
+		LocalTextBinder.bindText(linearOffsetText.textProperty(), "field.linear.offset");
+		LocalTextBinder.bindText(averageMaxText.textProperty(), "field.average.max");
+		LocalTextBinder.bindText(averageMinText.textProperty(), "field.average.min");
+		LocalTextBinder.bindText(relativeMaxText.textProperty(), "field.relative.max");
+		LocalTextBinder.bindText(relativeMinText.textProperty(), "field.relative.min");
+		LocalTextBinder.bindText(scanBtn.textProperty(), "button.scan");
+		LocalTextBinder.bindText(settingsBtn.textProperty(), "button.settings");
+		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
+		LocalTextBinder.bindText(languageBtn.textProperty(), "button.set.lang");
+		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
+		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
+		LocalTextBinder.bindText(lineChart.titleProperty(), "chart.label");
+		LocalTextBinder.bindText(tabAutomatic.textProperty(), "tab.auto");
+		LocalTextBinder.bindText(tabManual.textProperty(), "tab.manual");
+		LocalTextBinder.bindText(tableColumn.textProperty(), "table.header");
+		
+		Label label = new Label();
+		tableView.setPlaceholder(label);
+		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");
+		
+		tableColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
+		tableColumn.setCellFactory((column) -> {
 				return new TableCell<DataFile, Integer>() {
 					@Override
 					protected void updateItem(Integer fileId, boolean empty) {
@@ -261,15 +224,23 @@ public class MainView {
 						if (empty || fileId == null) {
 							setText(null);
 						} else {
-							setText("Файл " + fileId);
+							String prefix = LocalManager.getInstance().getString("table.file.prefix");
+							setText(prefix + " " + fileId);
 						}
 					}
 				};
 		});
 
-		filesColumn.setMaxWidth(200);
-		filesColumn.setResizable(false);
+		LocalManager.getInstance().resourceBundleProperty().addListener((obs, oldVal, newVal) -> {
+			tableColumn.setVisible(false);
+			tableColumn.setVisible(true);
+		});
+		
+	}
 
+	public void setViewModel(MainViewModel viewModel) {
+		this.viewModel = viewModel;
+		tableView.setItems(viewModel.getFileList());
 		tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
 			if(!updatingFromViewModel) {
 				viewModel.selectedDataFileProperty().set(newValue);
@@ -320,25 +291,23 @@ public class MainView {
 			return change;
 		});
 
-		linearOffsetField.setTextFormatter(signedDigitsMax7);
-		yAxis.lowerBoundProperty().bind(this.viewModel.yAxisLowerBoundProperty());
-		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());		
+		linearOffsetField.setTextFormatter(signedDigitsMax7);	
+		
 		series = new XYChart.Series<>();
 		series.setData(viewModel.getChartData());
 		lineChart.getData().add(series);
-	//	lineChart.titleProperty().bind(viewModel.chartTitleProperty());
-	//	xAxis.labelProperty().bind(viewModel.xAxisLabelProperty());
-	//	yAxis.labelProperty().bind(viewModel.yAxisLabelProperty());
+		lineChart.setCreateSymbols(false);
+		lineChart.setLegendVisible(false);
+		lineChart.setAnimated(false);
+		lineChart.setLegendSide(Side.LEFT);		
 
 		xAxis.setUpperBound(15);
 		xAxis.setMinorTickCount(2);
 		yAxis.setAutoRanging(false);
 		yAxis.setTickUnit(1);
 		yAxis.setMinorTickCount(0);
-		lineChart.setCreateSymbols(false);
-		lineChart.setLegendVisible(false);
-		lineChart.setAnimated(false);
-		lineChart.setLegendSide(Side.LEFT);		
+		yAxis.lowerBoundProperty().bind(this.viewModel.yAxisLowerBoundProperty());
+		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());		
 	}
 
 }
