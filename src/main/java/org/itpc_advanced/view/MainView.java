@@ -229,6 +229,10 @@ public class MainView {
 			VisualFX.slideTransition(series.getNode());
 			updatingFromViewModel = false;
 		});
+		
+		viewModel.linearOffsetProperty().addListener((obs, oldValue, newValue) -> {
+			VisualFX.slideTransition(series.getNode());
+		});
 
 		relativeMaxField.textProperty().bind(this.viewModel.relativeMaxProperty());
 		relativeMinField.textProperty().bind(this.viewModel.relativeMinProperty());
@@ -269,7 +273,7 @@ public class MainView {
 
 		linearOffsetField.setTextFormatter(signedDigitsMax7);	
 		
-		series = new XYChart.Series<>();
+		series = new XYChart.Series<Number, Number>();
 		series.setData(viewModel.getChartData());
 		lineChart.getData().add(series);
 		lineChart.setCreateSymbols(false);
