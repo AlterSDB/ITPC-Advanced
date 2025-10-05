@@ -232,7 +232,9 @@ public class MainView {
 		
 		viewModel.linearOffsetProperty().addListener((obs, oldValue, newValue) -> {
 			VisualFX.slideTransition(series.getNode());
+			this.viewModel.updateFields();
 		});
+		
 
 		relativeMaxField.textProperty().bind(this.viewModel.relativeMaxProperty());
 		relativeMinField.textProperty().bind(this.viewModel.relativeMinProperty());

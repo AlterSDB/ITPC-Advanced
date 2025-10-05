@@ -6,6 +6,7 @@ import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
+import org.itpc_advanced.utils.VisualFX;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -42,12 +43,10 @@ public class MainViewModel {
 					System.out.println("CHANGED FILE");
 					tempSetProperty.setValue(newDataFile.getTargetTemperature().toString());
 					newDataFile.setTargetTemperature(Integer.parseInt(tempSetProperty.getValue()));
-					relativeMaxProperty.setValue(newDataFile.getRelativeMax().toString());
-					relativeMinProperty.setValue(newDataFile.getRelativeMin().toString());
-					averageMaxProperty.setValue(newDataFile.getAverageMax().toString());
-					averageMinProperty.setValue(newDataFile.getAverageMin().toString());
 					linearOffsetProperty.setValue(newDataFile.getLinearOffset().toString());
-
+					
+					updateFields();
+					
 					yAxisLowerBoundProperty.set(newDataFile.getChartBounds()[0]);
 					yAxisUpperBoundProperty.set(newDataFile.getChartBounds()[1]);
 					chartData.clear();
@@ -244,6 +243,14 @@ public class MainViewModel {
 		} else {
 			localization.setLocale(Locale.ENGLISH);
 		}	
+	}
+
+	public void updateFields() {
+		VisualFX.changeText(relativeMaxProperty, selectedDataFile.get().getRelativeMax().toString());
+		VisualFX.changeText(relativeMinProperty, selectedDataFile.get().getRelativeMin().toString());
+		VisualFX.changeText(averageMaxProperty, selectedDataFile.get().getAverageMax().toString());
+		VisualFX.changeText(averageMinProperty, selectedDataFile.get().getAverageMin().toString());
+		
 	}
 
 }
