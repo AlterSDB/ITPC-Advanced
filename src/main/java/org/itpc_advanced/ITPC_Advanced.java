@@ -20,12 +20,12 @@ public class ITPC_Advanced extends Application {
 
 	@Override
 	public void start(Stage mainStage) throws Exception {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-		Parent root = loader.load();
+		FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+		Parent root = mainLoader.load();
 
-		MainView controller = loader.getController();
+		MainView mainController = mainLoader.getController();
 		MainViewModel viewModel = new MainViewModel();
-		controller.setViewModel(viewModel);
+		mainController.setViewModel(viewModel);
 
 		Properties properties = new Properties();
 		properties.load(getClass().getResourceAsStream("/version.properties"));

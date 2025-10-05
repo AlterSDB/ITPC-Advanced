@@ -8,6 +8,7 @@ import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
 import org.itpc_advanced.utils.VisualFX;
+import org.itpc_advanced.view.SettingsView;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -231,10 +232,10 @@ public class MainViewModel {
 	}
 
 	public void copyResults() {
-		if(selectedDataFile.get() == null) {
-			System.out.println("File is not choosen");
+		if (selectedDataFile.get() == null) {
 			return;
 		}
+
 		ReportBuilder.buildReport(selectedDataFile.get());
 	}
 
@@ -264,8 +265,12 @@ public class MainViewModel {
 		try {
 			settingsStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings.fxml"));
-			Parent parent;
-			parent = loader.load();
+			Parent parent = loader.load();
+			
+			SettingsView settingsController = loader.getController();
+			SettingsViewModel settingsViewModel = new SettingsViewModel();
+			settingsController.setViewModel(settingsViewModel);
+
 			Scene scene = new Scene(parent);
 			settingsStage.setScene(scene);
 			settingsStage.setTitle("Настройки");
@@ -274,7 +279,6 @@ public class MainViewModel {
 			settingsStage.getIcons().add(new Image("/images/logo.png"));
 			settingsStage.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

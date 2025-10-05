@@ -1,6 +1,8 @@
 package org.itpc_advanced.view;
 
-import org.itpc_advanced.model.Settings2;
+import org.itpc_advanced.model.Settings;
+import org.itpc_advanced.viewmodel.MainViewModel;
+import org.itpc_advanced.viewmodel.SettingsViewModel;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,27 +19,30 @@ import jssc.SerialPortList;
 
 public class SettingsView {
 
-	@FXML	private AnchorPane pane;
 	@FXML	private MenuButton selectPortMenu;
-	@FXML	private CheckBox automaticTargetCheck;
-	@FXML	private CheckBox autoLoadCheck;
-	@FXML	private CheckBox multipleChartsCheck;
 	@FXML	private CheckBox shuffleCheck;
-	@FXML	private TextField timeStepField;
+	@FXML	private TextField timestepField;
 	@FXML	private TextField timeoutField;
 	@FXML	private Button saveButton;
-
-	private final Settings2 settings = new Settings2(pane);
+	private SettingsViewModel viewModel;
+	
+	
+	
+	
+	public void setViewModel(SettingsViewModel viewModel) {
+		this.viewModel = viewModel;
+		
+		this.timestepField.textProperty().bind(this.viewModel.timestepProperty());
+		this.timeoutField.textProperty().bind(this.viewModel.timeoutProperty());
+		System.out.println("SETTINGS GETTED");
+	//	this.shuffleCheck.g
+		
+	}
+	
+	/*
 
 	@FXML
 	void initialize() {
-		multipleChartsCheck.setSelected(settings.getMultipleCharts().getValue());
-		automaticTargetCheck.setSelected(settings.getAutomaticTarget().getValue());
-		autoLoadCheck.setSelected(settings.getAutoLoad().getValue());
-		shuffleCheck.setSelected(settings.getShuffleValues().getValue());
-		selectPortMenu.setText(settings.getPort().getValue());
-		timeStepField.setText(settings.getTimeStep().getValue().toString());
-		timeoutField.setText(settings.getConnectionTimeout().getValue().toString());
 		System.out.println("Обнаружены порты: ");
 		for (String port : SerialPortList.getPortNames()) {
 			System.out.println(port);
@@ -70,7 +75,7 @@ public class SettingsView {
 	}
 
 	protected void saveSettings() {
-		settings.setTimeStep(timeStepField.getText());
+    //		settings.setTimeStep(timeStepField.getText());
 		/*timeout = timeoutField.getText();
 		Double newTimeStep;
 		Double newConnectionTimeout;
@@ -95,7 +100,6 @@ public class SettingsView {
 		settings.setConnectionTimeout(newConnectionTimeout);
 		settings.setTimeStep(newTimeStep);
 		settings.setShuffleValues(shuffleCheck.isSelected());
-		settings.setPort(selectPortMenu.getText()); */
-	}
-
+		settings.setPort(selectPortMenu.getText()); 
+	}*/
 }

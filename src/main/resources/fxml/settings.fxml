@@ -29,20 +29,14 @@
         </rowConstraints>
          <children>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Порт:" 						GridPane.rowIndex="0"/>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Автозагрузка:" 				GridPane.rowIndex="1" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Наложение графиков:" 		GridPane.rowIndex="2" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Автом. расчёт t°з:" 		GridPane.rowIndex="3" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Перемешивать значения:" 	GridPane.rowIndex="4" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Таймаут: " 					GridPane.rowIndex="5"/>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Временной шаг, в минутах:"	GridPane.rowIndex="6" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Перемешивать значения:" 	GridPane.rowIndex="1" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Макс. отклонение: "			GridPane.rowIndex="2"/>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Таймаут:"	GridPane.rowIndex="3" />
             
             <MenuButton fx:id="selectPortMenu"		mnemonicParsing="false" 	GridPane.columnIndex="1" text="COM1" />
-            <CheckBox fx:id="autoLoadCheck" 		mnemonicParsing="false" 	GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <CheckBox fx:id="multipleChartsCheck" 	mnemonicParsing="false" 	GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <CheckBox fx:id="automaticTargetCheck" 	mnemonicParsing="false" 	GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <CheckBox fx:id="shuffleCheck" mnemonicParsing="false"  			GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="timeoutField" prefHeight="25.0" prefWidth="78.0" 	GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="timeStepField" prefHeight="25.0" prefWidth="39.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <CheckBox fx:id="shuffleCheck" mnemonicParsing="false"  			GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="timeoutField" prefHeight="25.0" prefWidth="78.0" 	GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="timestepField" prefHeight="25.0" prefWidth="39.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       
