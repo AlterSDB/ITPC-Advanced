@@ -1,6 +1,6 @@
 package org.itpc_advanced.view;
 
-import org.itpc_advanced.model.Settings;
+import org.itpc_advanced.model.Settings2;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import jssc.SerialPortList;
 
-public class SettingsController {
+public class SettingsView {
 
 	@FXML	private AnchorPane pane;
 	@FXML	private MenuButton selectPortMenu;
@@ -27,7 +27,7 @@ public class SettingsController {
 	@FXML	private TextField timeoutField;
 	@FXML	private Button saveButton;
 
-	private final Settings settings = new Settings(pane);
+	private final Settings2 settings = new Settings2(pane);
 
 	@FXML
 	void initialize() {

@@ -1,5 +1,6 @@
 package org.itpc_advanced.viewmodel;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import org.itpc_advanced.model.DataFile;
@@ -16,7 +17,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class MainViewModel {
 
@@ -35,6 +41,7 @@ public class MainViewModel {
 	private final StringProperty yAxisLabel = new SimpleStringProperty();
 	private final DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty();
 	private final DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty();
+	public Stage settingsStage;
 
 	public MainViewModel(){	
 
@@ -246,6 +253,30 @@ public class MainViewModel {
 		VisualFX.changeText(averageMaxProperty, selectedDataFile.get().getAverageMax().toString());
 		VisualFX.changeText(averageMinProperty, selectedDataFile.get().getAverageMin().toString());
 		
+	}
+
+	public void showSettings() {
+		if (settingsStage != null && settingsStage.isShowing()) {
+			settingsStage.close();
+			return;
+		}
+
+		try {
+			settingsStage = new Stage();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings.fxml"));
+			Parent parent;
+			parent = loader.load();
+			Scene scene = new Scene(parent);
+			settingsStage.setScene(scene);
+			settingsStage.setTitle("Настройки");
+			settingsStage.setResizable(false);
+			settingsStage.setAlwaysOnTop(true);
+			settingsStage.getIcons().add(new Image("/images/logo.png"));
+			settingsStage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

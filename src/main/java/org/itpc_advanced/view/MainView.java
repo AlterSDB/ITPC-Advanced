@@ -66,6 +66,11 @@ public class MainView {
 		viewModel.copyResults();
 	}
 	
+	@FXML
+	private void onSettingsBtnAction() {
+		viewModel.showSettings();
+	}
+	
     private XYChart.Series<Number, Number> series;
 	
 	private MainViewModel viewModel;

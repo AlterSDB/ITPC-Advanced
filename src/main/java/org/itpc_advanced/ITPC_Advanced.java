@@ -7,15 +7,12 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Properties;
 
 import org.itpc_advanced.view.MainView;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
 public class ITPC_Advanced extends Application {
-
-	private static Stage settingsStage;
 
 	public static void main(String[] args) {
 		launch(args);	
@@ -36,31 +33,13 @@ public class ITPC_Advanced extends Application {
 		mainStage.getIcons().add(new Image("/images/logo.png"));
 		mainStage.setScene(new Scene(root));
 		mainStage.setResizable(false);
-		mainStage.setOnCloseRequest((event) -> {
-				if(settingsStage != null) {
-					settingsStage.close();
-				}
-		});
+	//	mainStage.setOnCloseRequest((event) -> {
+		//		if(settingsStage != null) {
+	//				settingsStage.close();
+	//			}
+	//	});
 
 		mainStage.show();
-	}
-
-	public void callSettingsWindow() throws IOException {
-		if (settingsStage != null && settingsStage.isShowing()) {
-			settingsStage.close();
-			return;
-		}
-
-		settingsStage = new Stage();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings.fxml"));
-		Parent parent = loader.load();
-		Scene scene = new Scene(parent);
-		settingsStage.setScene(scene);
-		settingsStage.setTitle("Настройки");
-		settingsStage.setResizable(false);
-		settingsStage.setAlwaysOnTop(true);
-		settingsStage.getIcons().add(new Image("/images/logo.png"));
-		settingsStage.show();
 	}
 
 }
