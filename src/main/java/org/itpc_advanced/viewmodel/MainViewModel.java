@@ -62,9 +62,7 @@ public class MainViewModel {
 				System.out.println("CHANGED TARGET to " + Double.parseDouble(newValue));
 				if (selectedDataFile.getValue() != null && !newValue.isEmpty()) {		
 				selectedDataFile.getValue().setTargetTemperature(Integer.parseInt(newValue));
-				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
-				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
-				linearOffsetProperty.setValue(selectedDataFile.getValue().getLinearOffset().toString());
+				updateFields();
 				}
 			});	
 
@@ -75,10 +73,7 @@ public class MainViewModel {
 
 				if (newValue == null || newValue.isEmpty() || newValue.equals("-")) {
 					selectedDataFile.getValue().setLinearOffset(0);
-					relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
-					relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
-					averageMaxProperty.setValue(selectedDataFile.getValue().getAverageMax().toString());
-					averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());
+					updateFields();
 					return;
 				}
 
