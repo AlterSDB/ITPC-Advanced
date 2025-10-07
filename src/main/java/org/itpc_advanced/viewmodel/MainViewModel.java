@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.model.Settings;
 import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.ReportBuilder;
@@ -44,6 +45,7 @@ public class MainViewModel {
 	private final DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty();
 	private final DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty();
 	public Stage settingsStage;
+	private Settings settings = Settings.getInstance();
 
 	public MainViewModel(){	
 
@@ -147,8 +149,12 @@ public class MainViewModel {
 
 	public void readDataFiles() {
 		fileList.clear();
-		fileList.addAll(MockyDataFiles.mock());
-	//	fileList.addAll(DeviceScanner.readDataFiles());
+		
+		if (settings.isDemoMode()) {
+			fileList.addAll(MockyDataFiles.mock());
+		} else {
+			fileList.addAll(DeviceScanner.readDataFiles());
+		}
 	}
 
 	public StringProperty averageMaxProperty() {

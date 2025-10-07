@@ -38,6 +38,8 @@
             <CheckBox fx:id="shuffleValuesCheckBox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <TextField fx:id="maxDeviationTextField" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <TextField fx:id="connTimeoutTextField" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Text fx:id="demoModeText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Demo mode: " GridPane.rowIndex="4" />
+            <CheckBox fx:id="demoModeCheckBox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
          </children>
          <padding>
             <Insets top="15.0" />

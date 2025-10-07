@@ -7,6 +7,7 @@ public class Settings {
 
 	private String  port = "COM1";
 	private Boolean shuffleValues = true;
+	private Boolean demoMode = true;
 	private Integer  maxDeviation = 50;
 	private Integer  connectionTimeout = 5000;
 
@@ -46,12 +47,20 @@ public class Settings {
 		this.maxDeviation = maxDeviation;
 	}
 
-	public Boolean getShuffleValues() {
+	public Boolean isShuffleValues() {
 		return shuffleValues;
 	}
 
 	public void setShuffleValues(Boolean shuffleValues) {
 		this.shuffleValues = shuffleValues;
+	}
+
+	public Boolean isDemoMode() {
+		return demoMode;
+	}
+
+	public void setDemoMode(Boolean demoMode) {
+		this.demoMode = demoMode;
 	}
 
 }

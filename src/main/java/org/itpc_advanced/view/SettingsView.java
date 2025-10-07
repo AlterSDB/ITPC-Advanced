@@ -26,6 +26,8 @@ public class SettingsView {
     @FXML private CheckBox shuffleValuesCheckBox;
     @FXML private TextField maxDeviationTextField;
     @FXML private TextField connTimeoutTextField;
+    @FXML private Text demoModeText;
+    @FXML private CheckBox demoModeCheckBox;
     @FXML private Button saveSettingsBtn;
 	private SettingsViewModel viewModel;
 
@@ -34,6 +36,8 @@ public class SettingsView {
 		this.maxDeviationTextField.textProperty().bindBidirectional(this.viewModel.maxDeviationProperty());
 		this.connTimeoutTextField.textProperty().bindBidirectional(this.viewModel.timeoutProperty());
 		this.shuffleValuesCheckBox.selectedProperty().bindBidirectional(this.viewModel.shuffleValuesProperty());
+		this.demoModeCheckBox.selectedProperty().bindBidirectional(this.viewModel.demoModeProperty());
+
 		maxDeviationTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
 		connTimeoutTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
 	}
