@@ -7,6 +7,7 @@ import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Settings;
 import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.LocalManager;
+import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
 import org.itpc_advanced.utils.VisualFX;
@@ -281,10 +282,12 @@ public class MainViewModel {
 
 			Scene scene = new Scene(parent);
 			settingsStage.setScene(scene);
-			settingsStage.setTitle("Настройки");
 			settingsStage.setResizable(false);
 			settingsStage.setAlwaysOnTop(true);
 			settingsStage.getIcons().add(new Image("/images/logo.png"));
+			LocalTextBinder.bindText(settingsStage.titleProperty(), "settings.label");
+			
+			
 			settingsStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();

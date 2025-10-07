@@ -1,5 +1,6 @@
 package org.itpc_advanced.view;
 
+import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.service.TextFormatterFactory;
 import org.itpc_advanced.viewmodel.SettingsViewModel;
 
@@ -11,8 +12,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import jssc.SerialPortList;
 
@@ -33,11 +32,11 @@ public class SettingsView {
 
 	public void setViewModel(SettingsViewModel viewModel) {
 		this.viewModel = viewModel;
-		this.maxDeviationTextField.textProperty().bindBidirectional(this.viewModel.maxDeviationProperty());
-		this.connTimeoutTextField.textProperty().bindBidirectional(this.viewModel.timeoutProperty());
-		this.shuffleValuesCheckBox.selectedProperty().bindBidirectional(this.viewModel.shuffleValuesProperty());
-		this.demoModeCheckBox.selectedProperty().bindBidirectional(this.viewModel.demoModeProperty());
-
+		maxDeviationTextField.textProperty().bindBidirectional(this.viewModel.maxDeviationProperty());
+		connTimeoutTextField.textProperty().bindBidirectional(this.viewModel.timeoutProperty());
+		shuffleValuesCheckBox.selectedProperty().bindBidirectional(this.viewModel.shuffleValuesProperty());
+		demoModeCheckBox.selectedProperty().bindBidirectional(this.viewModel.demoModeProperty());
+		
 		maxDeviationTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
 		connTimeoutTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
 	}
@@ -59,19 +58,18 @@ public class SettingsView {
 				}
 			});
 		}
+		
+		LocalTextBinder.bindText(portText.textProperty(), "settings.port");
+		LocalTextBinder.bindText(shuffleValuesText.textProperty(), "settings.shuffle.values");
+		LocalTextBinder.bindText(maxDeviationText.textProperty(), "settings.max.deviation");
+		LocalTextBinder.bindText(connTimeoutText.textProperty(), "settings.connection.timeout");
+		LocalTextBinder.bindText(demoModeText.textProperty(), "settings.demo.mode");
+		LocalTextBinder.bindText(saveSettingsBtn.textProperty(), "settings.button.save");
+		
 		saveSettingsBtn.setOnAction((event) -> viewModel.saveSettings());
 	//	maxDeviationTextField.setOnKeyPressed(saveOnEnterKey());
 	//	connTimeoutTextField.setOnKeyPressed(saveOnEnterKey());
 	//	connTimeoutTextField.getParent().setOnKeyPressed(saveOnEnterKey());
-	}
-	
-	private EventHandler<KeyEvent> saveOnEnterKey() {
-		return (key) -> {
-				if (key.getCode().equals(KeyCode.ENTER)) {
-					viewModel.saveSettings();
-					System.out.println("ZZZ");
-				}
-		};
 	}
 
 }
