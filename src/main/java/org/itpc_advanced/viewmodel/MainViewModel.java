@@ -249,11 +249,12 @@ public class MainViewModel {
 	}
 
 	public void updateFields() {
+		if (selectedDataFile.get() != null && !relativeMaxProperty.get().isEmpty() ) {
 		VisualFX.changeText(relativeMaxProperty, selectedDataFile.get().getRelativeMax().toString());
 		VisualFX.changeText(relativeMinProperty, selectedDataFile.get().getRelativeMin().toString());
 		VisualFX.changeText(averageMaxProperty, selectedDataFile.get().getAverageMax().toString());
 		VisualFX.changeText(averageMinProperty, selectedDataFile.get().getAverageMin().toString());
-		
+		}
 	}
 
 	public void showSettings() {

@@ -2,18 +2,18 @@ package org.itpc_advanced.model;
 
 
 public class Settings {
-	
+
 	private static Settings instance = null;
-	
+
 	private String  port = "COM1";
-	private Integer  connectionTimeout = 5000;
-	private Integer  maxDeviation = 40;
 	private Boolean shuffleValues = true;
+	private Integer  maxDeviation = 50;
+	private Integer  connectionTimeout = 5000;
 
 	private Settings() {
-		
+
 	}
-	
+
 	public static Settings getInstance() {
 		if (instance == null) {
 			instance = new Settings();

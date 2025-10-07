@@ -3,6 +3,7 @@ package org.itpc_advanced.view;
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.LocalTextBinder;
+import org.itpc_advanced.service.TextFormatterFactory;
 import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
@@ -18,7 +19,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -248,37 +248,8 @@ public class MainView {
 		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
 		linearOffsetField.textProperty().bindBidirectional(this.viewModel.linearOffsetProperty());
 
-		TextFormatter<String> digitsMax7Formatter = new TextFormatter<>(change -> {
-			String newText = change.getControlNewText();
-
-			if (!newText.matches("\\d*")) {
-				return null;
-			}
-
-			if (newText.length() > 7) {
-				return null;
-			}
-
-			return change;
-		});
-
-		tempSetField.setTextFormatter(digitsMax7Formatter);
-
-		TextFormatter<String> signedDigitsMax7 = new TextFormatter<>(change -> {
-			String newText = change.getControlNewText();
-
-			if (newText.isEmpty() || newText.equals("-")) {
-				return change;
-			}
-
-			if (!newText.matches("-?\\d{0,7}")) {
-				return null;
-			}
-
-			return change;
-		});
-
-		linearOffsetField.setTextFormatter(signedDigitsMax7);	
+		tempSetField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(7));
+		linearOffsetField.setTextFormatter(TextFormatterFactory.getOnlySignedDigitsTextFormatter(7));	
 		
 		series = new XYChart.Series<Number, Number>();
 		series.setData(viewModel.getChartData());

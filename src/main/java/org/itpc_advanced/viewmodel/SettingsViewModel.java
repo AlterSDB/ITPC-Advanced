@@ -2,47 +2,63 @@ package org.itpc_advanced.viewmodel;
 
 import org.itpc_advanced.model.Settings;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class SettingsViewModel {
-	
-	//private MenuButton selectPortMenu;
-	private StringProperty shuffleValues = new SimpleStringProperty();
-	private StringProperty timestepProperty = new SimpleStringProperty();
-	private StringProperty timeoutProperty = new SimpleStringProperty();
+
+	private BooleanProperty shuffleValuesProperty = new SimpleBooleanProperty();
+	private StringProperty maxDeviationProperty = new SimpleStringProperty();
+	private StringProperty connTimeoutProperty = new SimpleStringProperty();
 	
 	private Settings settings;
 	
 	public SettingsViewModel() {
 		settings = Settings.getInstance();
-		timestepProperty.set(settings.getMaxDeviation().toString());
-		timeoutProperty.set(settings.getConnectionTimeout().toString());
+		maxDeviationProperty.set(settings.getMaxDeviation().toString());
+		connTimeoutProperty.set(settings.getConnectionTimeout().toString());
+		shuffleValuesProperty.set(settings.getShuffleValues());
 		
+		shuffleValuesProperty.addListener((obs, oldVal, newVal) -> saveSettings());
+		maxDeviationProperty.addListener((obs, oldVal, newVal) -> saveSettings());
+		connTimeoutProperty.addListener((obs, oldVal, newVal) -> saveSettings());
+	}
+	
+	public void loadSettings() {
+		// load from file
 	}
 
-	public StringProperty shuffleValuesProperty() {
-		return shuffleValues;
+	public void saveSettings() {
+		settings.setShuffleValues(shuffleValuesProperty.getValue());
+		settings.setMaxDeviation(Integer.parseInt(maxDeviationProperty.getValue()));
+		settings.setConnectionTimeout(Integer.parseInt(connTimeoutProperty.getValue()));
+		// add save in file
 	}
 
-	public void setShuffle(Boolean shuffleValues) {
-		this.shuffleValues.set(shuffleValues.toString());;
+	public BooleanProperty shuffleValuesProperty() {
+		return shuffleValuesProperty;
 	}
 
-	public StringProperty timestepProperty() {
-		return timestepProperty;
+	public void setShuffleValues(Boolean shuffleValues) {
+		this.shuffleValuesProperty.set(shuffleValues);
 	}
 
-	public void setTimeStep(Integer timestep) {
-		this.timestepProperty.set(timestep.toString());
+	public StringProperty maxDeviationProperty() {
+		return maxDeviationProperty;
+	}
+
+	public void setMaxDeviation(Integer maxDeviation) {
+		this.maxDeviationProperty.set(maxDeviation.toString());
 	}
 
 	public StringProperty timeoutProperty() {
-		return timeoutProperty;
+		return connTimeoutProperty;
 	}
 
 	public void setTimeout(Integer timeout) {
-		this.timeoutProperty.set(timeout.toString());
+		this.connTimeoutProperty.set(timeout.toString());
 	}
 
 }
