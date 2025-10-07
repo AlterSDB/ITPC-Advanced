@@ -31,9 +31,20 @@ public class SettingsViewModel {
 	}
 
 	public void saveSettings() {
+
+		if (maxDeviationProperty.getValue().equals("")) {
+			settings.setMaxDeviation(0);
+		} else {
+			settings.setMaxDeviation(Integer.parseInt(maxDeviationProperty.getValue()));
+		}
+		
+		if (connTimeoutProperty.getValue().equals("")) {
+			settings.setConnectionTimeout(0);
+		} else {
+			settings.setConnectionTimeout(Integer.parseInt(connTimeoutProperty.getValue()));
+		}
+		
 		settings.setShuffleValues(shuffleValuesProperty.getValue());
-		settings.setMaxDeviation(Integer.parseInt(maxDeviationProperty.getValue()));
-		settings.setConnectionTimeout(Integer.parseInt(connTimeoutProperty.getValue()));
 		// add save in file
 	}
 

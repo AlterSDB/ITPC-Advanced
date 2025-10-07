@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;

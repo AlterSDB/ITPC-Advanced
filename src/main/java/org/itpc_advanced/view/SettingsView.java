@@ -56,14 +56,16 @@ public class SettingsView {
 			});
 		}
 		saveSettingsBtn.setOnAction((event) -> viewModel.saveSettings());
-		maxDeviationTextField.setOnKeyPressed(saveOnEnterKey());
-		connTimeoutTextField.setOnKeyPressed(saveOnEnterKey());
+	//	maxDeviationTextField.setOnKeyPressed(saveOnEnterKey());
+	//	connTimeoutTextField.setOnKeyPressed(saveOnEnterKey());
+	//	connTimeoutTextField.getParent().setOnKeyPressed(saveOnEnterKey());
 	}
 	
 	private EventHandler<KeyEvent> saveOnEnterKey() {
 		return (key) -> {
 				if (key.getCode().equals(KeyCode.ENTER)) {
 					viewModel.saveSettings();
+					System.out.println("ZZZ");
 				}
 		};
 	}
