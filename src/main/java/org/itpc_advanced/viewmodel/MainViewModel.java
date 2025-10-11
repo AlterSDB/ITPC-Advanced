@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Settings;
+import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.LocalTextBinder;
@@ -303,6 +304,10 @@ public class MainViewModel {
 
 	public StringProperty pointsCountProperty() {
 		return pointsCountProperty;
+	}
+
+	public void calculateByTextArea(String text) {
+		selectedDataFile.set(DataParser.parse(text));
 	}
 
 }

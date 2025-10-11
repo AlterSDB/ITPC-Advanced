@@ -22,16 +22,16 @@ public class DataFile {
 	// Derivatives
 	private List<Double> processedValues = new ArrayList<Double>();
 	private List<XYChart.Data<Number, Number>> chartData = new ArrayList<XYChart.Data<Number, Number>>();
-	private List<Double> maxTemps = null;
-	private List<Double> minTemps = null;
-	private Integer fileId = null;
+	private List<Double> maxTemps = new ArrayList<Double>();;
+	private List<Double> minTemps = new ArrayList<Double>();;
+	private Integer fileId = 0;
 	private Integer targetTemperature = 0;
 	private Integer linearOffset = 0;
 	private Double averageMax = 0.0;
 	private Double averageMin = 0.0;
 	private Double relativeMax = 0.0;
 	private Double relativeMin = 0.0;
-	private double[] chartBounds = null;
+	private double[] chartBounds = new double[]{0.0, 10.0};
 
 	public DataFile(String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> values) {
 		this.tcType = tcType;
@@ -41,10 +41,11 @@ public class DataFile {
 	}
 
 	public DataFile() {
-		this.tcType = null;
-		this.timeStamp = null;
-		this.timeStep = null;
-		this.values = null;
+		this.tcType = "types.l";
+		this.timeStamp = LocalDateTime.now();
+		this.timeStep = 0.0;
+		this.values = new ArrayList<Double>();
+		this.chartBounds = new double[]{0.0, 10.0};
 	}
 
 	public static int getCounter() {
@@ -154,6 +155,10 @@ public class DataFile {
 			this.linearOffset = 0;
 		} else {
 			this.linearOffset = linearOffset;
+		}
+		
+		if (values == null) {
+			return;
 		}
 		
 		processedValues = DataProcessor.setLinearOffset(values, this.linearOffset);

@@ -18,6 +18,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -34,6 +35,8 @@ public class MainView {
     @FXML private NumberAxis yAxis;
     @FXML private Tab tabAutomatic;
     @FXML private Tab tabManual;
+    @FXML private TextArea manualTextArea;
+    @FXML private Button calculateBtn;
 	@FXML private TableView<DataFile> tableView;
     @FXML private TableColumn<DataFile, String> tableColumn;
     @FXML private Text tempText;
@@ -64,6 +67,11 @@ public class MainView {
 	@FXML
 	private void onScanBtnAction() {
 		viewModel.readDataFiles();
+	}
+
+	@FXML
+	private void onCalculateBtnAction() {
+		viewModel.calculateByTextArea(manualTextArea.getText());
 	}
 
 	@FXML

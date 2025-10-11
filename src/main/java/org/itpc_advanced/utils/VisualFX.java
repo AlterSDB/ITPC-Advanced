@@ -84,7 +84,7 @@ public class VisualFX {
 		StringBuffer newTextBuffer = new StringBuffer();	
 		StringBuffer oldTextBuffer = new StringBuffer(oldText);
 		int duration = 0;
-		int step = 50;
+		int step = 40;
 
 		for (int i = 0; i < oldTextBuffer.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
@@ -92,7 +92,7 @@ public class VisualFX {
 					oldTextBuffer.deleteCharAt(oldTextBuffer.length() - 1);
 					oldTextProperty.setValue(oldTextBuffer.toString());
 				}));
-			duration += step - 20;
+			duration += step - 10;
 		}
 
 		for (int i = 0; i < newText.length() ; i++) {

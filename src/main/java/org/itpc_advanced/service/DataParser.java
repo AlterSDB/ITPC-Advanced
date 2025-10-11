@@ -13,6 +13,18 @@ public class DataParser {
 	private static final Double[] TIME_STEPS = {0.5, 1.0, 2.0, 5.0, 15.0, 30.0, 60.0};
 	private static final Integer  OFFSET = 7;
 	private static final Integer  STOP_BYTES = valueOf((byte)-35, (byte)125); 
+	
+	
+	public static DataFile parse(String rawData) {
+		try {
+			return new DataFile();
+
+//		return new DataFile(tcType, timeStamp, timeStep, values);
+		} catch(Exception e) {
+			System.out.println("Error parsing data: " + e.getMessage());
+		}
+			return null;
+		}
 
 	public static DataFile parse(byte[] rawData) {
 		try {
@@ -51,9 +63,8 @@ public class DataParser {
 		} catch(Exception e) {
 			System.out.println("Error parsing data: " + e.getMessage());
 		}
-
-		return null;
-		}	
+			return null;
+		}
 
 	private static int valueOf (byte x, byte y) {
 		return ((y << 8) | (x & 0xFF));
