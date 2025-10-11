@@ -59,7 +59,7 @@ public class DataFile {
 		return counter;
 	}
 
-	public static void resetCounter(int counter) {
+	public static void resetCounter() {
 		DataFile.counter = 1;
 	}
 
@@ -164,7 +164,7 @@ public class DataFile {
 			this.linearOffset = linearOffset;
 		}
 		
-		if (values == null) {
+		if (values == null || values.size() < 20) {
 			return;
 		}
 		

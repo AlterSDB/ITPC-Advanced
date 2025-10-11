@@ -125,6 +125,7 @@ public class MainViewModel {
 	}
 
 	public void readDataFiles() {
+		DataFile.resetCounter();
 		fileList.clear();
 
 		if (settings.isDemoMode()) {

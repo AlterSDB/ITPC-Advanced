@@ -55,17 +55,19 @@ public class DataParser {
 
 			if (rawData[OFFSET + 1] == -1 && rawData[OFFSET + 2] == -1 ) {
 				System.out.println("Note: DataFile is empty.");
-				return new DataFile("-", LocalDateTime.MIN, 0.0, new ArrayList<Double>());
+				return new DataFile();
 			}
 
 			ByteBuffer buffer = ByteBuffer.wrap(rawData);		
 			buffer.position(OFFSET); 
 			Double timeStep = TIME_STEPS[valueOf(buffer.get(), buffer.get()) - 1];
+
 			int month = valueOf(buffer.get(), buffer.get());
 			int day = valueOf(buffer.get(), buffer.get());
 			int hours = valueOf(buffer.get(), buffer.get());
 			int minutes = valueOf(buffer.get(), buffer.get());	
-			LocalDateTime timeStamp = LocalDateTime.of(2025, day, month, hours, minutes);
+			LocalDateTime timeStamp = LocalDateTime.of(LocalDateTime.now().getYear(), day, month, hours, minutes);
+
 			String tcType = TC_TYPES[valueOf(buffer.get(), buffer.get()) - 1];
 			List<Double> values = new ArrayList<Double>();
 
