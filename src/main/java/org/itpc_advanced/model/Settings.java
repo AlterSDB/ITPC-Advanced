@@ -4,9 +4,8 @@ package org.itpc_advanced.model;
 public class Settings {
 
 	private static Settings instance = null;
-
 	private String  port = "COM1";
-	private Boolean shuffleValues = true;
+	private Boolean shuffleValues = false;
 	private Boolean demoMode = true;
 	private Integer  maxDeviation = 50;
 	private Integer  connectionTimeout = 5000;
@@ -19,7 +18,7 @@ public class Settings {
 		if (instance == null) {
 			instance = new Settings();
 		}
-		
+
 		return instance;
 	}
 

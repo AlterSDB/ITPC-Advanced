@@ -45,40 +45,42 @@ public class ReportBuilder {
 	    			   + "overflow-wrap:break-word;\">";
 	    String divStyle = "<div dir=\"ltr\" style=\"margin-left:0pt;\" align=\"center\">";
 	    htmlText.append("<table><tbody>");
-	    
+
 	    ArrayList<Double> maxTemps = new ArrayList<Double>(df.getMaxTemps());
 	    ArrayList<Double> minTemps = new ArrayList<Double>(df.getMinTemps());
-	    
+
 		if (Settings.getInstance().isShuffleValues()) {
 			Collections.shuffle(maxTemps);
 			Collections.shuffle(minTemps);
 		}
-	    
+
 	    for (double value : maxTemps) {
 	    	casualText.append(value + " " + "\n");
 	    	htmlText.append(trStyle + tdStyle + divStyle + value + "</div></td></tr>");
 	    }
+
 	    for (double value : minTemps) {
 	    	casualText.append(value + " " + "\n");
 	    	htmlText.append(trStyle + tdStyle + divStyle + value + "</div></td></tr>");
 	    }
+
 	    casualText.append(df.getAverageMax() + " " + "\n");
     	htmlText.append(trStyle + tdStyle + divStyle + df.getAverageMax() + "</div></td></tr>");
-    	
+
     	casualText.append(df.getAverageMin() + " " + "\n");
     	htmlText.append(trStyle + tdStyle + divStyle + df.getAverageMin() + "</div></td></tr>");
-    	
+
     	casualText.append(df.getRelativeMax() + " " + "\n");
     	htmlText.append(trStyle + tdStyle + divStyle + df.getRelativeMax() + "</div></td></tr>");
-    	
+
     	casualText.append(df.getRelativeMin() + " " + "\n");
     	htmlText.append(trStyle + tdStyle + divStyle + df.getRelativeMin() + "</div></td></tr>");
-	    
+
 	    htmlText.append("</tbody></table>");
 	    ClipboardContent content = new ClipboardContent();
 	    content.putString(casualText.toString().replace(".", ","));
 	    content.putHtml(htmlText.toString().replace(".", ","));
-        
+
 	    return content;
 	}
 

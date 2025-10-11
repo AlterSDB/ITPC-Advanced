@@ -37,14 +37,14 @@ public class DataFile {
 		this.tcType = tcType;
 		this.timeStamp = timeStamp;
 		this.timeStep = timeStep;
-		this.values = values;		
+		this.values = values;
 	}
 
 	public DataFile() {
 		this.tcType = null;
 		this.timeStamp = null;
 		this.timeStep = null;
-		this.values = null;	
+		this.values = null;
 	}
 
 	public static int getCounter() {
@@ -59,14 +59,14 @@ public class DataFile {
 		if (fileId == null) {
 			return 0;
 		}
-		
+
 		return fileId;
 	}
 
 	public List<Double> getValues() {
 		return values;
 	}
-	
+
 	public List<Double> getProcessedValues() {
 		return processedValues;
 	}
@@ -130,7 +130,7 @@ public class DataFile {
 	public void setChartData(ObservableList<XYChart.Data<Number, Number>> chartData) {
 		this.chartData = chartData;
 	}
-	
+
 	public void setProcessedValues(List<Double> processedValues) {
 		this.processedValues = processedValues;
 	}
@@ -163,18 +163,18 @@ public class DataFile {
 		if (processedValues.size() == 0) {
 			return;
 		}
-		
+
 		for (int i = 0; i < 10; i++) {
 				this.maxTemps.add(processedValues.get(processedValues.size() - 1 - i));
 				this.minTemps.add(this.minTemps.size() - i, processedValues.get(i));
 			}
+
 		setAverageMax(DataProcessor.findAverage(this.maxTemps));
 		setAverageMin(DataProcessor.findAverage(this.minTemps));
 		setRelativeMax(DataProcessor.findRelative(this.targetTemperature, averageMax));
 		setRelativeMin(DataProcessor.findRelative(this.targetTemperature, averageMin));
 /**/	setChartBounds(DataProcessor.findChartBounds(processedValues));
 		setChartData(DataProcessor.getChartData(this));
-		
 	}
 
 	public void setAverageMax(Double averageMax) {

@@ -25,31 +25,24 @@ import javafx.scene.text.Text;
 
 public class MainView {
 
+    @FXML private Button scanBtn;
+    @FXML private Button copyResultBtn;
+    @FXML private Button settingsBtn;
+    @FXML private ImageView logoImageView;
+    @FXML private LineChart<Number, Number> lineChart;
+    @FXML private NumberAxis xAxis;
+    @FXML private NumberAxis yAxis;
     @FXML private Tab tabAutomatic;
+    @FXML private Tab tabManual;
 	@FXML private TableView<DataFile> tableView;
     @FXML private TableColumn<DataFile, String> tableColumn;
-    @FXML private Button scanBtn;
-    @FXML private Tab tabManual;
     @FXML private Text tempText;
     @FXML private Text averageMaxText;
     @FXML private Text averageMinText;
     @FXML private Text relativeMaxText;
     @FXML private Text relativeMinText;
-    @FXML private TextField averageMaxField;
-    @FXML private TextField averageMinField;
-    @FXML private TextField relativeMaxField;
-    @FXML private TextField relativeMinField;
-    @FXML private ImageView logoImageView;
-    @FXML private Button copyResultBtn;
-    @FXML private Button settingsBtn;
-    @FXML private TextField tempSetField;
     @FXML private Text tempSetText;
-    @FXML private TextField linearOffsetField;
     @FXML private Text linearOffsetText;
-    @FXML private LineChart<Number, Number> lineChart;
-    @FXML private NumberAxis xAxis;
-    @FXML private NumberAxis yAxis;
-    
     @FXML private Text typeText;
     @FXML private Text timeStampText;
     @FXML private Text timeStepText;
@@ -58,10 +51,15 @@ public class MainView {
     @FXML private Text timeStampValueText;
     @FXML private Text timeStepValueText;
     @FXML private Text pointsCountValueText;
-    
-    
-    
- 
+    @FXML private TextField averageMaxField;
+    @FXML private TextField averageMinField;
+    @FXML private TextField relativeMaxField;
+    @FXML private TextField relativeMinField;
+    @FXML private TextField tempSetField;
+    @FXML private TextField linearOffsetField;
+
+    private XYChart.Series<Number, Number> series;
+	private MainViewModel viewModel;
 
 	@FXML
 	private void onScanBtnAction() {
@@ -72,15 +70,11 @@ public class MainView {
 	private void onCopyResultsBtnAction() {
 		viewModel.copyResults();
 	}
-	
+
 	@FXML
 	private void onSettingsBtnAction() {
 		viewModel.showSettings();
 	}
-	
-    private XYChart.Series<Number, Number> series;
-	
-	private MainViewModel viewModel;
 
     public Tab getTabAutomatic() {
 		return tabAutomatic;
@@ -171,7 +165,7 @@ public class MainView {
 	}
 
 	private boolean updatingFromViewModel = false;
-	
+
 	@FXML
 	@SuppressWarnings("unchecked")
 	void initialize() {
@@ -193,16 +187,16 @@ public class MainView {
 		LocalTextBinder.bindText(tabAutomatic.textProperty(), "tab.auto");
 		LocalTextBinder.bindText(tabManual.textProperty(), "tab.manual");
 		LocalTextBinder.bindText(tableColumn.textProperty(), "table.header");
-		
+
 		LocalTextBinder.bindText(timeStampText.textProperty(), "df.timestamp");
 		LocalTextBinder.bindText(typeText.textProperty(), "df.tc.type");
 		LocalTextBinder.bindText(timeStepText.textProperty(), "df.timestep");
 		LocalTextBinder.bindText(pointsCountText.textProperty(), "df.points.count");
-		
+
 		Label label = new Label();
 		tableView.setPlaceholder(label);
 		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");
-		
+
 		tableColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
 		tableColumn.setCellFactory((column) -> {
 				return new TableCell<DataFile, Integer>() {
@@ -223,14 +217,14 @@ public class MainView {
 			tableColumn.setVisible(false);
 			tableColumn.setVisible(true);
 		});
-		
+
 	}
 
 	public void setViewModel(MainViewModel viewModel) {
 		this.viewModel = viewModel;
 		tableView.setItems(viewModel.getFileList());
 		tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
-			if(!updatingFromViewModel) {
+			if (!updatingFromViewModel) {
 				viewModel.selectedDataFileProperty().set(newValue);
 			}
 		});
@@ -241,12 +235,11 @@ public class MainView {
 			VisualFX.slideTransition(series.getNode());
 			updatingFromViewModel = false;
 		});
-		
+
 		viewModel.linearOffsetProperty().addListener((obs, oldValue, newValue) -> {
 			VisualFX.slideTransition(series.getNode());
 			this.viewModel.updateFields();
 		});
-		
 
 		relativeMaxField.textProperty().bind(this.viewModel.relativeMaxProperty());
 		relativeMinField.textProperty().bind(this.viewModel.relativeMinProperty());
@@ -254,22 +247,22 @@ public class MainView {
 		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
 		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
 		linearOffsetField.textProperty().bindBidirectional(this.viewModel.linearOffsetProperty());
-		
+
 		typeValueText.textProperty().bind(this.viewModel.tcTypeProperty());
 		timeStampValueText.textProperty().bind(this.viewModel.timeStampProperty());
 		timeStepValueText.textProperty().bind(this.viewModel.timeStepProperty());
 		pointsCountValueText.textProperty().bind(this.viewModel.pointsCountProperty());
 
 		tempSetField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(7));
-		linearOffsetField.setTextFormatter(TextFormatterFactory.getOnlySignedDigitsTextFormatter(7));	
-		
+		linearOffsetField.setTextFormatter(TextFormatterFactory.getOnlySignedDigitsTextFormatter(7));
+
 		series = new XYChart.Series<Number, Number>();
 		series.setData(viewModel.getChartData());
 		lineChart.getData().add(series);
 		lineChart.setCreateSymbols(false);
 		lineChart.setLegendVisible(false);
 		lineChart.setAnimated(false);
-		lineChart.setLegendSide(Side.LEFT);		
+		lineChart.setLegendSide(Side.LEFT);
 
 		xAxis.setUpperBound(15);
 		xAxis.setMinorTickCount(2);
@@ -277,7 +270,7 @@ public class MainView {
 		yAxis.setTickUnit(1);
 		yAxis.setMinorTickCount(0);
 		yAxis.lowerBoundProperty().bind(this.viewModel.yAxisLowerBoundProperty());
-		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());		
+		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());
 	}
 
 }

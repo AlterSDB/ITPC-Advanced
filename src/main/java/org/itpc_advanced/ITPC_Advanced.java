@@ -33,12 +33,6 @@ public class ITPC_Advanced extends Application {
 		mainStage.getIcons().add(new Image("/images/logo.png"));
 		mainStage.setScene(new Scene(root));
 		mainStage.setResizable(false);
-	//	mainStage.setOnCloseRequest((event) -> {
-		//		if(settingsStage != null) {
-	//				settingsStage.close();
-	//			}
-	//	});
-
 		mainStage.show();
 	}
 

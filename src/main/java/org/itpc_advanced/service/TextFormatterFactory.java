@@ -3,7 +3,7 @@ package org.itpc_advanced.service;
 import javafx.scene.control.TextFormatter;
 
 public class TextFormatterFactory {
-	
+
 	public static TextFormatter<String> getOnlyDigitsTextFormatter(int maxDigits) {
 		return new TextFormatter<>(change -> {
 			String newText = change.getControlNewText();
@@ -19,7 +19,7 @@ public class TextFormatterFactory {
 			return change;
 		});
 	}
-	
+
 	public static TextFormatter<String> getOnlySignedDigitsTextFormatter(int maxDigits) {
 		return new TextFormatter<>(change -> {
 			String newText = change.getControlNewText();

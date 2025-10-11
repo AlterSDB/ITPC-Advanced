@@ -30,7 +30,7 @@ public class SettingsView {
     @FXML private CheckBox demoModeCheckBox;
     @FXML private Button saveSettingsBtn;
     @FXML private Button languageBtn;
-    
+
 	private SettingsViewModel viewModel;
 
 	public void setViewModel(SettingsViewModel viewModel) {
@@ -39,11 +39,10 @@ public class SettingsView {
 		connTimeoutTextField.textProperty().bindBidirectional(this.viewModel.timeoutProperty());
 		shuffleValuesCheckBox.selectedProperty().bindBidirectional(this.viewModel.shuffleValuesProperty());
 		demoModeCheckBox.selectedProperty().bindBidirectional(this.viewModel.demoModeProperty());
-		
 		maxDeviationTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
 		connTimeoutTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
 	}
-	
+
 	@FXML
 	void initialize() {
 		System.out.println("Available ports: ");
@@ -61,7 +60,7 @@ public class SettingsView {
 				}
 			});
 		}
-		
+
 		LocalTextBinder.bindText(portText.textProperty(), "settings.port");
 		LocalTextBinder.bindText(shuffleValuesText.textProperty(), "settings.shuffle.values");
 		LocalTextBinder.bindText(maxDeviationText.textProperty(), "settings.max.deviation");
@@ -70,10 +69,9 @@ public class SettingsView {
 		LocalTextBinder.bindText(languageText.textProperty(), "settings.language");
 		LocalTextBinder.bindText(saveSettingsBtn.textProperty(), "settings.button.save");
 		LocalTextBinder.bindText(languageBtn.textProperty(), "settings.button.set.lang");
-		
+
 		saveSettingsBtn.setOnAction((event) -> viewModel.saveSettings());
 		languageBtn.setOnAction((event) -> viewModel.changeLanguage());
-
 	//	maxDeviationTextField.setOnKeyPressed(saveOnEnterKey());
 	//	connTimeoutTextField.setOnKeyPressed(saveOnEnterKey());
 	//	connTimeoutTextField.getParent().setOnKeyPressed(saveOnEnterKey());

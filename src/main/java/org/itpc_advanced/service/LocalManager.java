@@ -10,27 +10,25 @@ public class LocalManager {
 	private static LocalManager instance;
 	private final ObjectProperty<ResourceBundle> resources = new SimpleObjectProperty<>();
 	private final ObjectProperty<Locale> currentLocale = new SimpleObjectProperty<>();
-	
-	
+
 	private LocalManager() {
 		setLocale(Locale.ENGLISH);
 	}
-	
+
 	public static LocalManager getInstance() {
 		if (instance == null) {
 			instance = new LocalManager();
 		}
+
 		return instance;
 	}
-
 
 	public void setLocale(Locale locale) {
 		ResourceBundle bundle = ResourceBundle.getBundle("lang", locale );
 		resources.set(bundle);
 		currentLocale.set(locale);
-		
 	}
-	
+
 	public String getString(String key) {
 		ResourceBundle bundle = resources.get();
 		if (bundle != null) {
@@ -40,6 +38,7 @@ public class LocalManager {
 				return "!" + key + "!";
 			}
 		}
+
 		return key;
 	}
 
@@ -62,6 +61,5 @@ public class LocalManager {
 	public boolean isEnglish() {
 		return currentLocale.get().getLanguage().equals(Locale.ENGLISH.getLanguage());
 	}
-	
 
 }

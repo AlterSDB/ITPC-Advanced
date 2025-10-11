@@ -25,14 +25,14 @@ public class MockyDataFiles {
 			DataFile df = DataParser.parse(rawData);
 			DataProcessor.calculate(df);
 			files.add(df);
-			
+
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return files;
 	}
 }

@@ -44,28 +44,23 @@ public class MainViewModel {
 	private final StringProperty yAxisLabel = new SimpleStringProperty();
 	private final DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty();
 	private final DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty();
-	
+
 	private final StringProperty typeProperty = new SimpleStringProperty();
 	private final StringProperty timeStampProperty = new SimpleStringProperty();
 	private final StringProperty timeStepProperty = new SimpleStringProperty();
 	private final StringProperty pointsCountProperty = new SimpleStringProperty();
-	
+
 	public Stage settingsStage;
 	private Settings settings = Settings.getInstance();
 
-
 	public MainViewModel(){	
-
 		selectedDataFile.addListener((observable, oldDataFile, newDataFile) -> {
 				if (newDataFile != null) {
-					System.out.println("CHANGED FILE");
 					tempSetProperty.setValue(newDataFile.getTargetTemperature().toString());
 					newDataFile.setTargetTemperature(Integer.parseInt(tempSetProperty.getValue()));
 					linearOffsetProperty.setValue(newDataFile.getLinearOffset().toString());
-					
 					updateInfo();
 					updateFields();
-					
 					yAxisLowerBoundProperty.set(newDataFile.getChartBounds()[0]);
 					yAxisUpperBoundProperty.set(newDataFile.getChartBounds()[1]);
 					chartData.clear();
@@ -78,8 +73,7 @@ public class MainViewModel {
 					return;
 				}
 
-				System.out.println("CHANGED TARGET to " + Double.parseDouble(newValue));
-				if (selectedDataFile.getValue() != null && !newValue.isEmpty()) {		
+				if (selectedDataFile.getValue() != null && !newValue.isEmpty()) {
 				selectedDataFile.getValue().setTargetTemperature(Integer.parseInt(newValue));
 				updateFields();
 				}
@@ -112,17 +106,15 @@ public class MainViewModel {
 				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
 				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
 				averageMaxProperty.setValue(selectedDataFile.getValue().getAverageMax().toString());
-				averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());		
-				
-				
+				averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());
 				yAxisLowerBoundProperty.set(selectedDataFile.get().getChartBounds()[0]);
 				yAxisUpperBoundProperty.set(selectedDataFile.get().getChartBounds()[1]);
 				chartData.clear();
 				chartData.setAll(selectedDataFile.get().getChartData());
-		});	
+		});
 
 		this.yAxisLowerBoundProperty.set(0);
-		this.yAxisUpperBoundProperty.set(10);		
+		this.yAxisUpperBoundProperty.set(10);
 	}
 
 	private boolean validateInput(String input) {
@@ -145,7 +137,7 @@ public class MainViewModel {
 		}
 
 		return false;
-		}	
+		}
 
 	public ObservableList<DataFile> getFileList() {
 		return fileList;
@@ -157,7 +149,7 @@ public class MainViewModel {
 
 	public void readDataFiles() {
 		fileList.clear();
-		
+
 		if (settings.isDemoMode()) {
 			fileList.addAll(MockyDataFiles.mock());
 		} else {
@@ -184,7 +176,7 @@ public class MainViewModel {
 	public StringProperty tempSetProperty() {
 		return tempSetProperty;
 	}
-	
+
 	public StringProperty linearOffsetProperty() {
 		return linearOffsetProperty;
 	}
@@ -204,7 +196,7 @@ public class MainViewModel {
 	public StringProperty yAxisLabelProperty() {
 		return yAxisLabel;
 	}
-	
+
 	public String getChartTitle() {
 		return chartTitle.get();
 	}
@@ -235,7 +227,6 @@ public class MainViewModel {
 
 	public void clearData() {
 		chartData.clear();
-		
 	}
 
 	public DoubleProperty yAxisLowerBoundProperty() {
@@ -250,7 +241,6 @@ public class MainViewModel {
 		if (selectedDataFile.get() == null) {
 			return;
 		}
-
 		ReportBuilder.buildReport(selectedDataFile.get());
 	}
 
@@ -262,6 +252,7 @@ public class MainViewModel {
 		VisualFX.changeText(averageMinProperty, selectedDataFile.get().getAverageMin().toString());
 		}
 	}
+
 	public void updateInfo(){
 		if (selectedDataFile.get() != null) {
 			VisualFX.changeText(typeProperty, LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
@@ -281,7 +272,7 @@ public class MainViewModel {
 			settingsStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings.fxml"));
 			Parent parent = loader.load();
-			
+
 			SettingsView settingsController = loader.getController();
 			SettingsViewModel settingsViewModel = new SettingsViewModel();
 			settingsController.setViewModel(settingsViewModel);
@@ -292,8 +283,6 @@ public class MainViewModel {
 			settingsStage.setAlwaysOnTop(true);
 			settingsStage.getIcons().add(new Image("/images/logo.png"));
 			LocalTextBinder.bindText(settingsStage.titleProperty(), "settings.label");
-			
-			
 			settingsStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();

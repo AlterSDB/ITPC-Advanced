@@ -1,6 +1,5 @@
 package org.itpc_advanced.service;
 
-
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
@@ -88,13 +87,12 @@ public class DeviceScanner {
 					}
 			});
 
-			final long deadline = System.currentTimeMillis() + Settings.getInstance().getConnectionTimeout(); 
+		final long deadline = System.currentTimeMillis() + Settings.getInstance().getConnectionTimeout(); 
 
 			while (currentState != State.DONE){
-				if(System.currentTimeMillis() > deadline) {
+				if (System.currentTimeMillis() > deadline) {
 					throw new TimeoutException("Time Out!");
 				}
-
 				Thread.sleep(20); // update timer delay
 			}
 		} catch(Exception e) {

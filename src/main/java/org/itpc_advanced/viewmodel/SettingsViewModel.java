@@ -6,7 +6,6 @@ import org.itpc_advanced.model.Settings;
 import org.itpc_advanced.service.LocalManager;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -17,45 +16,38 @@ public class SettingsViewModel {
 	private BooleanProperty demoModeProperty = new SimpleBooleanProperty();
 	private StringProperty maxDeviationProperty = new SimpleStringProperty();
 	private StringProperty connTimeoutProperty = new SimpleStringProperty();
-	
 	private Settings settings;
-	
+
 	public SettingsViewModel() {
 		settings = Settings.getInstance();
 		maxDeviationProperty.set(settings.getMaxDeviation().toString());
 		connTimeoutProperty.set(settings.getConnectionTimeout().toString());
 		shuffleValuesProperty.set(settings.isShuffleValues());
 		demoModeProperty.set(settings.isDemoMode());
-		
+
 		shuffleValuesProperty.addListener((obs, oldVal, newVal) -> saveSettings());
 		connTimeoutProperty.addListener((obs, oldVal, newVal) -> saveSettings());
 		maxDeviationProperty.addListener((obs, oldVal, newVal) -> saveSettings());
 		demoModeProperty.addListener((obs, oldVal, newVal) -> saveSettings());
 	}
-	
-	public void loadSettings() {
-		// load from file
-	}
 
 	public void saveSettings() {
-
 		if (maxDeviationProperty.getValue().equals("")) {
 			settings.setMaxDeviation(0);
 		} else {
 			settings.setMaxDeviation(Integer.parseInt(maxDeviationProperty.getValue()));
 		}
-		
+
 		if (connTimeoutProperty.getValue().equals("")) {
 			settings.setConnectionTimeout(0);
 		} else {
 			settings.setConnectionTimeout(Integer.parseInt(connTimeoutProperty.getValue()));
 		}
-		
 		settings.setShuffleValues(shuffleValuesProperty.getValue());
 		settings.setDemoMode(demoModeProperty.getValue());
-		// add save in file
+		// and save it in file
 	}
-	
+
 	public void changeLanguage() {
 		LocalManager localization = LocalManager.getInstance();
 
@@ -63,7 +55,7 @@ public class SettingsViewModel {
 			localization.setLocale(new Locale("ru"));
 		} else {
 			localization.setLocale(Locale.ENGLISH);
-		}	
+		}
 	}
 
 	public BooleanProperty shuffleValuesProperty() {

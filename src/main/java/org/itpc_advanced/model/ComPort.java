@@ -4,7 +4,7 @@ import jssc.SerialPort;
 import jssc.SerialPortException;
 
 public class ComPort extends SerialPort implements AutoCloseable {
-	
+
 	public ComPort(String portName) {
 		super(portName);
 	}
