@@ -68,7 +68,8 @@ public class MainViewModel {
 					tempSetProperty.setValue(newDataFile.getTargetTemperature().toString());
 					newDataFile.setTargetTemperature(Integer.parseInt(tempSetProperty.getValue()));
 					linearOffsetProperty.setValue(newDataFile.getLinearOffset().toString());
-
+					
+					updateInfo();
 					updateFields();
 					
 					yAxisLowerBoundProperty.set(newDataFile.getChartBounds()[0]);
@@ -274,11 +275,14 @@ public class MainViewModel {
 		VisualFX.changeText(relativeMinProperty, selectedDataFile.get().getRelativeMin().toString());
 		VisualFX.changeText(averageMaxProperty, selectedDataFile.get().getAverageMax().toString());
 		VisualFX.changeText(averageMinProperty, selectedDataFile.get().getAverageMin().toString());
-		
-		VisualFX.changeText(typeProperty, selectedDataFile.get().getTcType().toString());
-		VisualFX.changeText(timeStampProperty, selectedDataFile.get().getTimeStamp().toString());
-		VisualFX.changeText(timeStepProperty, selectedDataFile.get().getTimeStep().toString());
-		VisualFX.changeText(pointsCountProperty, new Integer(selectedDataFile.get().getValues().size()).toString());
+		}
+	}
+	public void updateInfo(){
+		if (selectedDataFile.get() != null) {
+			VisualFX.changeText(typeProperty, selectedDataFile.get().getTcType().toString());
+			VisualFX.changeText(timeStampProperty, selectedDataFile.get().getTimeStamp().toString());
+			VisualFX.changeText(timeStepProperty, selectedDataFile.get().getTimeStep().toString());
+			VisualFX.changeText(pointsCountProperty, new Integer(selectedDataFile.get().getValues().size()).toString());
 		}
 	}
 
