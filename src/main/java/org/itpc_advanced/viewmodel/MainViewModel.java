@@ -1,18 +1,14 @@
 package org.itpc_advanced.viewmodel;
 
-import java.io.IOException;
-
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Settings;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DataProcessor;
 import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.LocalManager;
-import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
 import org.itpc_advanced.utils.VisualFX;
-import org.itpc_advanced.view.SettingsView;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -22,18 +18,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
 
 public class MainViewModel {
 
 	private final ObservableList<DataFile> fileList = FXCollections.observableArrayList();   
 	private final ObjectProperty<DataFile> selectedDataFile = new SimpleObjectProperty<DataFile>();
-	public Stage settingsStage;
 	private Settings settings = Settings.getInstance();
 
 	private final StringProperty averageMaxProperty = new SimpleStringProperty();
@@ -98,7 +88,6 @@ public class MainViewModel {
 
 				selectedDataFile.getValue().setLinearOffset(parsed);
 				updateAttributes();
-				System.out.println("bounds: " + this.yAxisLowerBoundProperty.get() + "   " + this.yAxisUpperBoundProperty.get());
 		});
 
 		this.yAxisLowerBoundProperty.set(0);
@@ -263,33 +252,6 @@ public class MainViewModel {
 		}
 	}
 
-	public void showSettings() {
-		if (settingsStage != null && settingsStage.isShowing()) {
-			settingsStage.close();
-			return;
-		}
-
-		try {
-			settingsStage = new Stage();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings.fxml"));
-			Parent parent = loader.load();
-
-			SettingsView settingsController = loader.getController();
-			SettingsViewModel settingsViewModel = new SettingsViewModel();
-			settingsController.setViewModel(settingsViewModel);
-
-			Scene scene = new Scene(parent);
-			settingsStage.setScene(scene);
-			settingsStage.setResizable(false);
-			settingsStage.setAlwaysOnTop(true);
-			settingsStage.getIcons().add(new Image("/images/logo.png"));
-			LocalTextBinder.bindText(settingsStage.titleProperty(), "settings.label");
-			settingsStage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public StringProperty tcTypeProperty() {
 		return typeProperty;
 	}
@@ -306,7 +268,7 @@ public class MainViewModel {
 		return pointsCountProperty;
 	}
 
-	public void calculateByTextArea(String text) {
+	public void calculateManual(String text) {
 		selectedDataFile.set(DataParser.parseFromText(text));
 		DataProcessor.calculate(selectedDataFile.get());
 		updateAttributes();

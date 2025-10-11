@@ -1,14 +1,20 @@
 package org.itpc_advanced.view;
 
+import java.io.IOException;
+
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.service.TextFormatterFactory;
 import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.viewmodel.MainViewModel;
+import org.itpc_advanced.viewmodel.SettingsViewModel;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -21,8 +27,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class MainView {
 
@@ -63,6 +72,7 @@ public class MainView {
 
     private XYChart.Series<Number, Number> series;
 	private MainViewModel viewModel;
+	private Stage settingsStage;
 
 	@FXML
 	private void onScanBtnAction() {
@@ -71,7 +81,7 @@ public class MainView {
 
 	@FXML
 	private void onCalculateBtnAction() {
-		viewModel.calculateByTextArea(manualTextArea.getText());
+		viewModel.calculateManual(manualTextArea.getText());
 	}
 
 	@FXML
@@ -81,7 +91,7 @@ public class MainView {
 
 	@FXML
 	private void onSettingsBtnAction() {
-		viewModel.showSettings();
+		showSettings();
 	}
 
     public Tab getTabAutomatic() {
@@ -226,6 +236,35 @@ public class MainView {
 			tableColumn.setVisible(true);
 		});
 
+	}
+	
+	public void showSettings() {
+		if (settingsStage != null && settingsStage.isShowing()) {
+			settingsStage.close();
+			return;
+		}
+
+		try {
+			settingsStage = new Stage();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings.fxml"));
+			Parent parent = loader.load();
+
+			SettingsView settingsController = loader.getController();
+			SettingsViewModel settingsViewModel = new SettingsViewModel();
+			settingsController.setViewModel(settingsViewModel);
+
+			Scene scene = new Scene(parent);
+			settingsStage.setScene(scene);
+			settingsStage.initOwner((Stage)scanBtn.getScene().getWindow());
+			settingsStage.initModality(Modality.WINDOW_MODAL);
+			settingsStage.setResizable(false);
+			settingsStage.setAlwaysOnTop(true);
+			settingsStage.getIcons().add(new Image("/images/logo.png"));
+			LocalTextBinder.bindText(settingsStage.titleProperty(), "settings.label");
+			settingsStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setViewModel(MainViewModel viewModel) {

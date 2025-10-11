@@ -48,7 +48,7 @@
          </padding>
       </GridPane>
       
-      <Button fx:id="saveSettingsBtn" layoutX="142.0" layoutY="269.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" text="Close">
+      <Button fx:id="closeBtn" layoutX="142.0" layoutY="269.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" text="Close">
          <font>
             <Font size="14.0" />
          </font></Button>

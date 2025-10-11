@@ -13,6 +13,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import jssc.SerialPortList;
 
 public class SettingsView {
@@ -28,7 +29,7 @@ public class SettingsView {
     @FXML private TextField connTimeoutTextField;
     @FXML private Text demoModeText;
     @FXML private CheckBox demoModeCheckBox;
-    @FXML private Button saveSettingsBtn;
+    @FXML private Button closeBtn;
     @FXML private Button languageBtn;
 
 	private SettingsViewModel viewModel;
@@ -67,10 +68,13 @@ public class SettingsView {
 		LocalTextBinder.bindText(connTimeoutText.textProperty(), "settings.connection.timeout");
 		LocalTextBinder.bindText(demoModeText.textProperty(), "settings.demo.mode");
 		LocalTextBinder.bindText(languageText.textProperty(), "settings.language");
-		LocalTextBinder.bindText(saveSettingsBtn.textProperty(), "settings.button.save");
+		LocalTextBinder.bindText(closeBtn.textProperty(), "settings.button.save");
 		LocalTextBinder.bindText(languageBtn.textProperty(), "settings.button.set.lang");
 
-		saveSettingsBtn.setOnAction((event) -> viewModel.saveSettings());
+		closeBtn.setOnAction((event) -> {
+			Stage stage = (Stage)portText.getScene().getWindow();
+			stage.close();
+		});
 		languageBtn.setOnAction((event) -> viewModel.changeLanguage());
 	//	maxDeviationTextField.setOnKeyPressed(saveOnEnterKey());
 	//	connTimeoutTextField.setOnKeyPressed(saveOnEnterKey());
