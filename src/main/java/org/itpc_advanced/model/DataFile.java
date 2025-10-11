@@ -172,7 +172,7 @@ public class DataFile {
 		setAverageMin(DataProcessor.findAverage(this.minTemps));
 		setRelativeMax(DataProcessor.findRelative(this.targetTemperature, averageMax));
 		setRelativeMin(DataProcessor.findRelative(this.targetTemperature, averageMin));
-		setChartBounds(DataProcessor.findChartBounds(processedValues));
+/**/	setChartBounds(DataProcessor.findChartBounds(processedValues));
 		setChartData(DataProcessor.getChartData(this));
 		
 	}

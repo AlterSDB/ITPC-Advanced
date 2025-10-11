@@ -8,6 +8,7 @@ import java.util.concurrent.TimeoutException;
 import org.itpc_advanced.model.ComPort;
 import org.itpc_advanced.model.DataFile; 
 import org.itpc_advanced.model.Request;
+import org.itpc_advanced.model.Settings;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +24,6 @@ public class DeviceScanner {
 	private static final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 	private static volatile State currentState = State.WAITING_FOR_DEVICE;
 	private static volatile int filesCounter = 1;
-	private static final int timeout = 5000;
 
 	public static ObservableList<DataFile> readDataFiles() {
 		ObservableList<DataFile> files  = FXCollections.observableArrayList();
@@ -88,7 +88,7 @@ public class DeviceScanner {
 					}
 			});
 
-			final long deadline = System.currentTimeMillis() + timeout; // 10 seconds
+			final long deadline = System.currentTimeMillis() + Settings.getInstance().getConnectionTimeout(); 
 
 			while (currentState != State.DONE){
 				if(System.currentTimeMillis() > deadline) {
@@ -103,4 +103,5 @@ public class DeviceScanner {
 
 		return files;
 	}
+
 }

@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.model.Settings;
 
 public class DataProcessor {
 
@@ -34,11 +35,12 @@ public class DataProcessor {
 
 		int target = findTargetValue(dataFile.getValues());
 		
-		dataFile.setProcessedValues(new ArrayList<Double>(dataFile.getValues()));
+		ArrayList<Double> clearValues = removeParasiticValues(dataFile.getValues());
+		
+		dataFile.setProcessedValues(new ArrayList<Double>(clearValues));
 		ObservableList<XYChart.Data<Number,Number>> chartData = getChartData(dataFile);
-		List<Double> sortedValues = new ArrayList<Double>(dataFile.getValues());
+		List<Double> sortedValues = new ArrayList<Double>(dataFile.getProcessedValues());
 		Collections.sort(sortedValues);
-
 		List<Double> maxTemps = new ArrayList<Double>();
 		List<Double> minTemps = new ArrayList<Double>();
 		
@@ -85,7 +87,7 @@ public class DataProcessor {
 		ObservableList<XYChart.Data<Number,Number>> chartData = FXCollections.observableArrayList();
 		double time = 0.0;
 
-		for (int i = 0; i < df.getValues().size(); i++){
+		for (int i = 0; i < df.getProcessedValues().size(); i++){
 			chartData.add(new XYChart.Data<Number, Number>(time, df.getProcessedValues().get(i)));
 			time += df.getTimeStep();
 		}
@@ -98,7 +100,7 @@ public class DataProcessor {
 			return new double[] {0, 10};
 		}
 
-		double[] bounds     = new double[2];
+		double[] bounds  = new double[2];
 		double lowerBound = sortedValues.get(0);
 		double upperBound = sortedValues.get(sortedValues.size() - 1);
 		upperBound = Math.ceil(upperBound) / 10;
@@ -139,6 +141,33 @@ public class DataProcessor {
 
 		return (int) target;
 	}
+	
+	public static ArrayList<Double> removeParasiticValues(List<Double> values) {
+		if (values.isEmpty()) {
+			return (ArrayList<Double>) values;
+		}
+
+		ArrayList<Double> resultValues = new ArrayList<Double>(values);
+		ArrayList<Double> sortedValues = new ArrayList<Double>(values);
+		Collections.sort(sortedValues);
+
+		double middleValue  = sortedValues.get( (sortedValues.size()/2) );
+		double minValue     = sortedValues.get(0);
+		double maxValue     = sortedValues.get(sortedValues.size() - 1);
+		double maxDeviation = Settings.getInstance().getMaxDeviation();
+		double currentMaxDeviation = Math.max(maxValue - middleValue, middleValue - minValue);	
+
+		if (currentMaxDeviation > maxDeviation) {
+			for(double value : values) {
+				if(Math.abs(middleValue - value) > maxDeviation) {
+				resultValues.remove(value);
+				} 
+			} 
+		}
+
+		return resultValues;
+	}
+
 
 	public static void resetFilesCounter() {
 		fileCounter.set(1);	

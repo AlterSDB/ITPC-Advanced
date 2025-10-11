@@ -1,6 +1,10 @@
 package org.itpc_advanced.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.model.Settings;
 
 import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
@@ -42,11 +46,19 @@ public class ReportBuilder {
 	    String divStyle = "<div dir=\"ltr\" style=\"margin-left:0pt;\" align=\"center\">";
 	    htmlText.append("<table><tbody>");
 	    
-	    for (double value : df.getMaxTemps()) {
+	    ArrayList<Double> maxTemps = new ArrayList<Double>(df.getMaxTemps());
+	    ArrayList<Double> minTemps = new ArrayList<Double>(df.getMinTemps());
+	    
+		if (Settings.getInstance().isShuffleValues()) {
+			Collections.shuffle(maxTemps);
+			Collections.shuffle(minTemps);
+		}
+	    
+	    for (double value : maxTemps) {
 	    	casualText.append(value + " " + "\n");
 	    	htmlText.append(trStyle + tdStyle + divStyle + value + "</div></td></tr>");
 	    }
-	    for (double value : df.getMinTemps()) {
+	    for (double value : minTemps) {
 	    	casualText.append(value + " " + "\n");
 	    	htmlText.append(trStyle + tdStyle + divStyle + value + "</div></td></tr>");
 	    }
