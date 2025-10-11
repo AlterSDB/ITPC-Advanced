@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DataParser {
 
-	private static final String[] TC_TYPES = {"ТХК(L)", "ТХА(K)", "ТПР(B)", "ТПП(S)"};
+	private static final String[] TC_TYPES = {"types.l", "types.k", "types.b", "types.s"};
 	private static final Double[] TIME_STEPS = {0.5, 1.0, 2.0, 5.0, 15.0, 30.0, 60.0};
 	private static final Integer  OFFSET = 7;
 	private static final Integer  STOP_BYTES = valueOf((byte)-35, (byte)125); 

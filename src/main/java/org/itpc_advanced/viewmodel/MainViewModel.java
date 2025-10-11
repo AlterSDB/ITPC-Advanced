@@ -19,7 +19,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -33,12 +32,12 @@ public class MainViewModel {
 
 	private final ObservableList<DataFile> fileList = FXCollections.observableArrayList();   
 	private final ObjectProperty<DataFile> selectedDataFile = new SimpleObjectProperty<DataFile>();
-	private StringProperty averageMaxProperty = new SimpleStringProperty();
-	private StringProperty averageMinProperty = new SimpleStringProperty();
+	private final StringProperty averageMaxProperty = new SimpleStringProperty();
+	private final StringProperty averageMinProperty = new SimpleStringProperty();
 	private final StringProperty relativeMaxProperty = new SimpleStringProperty();
-	private StringProperty relativeMinProperty = new SimpleStringProperty();
-	private StringProperty tempSetProperty = new SimpleStringProperty();
-	private StringProperty linearOffsetProperty = new SimpleStringProperty();
+	private final StringProperty relativeMinProperty = new SimpleStringProperty();
+	private final StringProperty tempSetProperty = new SimpleStringProperty();
+	private final StringProperty linearOffsetProperty = new SimpleStringProperty();
 
 	private final ObservableList<XYChart.Data<Number, Number>> chartData = FXCollections.observableArrayList();
 	private final StringProperty chartTitle = new SimpleStringProperty();
@@ -52,13 +51,9 @@ public class MainViewModel {
 	private final StringProperty timeStepProperty = new SimpleStringProperty();
 	private final StringProperty pointsCountProperty = new SimpleStringProperty();
 	
-	
-	
 	public Stage settingsStage;
 	private Settings settings = Settings.getInstance();
-	
-	
-	
+
 
 	public MainViewModel(){	
 
@@ -267,6 +262,8 @@ public class MainViewModel {
 		} else {
 			localization.setLocale(Locale.ENGLISH);
 		}	
+		
+		typeProperty.set(LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
 	}
 
 	public void updateFields() {
@@ -279,7 +276,7 @@ public class MainViewModel {
 	}
 	public void updateInfo(){
 		if (selectedDataFile.get() != null) {
-			VisualFX.changeText(typeProperty, selectedDataFile.get().getTcType().toString());
+			VisualFX.changeText(typeProperty, LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
 			VisualFX.changeText(timeStampProperty, selectedDataFile.get().getTimeStamp().toString());
 			VisualFX.changeText(timeStepProperty, selectedDataFile.get().getTimeStep().toString());
 			VisualFX.changeText(pointsCountProperty, new Integer(selectedDataFile.get().getValues().size()).toString());
