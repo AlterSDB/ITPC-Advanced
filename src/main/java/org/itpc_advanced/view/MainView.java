@@ -50,6 +50,19 @@ public class MainView {
     @FXML private LineChart<Number, Number> lineChart;
     @FXML private NumberAxis xAxis;
     @FXML private NumberAxis yAxis;
+    
+    @FXML private Text typeText;
+    @FXML private Text timeStampText;
+    @FXML private Text timeStepText;
+    @FXML private Text pointsCountText;
+    @FXML private Text typeValueText;
+    @FXML private Text timeStampValueText;
+    @FXML private Text timeStepValueText;
+    @FXML private Text pointsCountValueText;
+    
+    
+    
+ 
 
 	@FXML
 	private void onScanBtnAction() {
@@ -192,6 +205,11 @@ public class MainView {
 		LocalTextBinder.bindText(tabManual.textProperty(), "tab.manual");
 		LocalTextBinder.bindText(tableColumn.textProperty(), "table.header");
 		
+		LocalTextBinder.bindText(timeStampText.textProperty(), "df.timestamp");
+		LocalTextBinder.bindText(typeText.textProperty(), "df.tc.type");
+		LocalTextBinder.bindText(timeStepText.textProperty(), "df.timestep");
+		LocalTextBinder.bindText(pointsCountText.textProperty(), "df.points.count");
+		
 		Label label = new Label();
 		tableView.setPlaceholder(label);
 		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");
@@ -247,6 +265,11 @@ public class MainView {
 		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
 		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
 		linearOffsetField.textProperty().bindBidirectional(this.viewModel.linearOffsetProperty());
+		
+		typeValueText.textProperty().bind(this.viewModel.tcTypeProperty());
+		timeStampValueText.textProperty().bind(this.viewModel.timeStampProperty());
+		timeStepValueText.textProperty().bind(this.viewModel.timeStepProperty());
+		pointsCountValueText.textProperty().bind(this.viewModel.pointsCountProperty());
 
 		tempSetField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(7));
 		linearOffsetField.setTextFormatter(TextFormatterFactory.getOnlySignedDigitsTextFormatter(7));	
