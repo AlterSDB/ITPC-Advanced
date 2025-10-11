@@ -33,6 +33,9 @@ public class MainViewModel {
 
 	private final ObservableList<DataFile> fileList = FXCollections.observableArrayList();   
 	private final ObjectProperty<DataFile> selectedDataFile = new SimpleObjectProperty<DataFile>();
+	public Stage settingsStage;
+	private Settings settings = Settings.getInstance();
+
 	private final StringProperty averageMaxProperty = new SimpleStringProperty();
 	private final StringProperty averageMinProperty = new SimpleStringProperty();
 	private final StringProperty relativeMaxProperty = new SimpleStringProperty();
@@ -52,21 +55,10 @@ public class MainViewModel {
 	private final StringProperty timeStepProperty = new SimpleStringProperty();
 	private final StringProperty pointsCountProperty = new SimpleStringProperty();
 
-	public Stage settingsStage;
-	private Settings settings = Settings.getInstance();
-
 	public MainViewModel(){	
 		selectedDataFile.addListener((observable, oldDataFile, newDataFile) -> {
 				if (newDataFile != null) {
-					tempSetProperty.setValue(newDataFile.getTargetTemperature().toString());
-					newDataFile.setTargetTemperature(Integer.parseInt(tempSetProperty.getValue()));
-					linearOffsetProperty.setValue(newDataFile.getLinearOffset().toString());
-					updateInfo();
-					updateFields();
-					yAxisLowerBoundProperty.set(newDataFile.getChartBounds()[0]);
-					yAxisUpperBoundProperty.set(newDataFile.getChartBounds()[1]);
-					chartData.clear();
-					chartData.setAll(newDataFile.getChartData());
+					updateAttributes();
 				}
 		});
 
@@ -76,8 +68,8 @@ public class MainViewModel {
 				}
 
 				if (selectedDataFile.getValue() != null && !newValue.isEmpty()) {
-				selectedDataFile.getValue().setTargetTemperature(Integer.parseInt(newValue));
-				updateFields();
+					selectedDataFile.getValue().setTargetTemperature(Integer.parseInt(newValue));
+					updateFields();
 				}
 			});	
 
@@ -105,21 +97,15 @@ public class MainViewModel {
 				}
 
 				selectedDataFile.getValue().setLinearOffset(parsed);
-				relativeMaxProperty.setValue(selectedDataFile.getValue().getRelativeMax().toString());
-				relativeMinProperty.setValue(selectedDataFile.getValue().getRelativeMin().toString());
-				averageMaxProperty.setValue(selectedDataFile.getValue().getAverageMax().toString());
-				averageMinProperty.setValue(selectedDataFile.getValue().getAverageMin().toString());
-				yAxisLowerBoundProperty.set(selectedDataFile.get().getChartBounds()[0]);
-				yAxisUpperBoundProperty.set(selectedDataFile.get().getChartBounds()[1]);
-				chartData.clear();
-				chartData.setAll(selectedDataFile.get().getChartData());
+				updateAttributes();
+				System.out.println("bounds: " + this.yAxisLowerBoundProperty.get() + "   " + this.yAxisUpperBoundProperty.get());
 		});
 
 		this.yAxisLowerBoundProperty.set(0);
 		this.yAxisUpperBoundProperty.set(10);
 	}
 
-	private boolean validateInput(String input) {
+	public boolean validateInput(String input) {
 		if (input.length() > 4) {
 			return false;
 		}
@@ -245,6 +231,19 @@ public class MainViewModel {
 		}
 		ReportBuilder.buildReport(selectedDataFile.get());
 	}
+	
+	public void updateAttributes() {
+		tempSetProperty.setValue(selectedDataFile.get().getTargetTemperature().toString());
+		selectedDataFile.get().setTargetTemperature(Integer.parseInt(tempSetProperty.getValue()));
+		linearOffsetProperty.setValue(selectedDataFile.get().getLinearOffset().toString());
+		yAxisLowerBoundProperty.set(selectedDataFile.get().getChartBounds()[0]);
+		yAxisUpperBoundProperty.set(selectedDataFile.get().getChartBounds()[1]);
+		chartData.clear();
+		chartData.setAll(selectedDataFile.get().getChartData());
+
+		updateInfo();
+		updateFields();
+	}
 
 	public void updateFields() {
 		if (selectedDataFile.get() != null) {
@@ -310,16 +309,7 @@ public class MainViewModel {
 	public void calculateByTextArea(String text) {
 		selectedDataFile.set(DataParser.parseFromText(text));
 		DataProcessor.calculate(selectedDataFile.get());
-		
-		tempSetProperty.setValue(selectedDataFile.get().getTargetTemperature().toString());
-		selectedDataFile.get().setTargetTemperature(Integer.parseInt(tempSetProperty.getValue()));
-		linearOffsetProperty.setValue(selectedDataFile.get().getLinearOffset().toString());
-		updateInfo();
-		updateFields();
-		yAxisLowerBoundProperty.set(selectedDataFile.get().getChartBounds()[0]);
-		yAxisUpperBoundProperty.set(selectedDataFile.get().getChartBounds()[1]);
-		chartData.clear();
-		chartData.setAll(selectedDataFile.get().getChartData());
+		updateAttributes();
 	}
 
 }

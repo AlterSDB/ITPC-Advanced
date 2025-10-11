@@ -98,27 +98,32 @@ public class DataProcessor {
 		}
 
 		double[] bounds  = new double[2];
-		double lowerBound = sortedValues.get(0);
-		double upperBound = sortedValues.get(sortedValues.size() - 1);
-		upperBound = Math.ceil(upperBound) / 10;
-		upperBound = Math.ceil(upperBound) * 10;
-		lowerBound = Math.floor(lowerBound) / 10;
-		lowerBound = Math.floor(lowerBound) * 10;
-		bounds[0]  = lowerBound;
-		bounds[1]  = upperBound;
+		// Lower bound
+		bounds[0]  = sortedValues.get(0);
+		bounds[0]  = Math.floor(bounds[0]) / 10;
+		bounds[0]  = Math.floor(bounds[0]) * 10;
+
+		// Upper bound
+		bounds[1]  = sortedValues.get(sortedValues.size() - 1);
+		bounds[1]  = Math.ceil(bounds[1]) / 10;
+		bounds[1]  = Math.ceil(bounds[1]) * 10;
 
 		if (bounds[1] - bounds[0] == 20) {
 			bounds[0] += 5;
 			bounds[1] -= 5;
+
 			while (sortedValues.get(sortedValues.size() - 1) > bounds[1]) {
-				bounds[0] += 1;
 				bounds[1] += 1;
 			}
 
 			while (sortedValues.get(1) < bounds[0]) {
 				bounds[0] -= 1;
-				bounds[1] -= 1;
 			}
+		}
+		
+		if (bounds[0] == bounds[1]) {
+			bounds[0] -= 5;
+			bounds[1] += 5;
 		}
 
 		return bounds;
