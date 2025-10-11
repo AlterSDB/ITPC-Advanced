@@ -63,7 +63,7 @@ public class DeviceScanner {
 						    case RECEIVING_FILES: {
 								// Received file chunk
 						    	System.out.println("FILE: " + Arrays.toString(buffer.toByteArray()));
-								DataFile df = DataParser.parse(buffer.toByteArray());
+								DataFile df = DataParser.parseFromBytes(buffer.toByteArray());
 								DataProcessor.calculate(df);
 								files.add(df);
 								buffer.reset();

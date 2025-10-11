@@ -22,7 +22,7 @@ public class MockyDataFiles {
 		DataProcessor.resetFilesCounter();	
 
 		for(byte[] rawData : rawDatas) {
-			DataFile df = DataParser.parse(rawData);
+			DataFile df = DataParser.parseFromBytes(rawData);
 			DataProcessor.calculate(df);
 			files.add(df);
 

@@ -41,11 +41,18 @@ public class DataFile {
 	}
 
 	public DataFile() {
-		this.tcType = "types.l";
+		this.tcType = "types.k";
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 0.0;
 		this.values = new ArrayList<Double>();
 		this.chartBounds = new double[]{0.0, 10.0};
+	}
+
+	public DataFile(List<Double> values) {
+		this.tcType = "types.k";
+		this.timeStamp = LocalDateTime.now();
+		this.timeStep = 15.0;
+		this.values = values;
 	}
 
 	public static int getCounter() {
@@ -165,7 +172,7 @@ public class DataFile {
 		this.maxTemps.clear();
 		this.minTemps.clear();
 		
-		if (processedValues.size() == 0) {
+		if (processedValues.size() < 2) {
 			return;
 		}
 

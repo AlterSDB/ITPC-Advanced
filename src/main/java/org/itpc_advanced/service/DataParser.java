@@ -15,18 +15,36 @@ public class DataParser {
 	private static final Integer  STOP_BYTES = valueOf((byte)-35, (byte)125); 
 	
 	
-	public static DataFile parse(String rawData) {
+	public static DataFile parseFromText(String rawData) {
+		
+		List<Double> values = new ArrayList<Double>();
+		
 		try {
-			return new DataFile();
+			if (rawData == null || rawData.trim().isEmpty()) {
+				return new DataFile();
+			}
+			String cleanData = rawData.replaceAll("[.,]", "");
+			cleanData = cleanData.replaceAll("[^\\d\\s]", "");
+			
+			String[] tokens = cleanData.split("[\\s]+");
+			
+			for (String token : tokens) {
+				token = token.trim();
+				if (!token.isEmpty()) {
+					Integer value = Integer.parseInt(token);
+					values.add(new Double((double)value / 10));
+				}
+			}
 
-//		return new DataFile(tcType, timeStamp, timeStep, values);
+			return new DataFile(values);
+
 		} catch(Exception e) {
 			System.out.println("Error parsing data: " + e.getMessage());
 		}
-			return null;
+			return new DataFile();
 		}
 
-	public static DataFile parse(byte[] rawData) {
+	public static DataFile parseFromBytes(byte[] rawData) {
 		try {
 			if (rawData == null || 
 					rawData.length < 2 || 

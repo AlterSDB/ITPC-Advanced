@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Settings;
 import org.itpc_advanced.service.DataParser;
+import org.itpc_advanced.service.DataProcessor;
 import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.LocalTextBinder;
@@ -307,7 +308,18 @@ public class MainViewModel {
 	}
 
 	public void calculateByTextArea(String text) {
-		selectedDataFile.set(DataParser.parse(text));
+		selectedDataFile.set(DataParser.parseFromText(text));
+		DataProcessor.calculate(selectedDataFile.get());
+		
+		tempSetProperty.setValue(selectedDataFile.get().getTargetTemperature().toString());
+		selectedDataFile.get().setTargetTemperature(Integer.parseInt(tempSetProperty.getValue()));
+		linearOffsetProperty.setValue(selectedDataFile.get().getLinearOffset().toString());
+		updateInfo();
+		updateFields();
+		yAxisLowerBoundProperty.set(selectedDataFile.get().getChartBounds()[0]);
+		yAxisUpperBoundProperty.set(selectedDataFile.get().getChartBounds()[1]);
+		chartData.clear();
+		chartData.setAll(selectedDataFile.get().getChartData());
 	}
 
 }
