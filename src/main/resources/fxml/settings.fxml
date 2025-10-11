@@ -40,13 +40,15 @@
             <TextField fx:id="connTimeoutTextField" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Text fx:id="demoModeText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Demo mode: " GridPane.rowIndex="4" />
             <CheckBox fx:id="demoModeCheckBox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+            <Text fx:id="languageText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Язык: " GridPane.rowIndex="5" />
+            <Button fx:id="languageBtn" mnemonicParsing="false" text="Language" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
          </children>
          <padding>
             <Insets top="15.0" />
          </padding>
       </GridPane>
       
-      <Button fx:id="saveSettingsBtn" layoutX="120.0" layoutY="240.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="170.0" text="Сохранить настройки">
+      <Button fx:id="saveSettingsBtn" layoutX="142.0" layoutY="269.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" text="Close">
          <font>
             <Font size="14.0" />
          </font></Button>

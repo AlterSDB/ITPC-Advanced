@@ -1,7 +1,6 @@
 package org.itpc_advanced.viewmodel;
 
 import java.io.IOException;
-import java.util.Locale;
 
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Settings;
@@ -253,17 +252,6 @@ public class MainViewModel {
 		}
 
 		ReportBuilder.buildReport(selectedDataFile.get());
-	}
-
-	public void changeLanguage() {
-		LocalManager localization = LocalManager.getInstance();
-		if (localization.isEnglish()) {
-			localization.setLocale(new Locale("ru"));
-		} else {
-			localization.setLocale(Locale.ENGLISH);
-		}	
-		
-		typeProperty.set(LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
 	}
 
 	public void updateFields() {

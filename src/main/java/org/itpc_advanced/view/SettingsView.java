@@ -21,6 +21,7 @@ public class SettingsView {
     @FXML private Text shuffleValuesText;
     @FXML private Text maxDeviationText;
     @FXML private Text connTimeoutText;
+    @FXML private Text languageText;
     @FXML private MenuButton selectPortMenuBtn;
     @FXML private CheckBox shuffleValuesCheckBox;
     @FXML private TextField maxDeviationTextField;
@@ -28,6 +29,8 @@ public class SettingsView {
     @FXML private Text demoModeText;
     @FXML private CheckBox demoModeCheckBox;
     @FXML private Button saveSettingsBtn;
+    @FXML private Button languageBtn;
+    
 	private SettingsViewModel viewModel;
 
 	public void setViewModel(SettingsViewModel viewModel) {
@@ -64,9 +67,13 @@ public class SettingsView {
 		LocalTextBinder.bindText(maxDeviationText.textProperty(), "settings.max.deviation");
 		LocalTextBinder.bindText(connTimeoutText.textProperty(), "settings.connection.timeout");
 		LocalTextBinder.bindText(demoModeText.textProperty(), "settings.demo.mode");
+		LocalTextBinder.bindText(languageText.textProperty(), "settings.language");
 		LocalTextBinder.bindText(saveSettingsBtn.textProperty(), "settings.button.save");
+		LocalTextBinder.bindText(languageBtn.textProperty(), "settings.button.set.lang");
 		
 		saveSettingsBtn.setOnAction((event) -> viewModel.saveSettings());
+		languageBtn.setOnAction((event) -> viewModel.changeLanguage());
+
 	//	maxDeviationTextField.setOnKeyPressed(saveOnEnterKey());
 	//	connTimeoutTextField.setOnKeyPressed(saveOnEnterKey());
 	//	connTimeoutTextField.getParent().setOnKeyPressed(saveOnEnterKey());

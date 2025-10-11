@@ -42,7 +42,6 @@ public class MainView {
     @FXML private ImageView logoImageView;
     @FXML private Button copyResultBtn;
     @FXML private Button settingsBtn;
-    @FXML private Button languageBtn;
     @FXML private TextField tempSetField;
     @FXML private Text tempSetText;
     @FXML private TextField linearOffsetField;
@@ -67,11 +66,6 @@ public class MainView {
 	@FXML
 	private void onScanBtnAction() {
 		viewModel.readDataFiles();
-	}
-	
-	@FXML
-	private void onLanguageBtnAction() {
-		viewModel.changeLanguage();
 	}
 
 	@FXML
@@ -156,10 +150,6 @@ public class MainView {
 		return settingsBtn;
 	}
 
-	public Button getLanguageBtn() {
-		return languageBtn;
-	}
-
 	public TextField getTempSetField() {
 		return tempSetField;
 	}
@@ -197,7 +187,6 @@ public class MainView {
 		LocalTextBinder.bindText(scanBtn.textProperty(), "button.scan");
 		LocalTextBinder.bindText(settingsBtn.textProperty(), "button.settings");
 		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
-		LocalTextBinder.bindText(languageBtn.textProperty(), "button.set.lang");
 		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
 		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
 		LocalTextBinder.bindText(lineChart.titleProperty(), "chart.label");

@@ -1,6 +1,9 @@
 package org.itpc_advanced.viewmodel;
 
+import java.util.Locale;
+
 import org.itpc_advanced.model.Settings;
+import org.itpc_advanced.service.LocalManager;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.Property;
@@ -51,6 +54,16 @@ public class SettingsViewModel {
 		settings.setShuffleValues(shuffleValuesProperty.getValue());
 		settings.setDemoMode(demoModeProperty.getValue());
 		// add save in file
+	}
+	
+	public void changeLanguage() {
+		LocalManager localization = LocalManager.getInstance();
+
+		if (localization.isEnglish()) {
+			localization.setLocale(new Locale("ru"));
+		} else {
+			localization.setLocale(Locale.ENGLISH);
+		}	
 	}
 
 	public BooleanProperty shuffleValuesProperty() {
