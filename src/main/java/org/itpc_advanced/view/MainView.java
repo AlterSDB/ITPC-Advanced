@@ -20,7 +20,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -269,6 +269,30 @@ public class MainView {
 			tableView.getSelectionModel().select(newValue);
 			VisualFX.slideTransition(series.getNode());
 			updatingFromViewModel = false;
+		});
+		
+		viewModel.pointsCountProperty().addListener((obs, oldValue, newValue) -> {
+			if (newValue == null || newValue.isEmpty()) {
+				return;
+			}
+
+			int count = Integer.parseInt(newValue);
+			
+			if (count < 20) {
+				pointsCountValueText.setFill(Color.CRIMSON);
+				return;
+			}
+			
+			if (count < 30) {
+				pointsCountValueText.setFill(Color.YELLOW);
+				return;
+			}
+			
+			if (count > 30) {
+				pointsCountValueText.setFill(Color.LIME);
+				return;
+			}
+
 		});
 
 		viewModel.linearOffsetProperty().addListener((obs, oldValue, newValue) -> {
