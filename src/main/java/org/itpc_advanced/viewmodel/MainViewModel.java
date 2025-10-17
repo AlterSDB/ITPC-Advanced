@@ -42,7 +42,7 @@ public class MainViewModel {
 	private final DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty();
 	private final DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty();
 
-	private final StringProperty typeProperty = new SimpleStringProperty();
+	private final StringProperty tcTypeProperty = new SimpleStringProperty();
 	private final StringProperty timeStampProperty = new SimpleStringProperty();
 	private final StringProperty timeStepProperty = new SimpleStringProperty();
 	private final StringProperty pointsCountProperty = new SimpleStringProperty();
@@ -251,15 +251,17 @@ public class MainViewModel {
 
 	public void updateInfo(){
 		if (selectedDataFile.get() != null) {
-			VisualFX.changeText(typeProperty, LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
+			VisualFX.changeText(tcTypeProperty, LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
+			System.out.println(selectedDataFile.get().getTcType().toString());
 			VisualFX.changeText(timeStepProperty, selectedDataFile.get().getTimeStep().toString());
+	//		tcTypeProperty.set(LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
 			timeStampProperty.set(selectedDataFile.get().getTimeStamp().format(DateTimeFormatter.ISO_LOCAL_DATE).toString());
 			pointsCountProperty.set(new Integer(selectedDataFile.get().getValues().size()).toString());
 		}
 	}
 
 	public StringProperty tcTypeProperty() {
-		return typeProperty;
+		return tcTypeProperty;
 	}
 
 	public StringProperty timeStampProperty() {

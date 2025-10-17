@@ -77,22 +77,21 @@ public class VisualFX {
 	 * Animation of fast erasing and typing text
 	 */
 
-	public static void changeText(StringProperty oldTextProperty, String newTextProperty) {
+	public static void changeText(StringProperty textProperty, String newText) {
 		Timeline timeline = new Timeline();
-		String oldText = oldTextProperty.getValue() != null ? oldTextProperty.getValue().toString() : "";
-		String newText = newTextProperty.toString();
+		String oldText = textProperty.getValue() != null ? textProperty.getValue().toString() : "";
 		StringBuffer newTextBuffer = new StringBuffer();	
 		StringBuffer oldTextBuffer = new StringBuffer(oldText);
 		int duration = 0;
-		int step = 40;
+		int step = 70;
 
 		for (int i = 0; i < oldTextBuffer.length() ; i++) {
 			timeline.getKeyFrames().add(new KeyFrame(
 				Duration.millis(duration), (event) -> {
 					oldTextBuffer.deleteCharAt(oldTextBuffer.length() - 1);
-					oldTextProperty.setValue(oldTextBuffer.toString());
+					textProperty.setValue(oldTextBuffer.toString());
 				}));
-			duration += step - 10;
+			duration += step - 20;
 		}
 
 		for (int i = 0; i < newText.length() ; i++) {
@@ -100,7 +99,7 @@ public class VisualFX {
 				Duration.millis(duration), (event) -> {
 						if (newTextBuffer.length() < newText.length()) {
 							newTextBuffer.append(newText.charAt(newTextBuffer.length()));
-							oldTextProperty.setValue(newTextBuffer.toString());
+							textProperty.setValue(newTextBuffer.toString());
 						}
 				}));
 
