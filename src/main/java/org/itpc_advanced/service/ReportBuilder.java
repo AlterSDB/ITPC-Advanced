@@ -7,29 +7,18 @@ import java.util.List;
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Settings;
 
-import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
 public class ReportBuilder {
 
-	public static void buildReport(TableView<DataFile> table) {
-		if (table == null) {
-			return;
-		}
-
-		if (table.getSelectionModel().getSelectedItem() == null) {
-			return;
-		}
-
-		Clipboard clipboard = Clipboard.getSystemClipboard();
-		DataFile df = (DataFile) table.getSelectionModel().getSelectedItem();
-		clipboard.setContent(ReportBuilder.getReport(df));
-	}
-
 	public static void buildReport(DataFile df) {
+		if (df == null) {
+			return;
+		}
+		
 		Clipboard clipboard = Clipboard.getSystemClipboard();
-		clipboard.setContent(ReportBuilder.getReport(df));
+		clipboard.setContent(getReport(df));
 	}
 
 	public static ClipboardContent getReport(DataFile df) {
