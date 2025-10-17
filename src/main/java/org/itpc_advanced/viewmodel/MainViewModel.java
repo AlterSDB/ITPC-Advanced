@@ -1,5 +1,9 @@
 package org.itpc_advanced.viewmodel;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import org.itpc_advanced.model.DataFile;
@@ -21,6 +25,8 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
 
 public class MainViewModel {
 
@@ -284,6 +290,36 @@ public class MainViewModel {
 
 	public StringProperty manualTextProperty() {
 		return manualTextFieldProperty;
+	}
+
+	public void saveFile(TextArea textArea) {
+		if (selectedDataFile.get() == null) {
+			return;
+		}
+		
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Titl l e");
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files (.txt)", ".txt"));
+		String defaultFileName = "output_" + selectedDataFile.get().getFileId() + ".txt";
+		fc.setInitialFileName(defaultFileName);
+		
+		File file = fc.showSaveDialog(textArea.getScene().getWindow());
+		
+		if (file != null) {
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+				writer.write(textArea.getText());
+				System.out.println("Successful save!");
+				
+			} catch(IOException e) {
+				System.err.println("File save error: " + e.getMessage());
+				
+			}
+		}
+		
+		
+		
+		
+		
 	}
 
 }

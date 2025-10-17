@@ -38,6 +38,7 @@ public class MainView {
     @FXML private Button scanBtn;
     @FXML private Button copyResultBtn;
     @FXML private Button settingsBtn;
+    @FXML private Button saveBtn;
     @FXML private ImageView logoImageView;
     @FXML private LineChart<Number, Number> lineChart;
     @FXML private NumberAxis xAxis;
@@ -80,6 +81,12 @@ public class MainView {
 	@FXML
 	private void onCalculateBtnAction() {
 		viewModel.calculateManual(manualTextArea.getText());
+	}
+	
+	@FXML
+	private void onSaveBtnAction() {
+		viewModel.saveFile(manualTextArea);
+		
 	}
 
 	@FXML
@@ -151,6 +158,10 @@ public class MainView {
 	public Button getSettingsBtn() {
 		return settingsBtn;
 	}
+	
+	public Button getSaveBtn() {
+		return saveBtn;
+	}
 
 	public TextField getTempSetField() {
 		return tempSetField;
@@ -188,6 +199,7 @@ public class MainView {
 		LocalTextBinder.bindText(relativeMinText.textProperty(), "field.relative.min");
 		LocalTextBinder.bindText(scanBtn.textProperty(), "button.scan");
 		LocalTextBinder.bindText(settingsBtn.textProperty(), "button.settings");
+		LocalTextBinder.bindText(saveBtn.textProperty(), "button.save");
 		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
 		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
 		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
