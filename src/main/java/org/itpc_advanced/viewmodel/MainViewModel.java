@@ -1,5 +1,7 @@
 package org.itpc_advanced.viewmodel;
 
+import java.time.format.DateTimeFormatter;
+
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Settings;
 import org.itpc_advanced.service.DataParser;
@@ -252,9 +254,9 @@ public class MainViewModel {
 	public void updateInfo(){
 		if (selectedDataFile.get() != null) {
 			VisualFX.changeText(typeProperty, LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
-			VisualFX.changeText(timeStampProperty, selectedDataFile.get().getTimeStamp().toString());
 			VisualFX.changeText(timeStepProperty, selectedDataFile.get().getTimeStep().toString());
 			VisualFX.changeText(pointsCountProperty, new Integer(selectedDataFile.get().getValues().size()).toString());
+			timeStampProperty.set(selectedDataFile.get().getTimeStamp().format(DateTimeFormatter.ISO_LOCAL_DATE).toString());
 		}
 	}
 
