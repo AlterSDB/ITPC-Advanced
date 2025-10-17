@@ -12,10 +12,12 @@ import org.itpc_advanced.utils.VisualFX;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.WritableDoubleValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
@@ -44,6 +46,7 @@ public class MainViewModel {
 	private final StringProperty timeStampProperty = new SimpleStringProperty();
 	private final StringProperty timeStepProperty = new SimpleStringProperty();
 	private final StringProperty pointsCountProperty = new SimpleStringProperty();
+	private final StringProperty manualTextFieldProperty = new SimpleStringProperty();
 
 	public MainViewModel(){	
 		selectedDataFile.addListener((observable, oldDataFile, newDataFile) -> {
@@ -230,6 +233,8 @@ public class MainViewModel {
 		yAxisUpperBoundProperty.set(selectedDataFile.get().getChartBounds()[1]);
 		chartData.clear();
 		chartData.setAll(selectedDataFile.get().getChartData());
+		
+		manualTextFieldProperty.set(ReportBuilder.getTextFromRawValues(selectedDataFile.get().getValues()));
 
 		updateInfo();
 		updateFields();
@@ -273,6 +278,10 @@ public class MainViewModel {
 		selectedDataFile.set(DataParser.parseFromText(text));
 		DataProcessor.calculate(selectedDataFile.get());
 		updateAttributes();
+	}
+
+	public StringProperty manualTextProperty() {
+		return manualTextFieldProperty;
 	}
 
 }

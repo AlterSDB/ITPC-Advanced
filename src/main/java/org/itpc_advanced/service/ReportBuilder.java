@@ -2,6 +2,7 @@ package org.itpc_advanced.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.model.Settings;
@@ -82,6 +83,18 @@ public class ReportBuilder {
 	    content.putHtml(htmlText.toString().replace(".", ","));
 
 	    return content;
+	}
+
+	public static String getTextFromRawValues(List<Double> values) {
+		if (values == null || values.isEmpty()) {
+			return "";
+		}
+
+		String result = values.toString()
+				.replaceAll("[\\[\\]]", "")
+				.replaceAll(",\\s+", "\n");
+		
+		return result;
 	}
 
 }

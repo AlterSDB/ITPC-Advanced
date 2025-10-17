@@ -42,8 +42,6 @@ public class MainView {
     @FXML private LineChart<Number, Number> lineChart;
     @FXML private NumberAxis xAxis;
     @FXML private NumberAxis yAxis;
-    @FXML private Tab tabAutomatic;
-    @FXML private Tab tabManual;
     @FXML private TextArea manualTextArea;
     @FXML private Button calculateBtn;
 	@FXML private TableView<DataFile> tableView;
@@ -94,10 +92,6 @@ public class MainView {
 		showSettings();
 	}
 
-    public Tab getTabAutomatic() {
-		return tabAutomatic;
-	}
-
 	public TableView<DataFile> getTableView() {
 		return tableView;
 	}
@@ -108,10 +102,6 @@ public class MainView {
 
 	public Button getScanBtn() {
 		return scanBtn;
-	}
-
-	public Tab getTabManual() {
-		return tabManual;
 	}
 
 	public Text getTempText() {
@@ -202,8 +192,6 @@ public class MainView {
 		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
 		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
 		LocalTextBinder.bindText(lineChart.titleProperty(), "chart.label");
-		LocalTextBinder.bindText(tabAutomatic.textProperty(), "tab.auto");
-		LocalTextBinder.bindText(tabManual.textProperty(), "tab.manual");
 		LocalTextBinder.bindText(tableColumn.textProperty(), "table.header");
 
 		LocalTextBinder.bindText(timeStampText.textProperty(), "df.timestamp");
@@ -294,6 +282,7 @@ public class MainView {
 		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
 		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
 		linearOffsetField.textProperty().bindBidirectional(this.viewModel.linearOffsetProperty());
+		manualTextArea.textProperty().bindBidirectional(this.viewModel.manualTextProperty());
 
 		typeValueText.textProperty().bind(this.viewModel.tcTypeProperty());
 		timeStampValueText.textProperty().bind(this.viewModel.timeStampProperty());
