@@ -65,9 +65,7 @@ public class DataProcessor {
 	}
 
 	public static double findRelative(double target, double average) {
-		double relative = average - target;
-
-		return Math.ceil(relative * 10) / 10;
+		return ( (average * 10) - (target * 10) ) / 10;
 	}
 
 	public static double findAverage(List<Double> maxTemps) {
@@ -77,7 +75,7 @@ public class DataProcessor {
 		}
 		average /= maxTemps.size();
 
-		return Math.floor(average * 10) / 10;
+		return Math.ceil(average * 10) / 10;
 	}
 
 	public static ObservableList<XYChart.Data<Number,Number>> getChartData(DataFile df) {
