@@ -35,6 +35,16 @@
 	-fx-scale-y:          -fx-scale-x;
 }
 
+.text-area{
+	-fx-padding:          		1,1,1,1;
+	-fx-border-color:     		lightgray;
+	-fx-border-width:     		1;
+	-fx-border-radius:    		5;
+	-fx-text-fill:        		white;
+	-fx-background-color: 		#424853;
+	-fx-control-inner-background: 	#424853;
+}
+
 .text-field{
 	-fx-padding:          1,1,1,1;
 	-fx-border-color:     lightgray;
@@ -74,7 +84,7 @@
 
 .table-row-cell:selected .table-cell {
 	-fx-background-color:  #464b54;
-	-fx-border-radius:     10;
+	-fx-border-radius:     6;
 	-fx-background-radius: 10;
 	-fx-text-fill:         white;
 }
@@ -82,6 +92,8 @@
 .table-view {
 	-fx-background-color:  transparent;
 	-fx-background-radius: 45;
+	-fx-border-color:     lightgray;
+	-fx-border-radius:     6;
 }
 
 #rect {
