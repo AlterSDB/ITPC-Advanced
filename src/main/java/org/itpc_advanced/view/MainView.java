@@ -200,6 +200,7 @@ public class MainView {
 		LocalTextBinder.bindText(scanBtn.textProperty(), "button.scan");
 		LocalTextBinder.bindText(settingsBtn.textProperty(), "button.settings");
 		LocalTextBinder.bindText(saveBtn.textProperty(), "button.save");
+		LocalTextBinder.bindText(calculateBtn.textProperty(), "button.calculate");
 		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
 		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
 		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
