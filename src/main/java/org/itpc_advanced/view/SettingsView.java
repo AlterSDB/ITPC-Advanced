@@ -1,6 +1,5 @@
 package org.itpc_advanced.view;
 
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +17,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import jssc.SerialPortList;
@@ -41,26 +38,12 @@ public class SettingsView {
     @FXML private Button languageBtn;
 
 	private SettingsViewModel viewModel;
-	private KeyboardControlsManager focusManager;
 	private Stage currentStage;
 	
-	public void setStage(Stage stage) {
-		currentStage = stage;
-		setupKeyboardNavigation();
-	}
-
-	public void setViewModel(SettingsViewModel viewModel) {
-		this.viewModel = viewModel;
-		maxDeviationTextField.textProperty().bindBidirectional(this.viewModel.maxDeviationProperty());
-		connTimeoutTextField.textProperty().bindBidirectional(this.viewModel.timeoutProperty());
-		shuffleValuesCheckBox.selectedProperty().bindBidirectional(this.viewModel.shuffleValuesProperty());
-		demoModeCheckBox.selectedProperty().bindBidirectional(this.viewModel.demoModeProperty());
-		maxDeviationTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
-		connTimeoutTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
-	}
-
 	@FXML
 	void initialize() {
+		bindTextElements();
+
 		System.out.println("Available ports: ");
 		for (String port : SerialPortList.getPortNames()) {
 			System.out.println(port);
@@ -77,6 +60,26 @@ public class SettingsView {
 			});
 		}
 
+		closeBtn.setOnAction((event) -> closeWindow());
+		languageBtn.setOnAction((event) -> viewModel.changeLanguage());		
+	}
+
+	public void setStage(Stage stage) {
+		currentStage = stage;
+		setupKeyboardNavigation();
+	}
+
+	public void setViewModel(SettingsViewModel viewModel) {
+		this.viewModel = viewModel;
+		maxDeviationTextField.textProperty().bindBidirectional(this.viewModel.maxDeviationProperty());
+		connTimeoutTextField.textProperty().bindBidirectional(this.viewModel.timeoutProperty());
+		shuffleValuesCheckBox.selectedProperty().bindBidirectional(this.viewModel.shuffleValuesProperty());
+		demoModeCheckBox.selectedProperty().bindBidirectional(this.viewModel.demoModeProperty());
+		maxDeviationTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
+		connTimeoutTextField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(5));
+	}
+
+	private void bindTextElements() {
 		LocalTextBinder.bindText(portText.textProperty(), "settings.port");
 		LocalTextBinder.bindText(shuffleValuesText.textProperty(), "settings.shuffle.values");
 		LocalTextBinder.bindText(maxDeviationText.textProperty(), "settings.max.deviation");
@@ -85,14 +88,9 @@ public class SettingsView {
 		LocalTextBinder.bindText(languageText.textProperty(), "settings.language");
 		LocalTextBinder.bindText(closeBtn.textProperty(), "settings.button.save");
 		LocalTextBinder.bindText(languageBtn.textProperty(), "settings.button.set.lang");
-
-		closeBtn.setOnAction((event) -> closeWindow());
-		languageBtn.setOnAction((event) -> viewModel.changeLanguage());		
-
 	}
 
 	private void setupKeyboardNavigation() {
-		Stage currentStage = (Stage)portText.getScene().getWindow();
 		List<Node> focusableElements = new ArrayList<>();
 		focusableElements.add(selectPortMenuBtn);
 		focusableElements.add(shuffleValuesCheckBox);
@@ -102,14 +100,12 @@ public class SettingsView {
 		focusableElements.add(languageBtn);
 		focusableElements.add(closeBtn);
 		
-		focusManager = new KeyboardControlsManager(currentStage, focusableElements);
-		
+		new KeyboardControlsManager(currentStage, focusableElements);
 	}
 
 	private void closeWindow() {
 		this.viewModel.saveSettings();
-		Stage stage = (Stage)portText.getScene().getWindow();
-		stage.close();
+		currentStage.close();
 	}
 
 }
