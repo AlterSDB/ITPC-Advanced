@@ -1,12 +1,13 @@
 package org.itpc_advanced.service;
 
-import java.awt.Checkbox;
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.MenuButton;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -27,7 +28,9 @@ public class KeyboardControlsManager {
 		if (!focusableElements.isEmpty()) {
 			focusableElements.get(0).requestFocus();
 		}
-		stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+		if (stage.getScene() != null) {
+			stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+		}
 	}
 	
 	private void handleKeyPress(KeyEvent event) {
@@ -65,19 +68,13 @@ public class KeyboardControlsManager {
 		
 		Node element = focusableElements.get(currentIndex);
 
-		if (element instanceof Button) {
-			Button button = (Button) focusableElements.get(currentIndex);
+		if (element instanceof ButtonBase) {
+			ButtonBase button = (ButtonBase) focusableElements.get(currentIndex);
 			button.fire();
 		}
-		
-		if (element instanceof MenuButton) {
-			MenuButton menuBtn = (MenuButton) focusableElements.get(currentIndex);
-			menuBtn.fire();
-		}
-		
-		if (element instanceof CheckBox) {
-			CheckBox checkBox = (CheckBox) focusableElements.get(currentIndex);
-			checkBox.fire();
+
+		else {
+			System.out.println("Enter Key Pressed");
 		}
 		
 	}
@@ -110,6 +107,7 @@ public class KeyboardControlsManager {
 		if (currentIndex >= 0 && currentIndex < focusableElements.size()) {
 			Node currentElement = focusableElements.get(currentIndex);
 			currentElement.requestFocus();
+			System.out.println(currentElement.getClass() + currentElement.getId());
 		}
 		
 	}
@@ -120,8 +118,7 @@ public class KeyboardControlsManager {
 		}
 		return null;
 	}
-	
-	
-	
+
+
 
 }

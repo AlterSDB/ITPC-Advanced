@@ -1,8 +1,11 @@
 package org.itpc_advanced.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.itpc_advanced.model.DataFile;
+import org.itpc_advanced.service.KeyboardControlsManager;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.service.TextFormatterFactory;
@@ -13,6 +16,7 @@ import org.itpc_advanced.viewmodel.SettingsViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -184,6 +188,7 @@ public class MainView {
 	}
 
 	private boolean updatingFromViewModel = false;
+	private Stage currentStage;
 
 	@FXML
 	@SuppressWarnings("unchecked")
@@ -267,6 +272,21 @@ public class MainView {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setStage(Stage stage) {
+		currentStage = stage;
+		setupKeyboardNavigation();
+	}
+	
+	private void setupKeyboardNavigation() {
+		List<Node> focusableElements = new ArrayList<>();
+		focusableElements.add(scanBtn);
+		focusableElements.add(copyResultBtn);
+		focusableElements.add(settingsBtn);
+		focusableElements.add(saveBtn);
+		
+		new KeyboardControlsManager(currentStage, focusableElements);
 	}
 
 	public void setViewModel(MainViewModel viewModel) {
