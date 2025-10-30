@@ -13,6 +13,8 @@ import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.viewmodel.MainViewModel;
 import org.itpc_advanced.viewmodel.SettingsViewModel;
 
+import com.sun.javafx.css.StyleCache.Key;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
@@ -32,6 +34,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -194,7 +199,7 @@ public class MainView {
 	@SuppressWarnings("unchecked")
 	void initialize() {
 		System.out.println("Init...");
-		TableColumn<DataFile, Integer> tableColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
+		TableColumn<DataFile, Integer> tableColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);		
 
 		LocalTextBinder.bindText(tempSetText.textProperty(), "field.set.target");
 		LocalTextBinder.bindText(linearOffsetText.textProperty(), "field.linear.offset");
@@ -287,6 +292,12 @@ public class MainView {
 		focusableElements.add(saveBtn);
 		
 		new KeyboardControlsManager(currentStage, focusableElements);
+		
+		KeyCombination keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
+		currentStage.getScene().getAccelerators().put(keyCombination, () -> {
+			saveBtn.fire();
+			System.out.println("Save pressed on Ctrl+S");
+		});
 	}
 
 	public void setViewModel(MainViewModel viewModel) {
