@@ -80,10 +80,6 @@ public class KeyboardControlsManager {
 			ButtonBase button = (ButtonBase) focusableElements.get(currentIndex);
 			button.fire();
 		}
-
-		else {
-			System.out.println("Enter Key Pressed");
-		}
 		
 	}
 
@@ -115,10 +111,6 @@ public class KeyboardControlsManager {
 		if (currentIndex >= 0 && currentIndex < focusableElements.size()) {
 			Node currentElement = focusableElements.get(currentIndex);
 			currentElement.requestFocus();
-			System.out.println(currentElement.getClass() + currentElement.getId());
-			if (currentElement instanceof TableView<?>) {
-				System.out.println("ESSS");
-			}
 		}
 		
 	}

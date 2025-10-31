@@ -24,7 +24,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextArea;
-import javafx.scene.shape.Path;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 public class MainViewModel {
@@ -128,19 +129,19 @@ public class MainViewModel {
 		return fileList;
 	}
 
-	public ObjectProperty<DataFile> selectedDataFileProperty() {
-		return selectedDataFile;
-	}
-
 	public void readDataFiles() {
 		DataFile.resetCounter();
 		fileList.clear();
-
+	
 		if (settings.isDemoMode()) {
 			fileList.addAll(MockyDataFiles.mock());
 		} else {
 			fileList.addAll(DeviceScanner.readDataFiles());
 		}
+	}
+
+	public ObjectProperty<DataFile> selectedDataFileProperty() {
+		return selectedDataFile;
 	}
 
 	public StringProperty averageMaxProperty() {
@@ -167,10 +168,6 @@ public class MainViewModel {
 		return linearOffsetProperty;
 	}
 
-	public ObservableList<XYChart.Data<Number, Number>> getChartData() {
-		return chartData;
-	}
-
 	public StringProperty chartTitleProperty() {
 		return chartTitle;
 	}
@@ -181,6 +178,10 @@ public class MainViewModel {
 
 	public StringProperty yAxisLabelProperty() {
 		return yAxisLabel;
+	}
+
+	public ObservableList<XYChart.Data<Number, Number>> getChartData() {
+		return chartData;
 	}
 
 	public String getChartTitle() {
@@ -257,9 +258,7 @@ public class MainViewModel {
 	public void updateInfo(){
 		if (selectedDataFile.get() != null) {
 			VisualFX.changeText(tcTypeProperty, LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
-			System.out.println(selectedDataFile.get().getTcType().toString());
 			VisualFX.changeText(timeStepProperty, selectedDataFile.get().getTimeStep().toString());
-	//		tcTypeProperty.set(LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
 			timeStampProperty.set(selectedDataFile.get().getTimeStamp().format(DateTimeFormatter.ISO_LOCAL_DATE).toString());
 			pointsCountProperty.set(new Integer(selectedDataFile.get().getValues().size()).toString());
 		}
@@ -303,6 +302,32 @@ public class MainViewModel {
 			FileManager.saveFile(path, data);
 		}
 
+	}
+
+	public void setColorablePointsCount(Text pointsCountText) {
+		pointsCountProperty.addListener((obs, oldValue, newValue) -> {
+			if (newValue == null || newValue.isEmpty()) {
+				return;
+			}
+
+			int count = Integer.parseInt(newValue);
+
+			if (count > 30) {
+				pointsCountText.setFill(Color.LIME);
+				return;
+			}
+
+			if (count < 30) {
+				pointsCountText.setFill(Color.YELLOW);
+				return;
+			}
+
+			if (count < 20) {
+				pointsCountText.setFill(Color.CRIMSON);
+				return;
+			}
+
+		});
 	}
 
 }

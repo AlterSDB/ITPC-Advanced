@@ -35,7 +35,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -77,35 +76,11 @@ public class MainView {
     @FXML private TextField linearOffsetField;
 
     private XYChart.Series<Number, Number> series;
+	private boolean updatingFromViewModel = false;
 	private MainViewModel viewModel;
 	private Stage settingsStage;
-
-	@FXML
-	private void onScanBtnAction() {
-		viewModel.readDataFiles();
-		tableView.requestFocus();
-	}
-
-	@FXML
-	private void onCalculateBtnAction() {
-		viewModel.calculateManual(manualTextArea.getText());
-	}
-	
-	@FXML
-	private void onSaveBtnAction() {
-		viewModel.saveFile(manualTextArea);
-		
-	}
-
-	@FXML
-	private void onCopyResultsBtnAction() {
-		viewModel.copyResults();
-	}
-
-	@FXML
-	private void onSettingsBtnAction() {
-		showSettings();
-	}
+	private Stage currentStage;
+	private Label label;
 
 	public TableView<DataFile> getTableView() {
 		return tableView;
@@ -191,40 +166,14 @@ public class MainView {
 		return yAxis;
 	}
 
-	private boolean updatingFromViewModel = false;
-	private Stage currentStage;
-
 	@FXML
-	@SuppressWarnings("unchecked")
 	void initialize() {
-		System.out.println("Init...");
-		TableColumn<DataFile, Integer> tableColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);		
-
-		LocalTextBinder.bindText(tempSetText.textProperty(), "field.set.target");
-		LocalTextBinder.bindText(linearOffsetText.textProperty(), "field.linear.offset");
-		LocalTextBinder.bindText(averageMaxText.textProperty(), "field.average.max");
-		LocalTextBinder.bindText(averageMinText.textProperty(), "field.average.min");
-		LocalTextBinder.bindText(relativeMaxText.textProperty(), "field.relative.max");
-		LocalTextBinder.bindText(relativeMinText.textProperty(), "field.relative.min");
-		LocalTextBinder.bindText(scanBtn.textProperty(), "button.scan");
-		LocalTextBinder.bindText(settingsBtn.textProperty(), "button.settings");
-		LocalTextBinder.bindText(saveBtn.textProperty(), "button.save");
-		LocalTextBinder.bindText(calculateBtn.textProperty(), "button.calculate");
-		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
-		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
-		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
-		LocalTextBinder.bindText(lineChart.titleProperty(), "chart.label");
-		LocalTextBinder.bindText(tableColumn.textProperty(), "table.header");
-
-		LocalTextBinder.bindText(timeStampText.textProperty(), "df.timestamp");
-		LocalTextBinder.bindText(typeText.textProperty(), "df.tc.type");
-		LocalTextBinder.bindText(timeStepText.textProperty(), "df.timestep");
-		LocalTextBinder.bindText(pointsCountText.textProperty(), "df.points.count");
-
-		Label label = new Label();
+		label = new Label();
 		tableView.setPlaceholder(label);
-		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");
-
+		TableColumn<DataFile, ?> tableColumn = (TableColumn<DataFile, ?>) tableView.getColumns().get(0);
+	
+		localizeTextElements();
+	
 		tableColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
 		tableColumn.setCellFactory((column) -> {
 				return new TableCell<DataFile, Integer>() {
@@ -240,30 +189,63 @@ public class MainView {
 					}
 				};
 		});
-
+	
 		LocalManager.getInstance().resourceBundleProperty().addListener((obs, oldVal, newVal) -> {
 			tableColumn.setVisible(false);
 			tableColumn.setVisible(true);
 		});
-
-	}
 	
+	}
+
+	public void setStage(Stage stage) {
+		currentStage = stage;
+		setupKeyboardNavigation();
+	}
+
+	public void setViewModel(MainViewModel viewModel) {
+		this.viewModel = viewModel;
+		tableView.setItems(viewModel.getFileList());
+		tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
+			if (!updatingFromViewModel) {
+				viewModel.selectedDataFileProperty().set(newValue);
+			}
+		});
+	
+		viewModel.selectedDataFileProperty().addListener((obs, oldValue, newValue) -> {
+			updatingFromViewModel = true;
+			tableView.getSelectionModel().select(newValue);
+			VisualFX.slideTransition(series.getNode());
+			updatingFromViewModel = false;
+		});
+		
+		viewModel.setColorablePointsCount(pointsCountValueText);
+		viewModel.linearOffsetProperty().addListener((obs, oldValue, newValue) -> {
+			VisualFX.slideTransition(series.getNode());
+			this.viewModel.updateFields();
+		});
+		tempSetField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(7));
+		linearOffsetField.setTextFormatter(TextFormatterFactory.getOnlySignedDigitsTextFormatter(7));
+	
+		bindProperties();
+		initLineChart();
+	}
+
 	public void showSettings() {
 		if (settingsStage != null && settingsStage.isShowing()) {
 			settingsStage.close();
 			return;
 		}
-
+	
 		try {
-			settingsStage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings.fxml"));
 			Parent parent = loader.load();
-
+	
 			SettingsView settingsController = loader.getController();
 			SettingsViewModel settingsViewModel = new SettingsViewModel();
 			settingsController.setViewModel(settingsViewModel);
-
 			Scene scene = new Scene(parent);
+			
+			settingsStage = new Stage();
 			settingsStage.setScene(scene);
 			settingsStage.initOwner((Stage)scanBtn.getScene().getWindow());
 			settingsStage.initModality(Modality.WINDOW_MODAL);
@@ -277,12 +259,30 @@ public class MainView {
 			e.printStackTrace();
 		}
 	}
-	
-	public void setStage(Stage stage) {
-		currentStage = stage;
-		setupKeyboardNavigation();
+
+	private void localizeTextElements() {
+		LocalTextBinder.bindText(tempSetText.textProperty(), "field.set.target");
+		LocalTextBinder.bindText(linearOffsetText.textProperty(), "field.linear.offset");
+		LocalTextBinder.bindText(averageMaxText.textProperty(), "field.average.max");
+		LocalTextBinder.bindText(averageMinText.textProperty(), "field.average.min");
+		LocalTextBinder.bindText(relativeMaxText.textProperty(), "field.relative.max");
+		LocalTextBinder.bindText(relativeMinText.textProperty(), "field.relative.min");
+		LocalTextBinder.bindText(scanBtn.textProperty(), "button.scan");
+		LocalTextBinder.bindText(settingsBtn.textProperty(), "button.settings");
+		LocalTextBinder.bindText(saveBtn.textProperty(), "button.save");
+		LocalTextBinder.bindText(calculateBtn.textProperty(), "button.calculate");
+		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
+		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
+		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
+		LocalTextBinder.bindText(lineChart.titleProperty(), "chart.label");
+		LocalTextBinder.bindText(tableColumn.textProperty(), "table.header");
+		LocalTextBinder.bindText(timeStampText.textProperty(), "df.timestamp");
+		LocalTextBinder.bindText(typeText.textProperty(), "df.tc.type");
+		LocalTextBinder.bindText(timeStepText.textProperty(), "df.timestep");
+		LocalTextBinder.bindText(pointsCountText.textProperty(), "df.points.count");
+		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");
 	}
-	
+
 	private void setupKeyboardNavigation() {
 		List<Node> focusableElements = new ArrayList<>();
 		focusableElements.add(settingsBtn);
@@ -297,74 +297,13 @@ public class MainView {
 		KeyCombination keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
 		currentStage.getScene().getAccelerators().put(keyCombination, () -> {
 			saveBtn.fire();
-			System.out.println("Save pressed on Ctrl+S");
 		});
 	}
 
-	public void setViewModel(MainViewModel viewModel) {
-		this.viewModel = viewModel;
-		tableView.setItems(viewModel.getFileList());
-		tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
-			if (!updatingFromViewModel) {
-				viewModel.selectedDataFileProperty().set(newValue);
-			}
-		});
-
-		viewModel.selectedDataFileProperty().addListener((obs, oldValue, newValue) -> {
-			updatingFromViewModel = true;
-			tableView.getSelectionModel().select(newValue);
-			VisualFX.slideTransition(series.getNode());
-			updatingFromViewModel = false;
-		});
-		
-		viewModel.pointsCountProperty().addListener((obs, oldValue, newValue) -> {
-			if (newValue == null || newValue.isEmpty()) {
-				return;
-			}
-
-			int count = Integer.parseInt(newValue);
-			
-			if (count < 20) {
-				pointsCountValueText.setFill(Color.CRIMSON);
-				return;
-			}
-			
-			if (count < 30) {
-				pointsCountValueText.setFill(Color.YELLOW);
-				return;
-			}
-			
-			if (count > 30) {
-				pointsCountValueText.setFill(Color.LIME);
-				return;
-			}
-
-		});
-
-		viewModel.linearOffsetProperty().addListener((obs, oldValue, newValue) -> {
-			VisualFX.slideTransition(series.getNode());
-			this.viewModel.updateFields();
-		});
-
-		relativeMaxField.textProperty().bind(this.viewModel.relativeMaxProperty());
-		relativeMinField.textProperty().bind(this.viewModel.relativeMinProperty());
-		averageMaxField.textProperty().bind(this.viewModel.averageMaxProperty());
-		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
-		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
-		linearOffsetField.textProperty().bindBidirectional(this.viewModel.linearOffsetProperty());
-		manualTextArea.textProperty().bindBidirectional(this.viewModel.manualTextProperty());
-
-		typeValueText.textProperty().bind(this.viewModel.tcTypeProperty());
-		timeStampValueText.textProperty().bind(this.viewModel.timeStampProperty());
-		timeStepValueText.textProperty().bind(this.viewModel.timeStepProperty());
-		pointsCountValueText.textProperty().bind(this.viewModel.pointsCountProperty());
-
-		tempSetField.setTextFormatter(TextFormatterFactory.getOnlyDigitsTextFormatter(7));
-		linearOffsetField.setTextFormatter(TextFormatterFactory.getOnlySignedDigitsTextFormatter(7));
-
+	private void initLineChart() {
 		series = new XYChart.Series<Number, Number>();
 		series.setData(viewModel.getChartData());
-		lineChart.getData().add(series);
+		lineChart.getData().add(series); 
 		lineChart.setCreateSymbols(false);
 		lineChart.setLegendVisible(false);
 		lineChart.setAnimated(false);
@@ -377,6 +316,48 @@ public class MainView {
 		yAxis.setMinorTickCount(0);
 		yAxis.lowerBoundProperty().bind(this.viewModel.yAxisLowerBoundProperty());
 		yAxis.upperBoundProperty().bind(this.viewModel.yAxisUpperBoundProperty());
+		
+	}
+
+	private void bindProperties() {
+		relativeMaxField.textProperty().bind(this.viewModel.relativeMaxProperty());
+		relativeMinField.textProperty().bind(this.viewModel.relativeMinProperty());
+		averageMaxField.textProperty().bind(this.viewModel.averageMaxProperty());
+		averageMinField.textProperty().bind(this.viewModel.averageMinProperty());
+		tempSetField.textProperty().bindBidirectional(this.viewModel.tempSetProperty());
+		linearOffsetField.textProperty().bindBidirectional(this.viewModel.linearOffsetProperty());
+		manualTextArea.textProperty().bindBidirectional(this.viewModel.manualTextProperty());
+		typeValueText.textProperty().bind(this.viewModel.tcTypeProperty());
+		timeStampValueText.textProperty().bind(this.viewModel.timeStampProperty());
+		timeStepValueText.textProperty().bind(this.viewModel.timeStepProperty());
+		pointsCountValueText.textProperty().bind(this.viewModel.pointsCountProperty());
+	}
+
+	@FXML
+	private void onScanBtnAction() {
+		viewModel.readDataFiles();
+		tableView.requestFocus();
+	}
+
+	@FXML
+	private void onCalculateBtnAction() {
+		viewModel.calculateManual(manualTextArea.getText());
+	}
+
+	@FXML
+	private void onSaveBtnAction() {
+		viewModel.saveFile(manualTextArea);
+		
+	}
+
+	@FXML
+	private void onCopyResultsBtnAction() {
+		viewModel.copyResults();
+	}
+
+	@FXML
+	private void onSettingsBtnAction() {
+		showSettings();
 	}
 
 }

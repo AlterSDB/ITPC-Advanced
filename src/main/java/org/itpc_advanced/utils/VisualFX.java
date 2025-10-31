@@ -143,7 +143,6 @@ public class VisualFX {
 
 	public static void changeTextField(TextField field, String newText) {
 		if (field == null ||newText.isEmpty()) {
-			System.out.println("ERROR VisualFX.changeText - null or empty");
 			return;
 		}
 
