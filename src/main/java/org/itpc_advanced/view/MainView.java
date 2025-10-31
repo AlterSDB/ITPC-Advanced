@@ -85,6 +85,7 @@ public class MainView {
 	@FXML
 	private void onScanBtnAction() {
 		viewModel.readDataFiles();
+		tableView.requestFocus();
 	}
 
 	@FXML
@@ -286,10 +287,12 @@ public class MainView {
 	
 	private void setupKeyboardNavigation() {
 		List<Node> focusableElements = new ArrayList<>();
-		focusableElements.add(scanBtn);
-		focusableElements.add(copyResultBtn);
 		focusableElements.add(settingsBtn);
+		focusableElements.add(tableView);
+		focusableElements.add(scanBtn);
+		focusableElements.add(calculateBtn);
 		focusableElements.add(saveBtn);
+		focusableElements.add(copyResultBtn);
 		
 		new KeyboardControlsManager(currentStage, focusableElements);
 		

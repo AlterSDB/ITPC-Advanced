@@ -28,6 +28,12 @@
 	
 }
 
+.button:focused {
+	-fx-border-color: orange;
+	-fx-background-color: transparent;
+	
+}
+
 .button:pressed {
 	-fx-background-color: linear-gradient(transparent 50%, #7a7a7a);
 	-fx-scale-shape:      true;

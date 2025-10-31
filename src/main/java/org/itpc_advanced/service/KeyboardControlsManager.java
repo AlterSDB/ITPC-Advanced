@@ -9,6 +9,7 @@ import javafx.scene.control.ButtonBase;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -51,6 +52,12 @@ public class KeyboardControlsManager {
 			case ESCAPE:
 				event.consume();
 				closeWindow();
+				break;
+			case SPACE:
+				event.consume();
+				if (!focusableElements.isEmpty()) {
+					focusableElements.get(0).requestFocus();
+				}
 				break;
 			default:
 				break;
@@ -109,6 +116,9 @@ public class KeyboardControlsManager {
 			Node currentElement = focusableElements.get(currentIndex);
 			currentElement.requestFocus();
 			System.out.println(currentElement.getClass() + currentElement.getId());
+			if (currentElement instanceof TableView<?>) {
+				System.out.println("ESSS");
+			}
 		}
 		
 	}
