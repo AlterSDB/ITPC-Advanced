@@ -11,6 +11,7 @@ import org.itpc_advanced.model.Settings;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DataProcessor;
 import org.itpc_advanced.service.DeviceScanner;
+import org.itpc_advanced.service.FileManager;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.ReportBuilder;
 import org.itpc_advanced.utils.MockyDataFiles;
@@ -26,6 +27,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextArea;
+import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 
 public class MainViewModel {
@@ -293,33 +295,17 @@ public class MainViewModel {
 	}
 
 	public void saveFile(TextArea textArea) {
-		if (selectedDataFile.get() == null) {
-			return;
+		int fileId = selectedDataFile.get() != null ? selectedDataFile.get().getFileId() : 0;
+		String defaultFileName = "output_" + fileId + ".txt";
+		FileChooser fileChooser = FileManager.getFileChooser(defaultFileName);
+
+		File path = fileChooser.showSaveDialog(textArea.getScene().getWindow());
+		String data = textArea.getText();
+
+		if (path != null && data != null) {
+			FileManager.saveFile(path, data);
 		}
-		
-		FileChooser fc = new FileChooser();
-		fc.setTitle("Titl l e");
-		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files (.txt)", ".txt"));
-		String defaultFileName = "output_" + selectedDataFile.get().getFileId() + ".txt";
-		fc.setInitialFileName(defaultFileName);
-		
-		File file = fc.showSaveDialog(textArea.getScene().getWindow());
-		
-		if (file != null) {
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-				writer.write(textArea.getText());
-				System.out.println("Successful save!");
-				
-			} catch(IOException e) {
-				System.err.println("File save error: " + e.getMessage());
-				
-			}
-		}
-		
-		
-		
-		
-		
+
 	}
 
 }
