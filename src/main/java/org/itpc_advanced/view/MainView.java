@@ -13,8 +13,6 @@ import org.itpc_advanced.utils.VisualFX;
 import org.itpc_advanced.viewmodel.MainViewModel;
 import org.itpc_advanced.viewmodel.SettingsViewModel;
 
-import com.sun.javafx.css.StyleCache.Key;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;

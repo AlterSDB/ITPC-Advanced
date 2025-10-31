@@ -1,9 +1,6 @@
 package org.itpc_advanced.viewmodel;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import org.itpc_advanced.model.DataFile;
