@@ -185,8 +185,11 @@ public class DataFile {
 		setAverageMin(DataProcessor.findAverage(this.minTemps));
 		setRelativeMax(DataProcessor.findRelative(this.targetTemperature, averageMax));
 		setRelativeMin(DataProcessor.findRelative(this.targetTemperature, averageMin));
-/**/	setChartBounds(DataProcessor.findChartBounds(processedValues));
-		setChartData(DataProcessor.getChartData(this));
+
+		if (linearOffset > 0) {
+			setChartBounds(DataProcessor.findChartBounds(processedValues));
+			setChartData(DataProcessor.getChartData(this));
+		};
 	}
 
 	public void setAverageMax(Double averageMax) {

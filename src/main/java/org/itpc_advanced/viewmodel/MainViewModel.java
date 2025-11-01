@@ -242,8 +242,8 @@ public class MainViewModel {
 		
 		manualTextFieldProperty.set(ReportBuilder.getTextFromRawValues(selectedDataFile.get().getValues()));
 
-		updateInfo();
 		updateFields();
+		updateInfo();
 	}
 
 	public void updateFields() {

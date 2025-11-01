@@ -84,44 +84,41 @@ public class DataProcessor {
 
 		for (int i = 0; i < df.getProcessedValues().size(); i++){
 			chartData.add(new XYChart.Data<Number, Number>(time, df.getProcessedValues().get(i)));
-			time += df.getTimeStep();
+			time += df.getTimeStep() / 60;
 		}
 
 		return chartData;
 	}
 
-    public static double[] findChartBounds(List<Double> sortedValues) {
+    public static double[] findChartBounds(List<Double> sortedValues) {	
 		if (sortedValues.size() < 5) {
 			return new double[] {0, 10};
 		}
 
 		double[] bounds  = new double[2];
+		
+		int multiplier = 5;
 		// Lower bound
 		bounds[0]  = sortedValues.get(0);
-		bounds[0]  = Math.floor(bounds[0]) / 10;
-		bounds[0]  = Math.floor(bounds[0]) * 10;
+		bounds[0]  = Math.floor(bounds[0]) / multiplier;
+		bounds[0]  = Math.floor(bounds[0]) * multiplier;
 
 		// Upper bound
 		bounds[1]  = sortedValues.get(sortedValues.size() - 1);
-		bounds[1]  = Math.ceil(bounds[1]) / 10;
-		bounds[1]  = Math.ceil(bounds[1]) * 10;
+		bounds[1]  = Math.ceil(bounds[1]) / multiplier;
+		bounds[1]  = Math.ceil(bounds[1]) * multiplier;
 
-		if (bounds[1] - bounds[0] == 20) {
-			bounds[0] += 5;
-			bounds[1] -= 5;
-
-			while (sortedValues.get(sortedValues.size() - 1) > bounds[1]) {
-				bounds[1] += 1;
-			}
-
-			while (sortedValues.get(1) < bounds[0]) {
-				bounds[0] -= 1;
-			}
-		}
-		
 		if (bounds[0] == bounds[1]) {
 			bounds[0] -= 5;
 			bounds[1] += 5;
+		}
+
+		while (sortedValues.get(sortedValues.size() - 1) > bounds[1] - 1) {
+			bounds[1] += 1;
+		}
+
+		while (sortedValues.get(1) < bounds[0] + 1) {
+			bounds[0] -= 1;
 		}
 
 		return bounds;
