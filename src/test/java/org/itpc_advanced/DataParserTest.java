@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.DataParser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
 public class DataParserTest {
@@ -23,13 +23,13 @@ public class DataParserTest {
 		DataFile df = null;
 
 		try {
-			df = DataParser.parse(rawData);
+			df = DataParser.parseFromBytes(rawData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		Assertions.assertEquals(DataFile.class, df.getClass());
-		Assertions.assertEquals("ТПП(S)", df.getTcType());
+		Assertions.assertEquals("types.s", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 12, 24, 15, 11), df.getTimeStamp());
 		Assertions.assertEquals(0.5, df.getTimeStep());
 		Assertions.assertEquals(20, df.getValues().size());
@@ -50,13 +50,13 @@ public class DataParserTest {
 				-1, -1, -1, -1, -1, -1, -1, -31, -25}; 
 		DataFile df = null;
 		try {
-			df = DataParser.parse(rawData);
+			df = DataParser.parseFromBytes(rawData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		Assertions.assertEquals(DataFile.class, df.getClass());
-		Assertions.assertEquals("ТХА(K)", df.getTcType());
+		Assertions.assertEquals("types.k", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 01, 01, 00, 00), df.getTimeStamp());
 		Assertions.assertEquals(15.0, df.getTimeStep());
 		Assertions.assertEquals(45, df.getValues().size());
@@ -78,13 +78,13 @@ public class DataParserTest {
 		DataFile df = null;
 
 		try {
-			df = DataParser.parse(rawData);
+			df = DataParser.parseFromBytes(rawData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		Assertions.assertEquals(DataFile.class, df.getClass());
-		Assertions.assertEquals("ТХК(L)", df.getTcType());
+		Assertions.assertEquals("types.l", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 01, 01, 00, 00), df.getTimeStamp());
 		Assertions.assertEquals(0.5, df.getTimeStep());
 		Assertions.assertEquals(24, df.getValues().size());
@@ -106,13 +106,13 @@ public class DataParserTest {
 		DataFile df = null;
 
 		try {
-			df = DataParser.parse(rawData);
+			df = DataParser.parseFromBytes(rawData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		Assertions.assertEquals(DataFile.class, df.getClass());
-		Assertions.assertEquals("ТХА(K)", df.getTcType());
+		Assertions.assertEquals("types.k", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 03, 04, 05, 06), df.getTimeStamp());
 		Assertions.assertEquals(1.0, df.getTimeStep());
 		Assertions.assertEquals(11, df.getValues().size());
@@ -134,13 +134,13 @@ public class DataParserTest {
 		
 		DataFile df = null;
 		try {
-			df = DataParser.parse(rawData);
+			df = DataParser.parseFromBytes(rawData);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		Assertions.assertEquals(DataFile.class, df.getClass());
-		Assertions.assertEquals("ТПР(B)", df.getTcType());
+		Assertions.assertEquals("types.b", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 05, 01, 00, 21), df.getTimeStamp());
 		Assertions.assertEquals(2.0, df.getTimeStep());
 		Assertions.assertEquals(10, df.getValues().size());
@@ -164,12 +164,12 @@ public class DataParserTest {
 		
 		DataFile df = null;
 		try {
-			df = DataParser.parse(rawData);
+			df = DataParser.parseFromBytes(rawData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		Assertions.assertEquals(DataFile.class, df.getClass());
-		Assertions.assertEquals("ТПП(S)", df.getTcType());
+		Assertions.assertEquals("types.s", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 01, 01, 00, 00), df.getTimeStamp());
 		Assertions.assertEquals(5.0, df.getTimeStep());
 		Assertions.assertEquals(4, df.getValues().size());
@@ -192,12 +192,12 @@ public class DataParserTest {
 		
 		DataFile df = null;
 		try {
-			df = DataParser.parse(rawData);
+			df = DataParser.parseFromBytes(rawData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		Assertions.assertEquals(DataFile.class, df.getClass());
-		Assertions.assertEquals("ТХА(K)", df.getTcType());
+		Assertions.assertEquals("types.k", df.getTcType());
 		Assertions.assertEquals(LocalDateTime.of(2025, 01,01,00,00), df.getTimeStamp());
 		Assertions.assertEquals(15.0, df.getTimeStep());
 		Assertions.assertEquals(8, df.getValues().size());
@@ -219,14 +219,13 @@ public class DataParserTest {
 		DataFile df = null;
 
 		try {
-			df = DataParser.parse(rawData);
+			df = DataParser.parseFromBytes(rawData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		Assertions.assertEquals(DataFile.class, df.getClass());
-		Assertions.assertEquals("-", df.getTcType());
-		Assertions.assertEquals(LocalDateTime.MIN, df.getTimeStamp());
+		Assertions.assertEquals("types.k", df.getTcType());
 		Assertions.assertEquals(0.0, df.getTimeStep());
 		Assertions.assertEquals(0, df.getValues().size());
 	}

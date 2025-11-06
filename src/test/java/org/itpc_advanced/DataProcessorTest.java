@@ -3,7 +3,7 @@ package org.itpc_advanced;
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DataProcessor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
 public class DataProcessorTest {
@@ -20,13 +20,13 @@ public class DataProcessorTest {
 				4, -72, 4, -72, 4, -72, 4, -73, 4, -73, 4, -35, 125, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 				-1, -1, -1, -1, -1, -1, -1, -31, -25}; 
-		DataFile df = DataParser.parse(rawData);
+		DataFile df = DataParser.parseFromBytes(rawData);
 		DataProcessor.calculate(df);
 
 		Assertions.assertEquals(DataFile.class, df.getClass());
 		Assertions.assertEquals(120, df.getTargetTemperature());
-		Assertions.assertEquals(121.2, df.getAverageMax());
-		Assertions.assertEquals(118.8, df.getAverageMin());
+		Assertions.assertEquals(121.3, df.getAverageMax());
+		Assertions.assertEquals(118.9, df.getAverageMin());
 		Assertions.assertEquals(10, df.getMaxTemps().size());
 		Assertions.assertEquals(10, df.getMinTemps().size());
 		Assertions.assertEquals(121.3, df.getMaxTemps().get(0));

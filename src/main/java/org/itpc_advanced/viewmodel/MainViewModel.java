@@ -312,12 +312,12 @@ public class MainViewModel {
 
 			int count = Integer.parseInt(newValue);
 
-			if (count > 30) {
+			if (count >= 30) {
 				pointsCountText.setFill(Color.LIME);
 				return;
 			}
 
-			if (count < 30) {
+			if (count < 30 && count >= 20) {
 				pointsCountText.setFill(Color.YELLOW);
 				return;
 			}

@@ -170,24 +170,25 @@ public class MainView {
 	void initialize() {
 		label = new Label();
 		tableView.setPlaceholder(label);
-		TableColumn<DataFile, ?> tableColumn = (TableColumn<DataFile, ?>) tableView.getColumns().get(0);
+		TableColumn<DataFile, Integer> tableColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
 	
 		localizeTextElements();
 	
 		tableColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
-		tableColumn.setCellFactory((column) -> {
-				return new TableCell<DataFile, Integer>() {
-					@Override
-					protected void updateItem(Integer fileId, boolean empty) {
-						super.updateItem(fileId, empty);
-						if (empty || fileId == null) {
-							setText(null);
-						} else {
-							String prefix = LocalManager.getInstance().getString("table.file.prefix");
-							setText(prefix + " " + fileId);
-						}
+		tableColumn.setCellFactory((TableColumn<DataFile, Integer> column) -> {
+			TableCell<DataFile, Integer> tableCell = new TableCell<DataFile, Integer>() {
+				@Override
+				protected void updateItem(Integer fileId, boolean empty) {
+					super.updateItem(fileId, empty);
+					if (empty || fileId == null) {
+						setText(null);
+					} else {
+						String prefix = LocalManager.getInstance().getString("table.file.prefix");
+						setText(prefix + " " + fileId);
 					}
-				};
+				}
+			};
+			return tableCell;
 		});
 	
 		LocalManager.getInstance().resourceBundleProperty().addListener((obs, oldVal, newVal) -> {
