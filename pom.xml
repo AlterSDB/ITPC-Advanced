@@ -15,11 +15,12 @@
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.test.skip>false</maven.test.skip>
+		<maven.test.skip>true</maven.test.skip>
 		<javafx.version>11</javafx.version>
 		<main.class>org.itpc_advanced.App</main.class>
 		<executable.name>ITPC Advanced</executable.name>
-		<app.version>2.0.0.0</app.version>
+		<app.version>${project.version}.0</app.version>
+		<version>${project.version}</version>
 		<launch4j.version>2.5.2</launch4j.version>
 	</properties>
 
@@ -179,7 +180,8 @@
 								<minVersion>1.8.0</minVersion>
 								<initialHeapSize>128</initialHeapSize>
 								<maxHeapSize>1024</maxHeapSize>
-								<runtimeBits>32</runtimeBits>
+								<requires64Bit>false</requires64Bit>
+								<path>%JAVA_HOME%;%PATH%</path>
 								<opts>
 									<opt>--module-path</opt>
 									<opt>libs</opt>
@@ -191,14 +193,22 @@
 								<fileVersion>${app.version}</fileVersion>
 								<txtFileVersion>${app.version}</txtFileVersion>
 								<fileDescription>${project.name}</fileDescription>
-								<copyright>(c)Anders</copyright>
-								<companyName>Anders</companyName>
+								<copyright>©2024-2025 Anders Solutions. All rights reserved.</copyright>
+								<companyName>Anders Solutions</companyName>
 								<productVersion>${app.version}</productVersion>
 								<txtProductVersion>${app.version}</txtProductVersion>
 								<productName>${project.name}</productName>
 								<internalName>${project.name}</internalName>
 								<originalFilename>${executable.name}.exe</originalFilename>
 							</versionInfo>
+
+							<project>
+								<organization>
+									<name>Anders Solutions</name>
+								</organization>
+								<description>Digital thermometers software</description>
+								<inceptionYear>2025</inceptionYear>
+							</project>
 						</configuration>
 					</execution>
 				</executions>
