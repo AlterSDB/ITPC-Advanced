@@ -24,7 +24,7 @@ public class LocalManager {
 	}
 
 	public void setLocale(Locale locale) {
-		ResourceBundle bundle = ResourceBundle.getBundle("lang", locale );
+		ResourceBundle bundle = ResourceBundle.getBundle("local/lang", locale );
 		resources.set(bundle);
 		currentLocale.set(locale);
 	}

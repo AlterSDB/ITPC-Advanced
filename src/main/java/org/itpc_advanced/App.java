@@ -12,7 +12,7 @@ import java.util.Properties;
 import org.itpc_advanced.view.MainView;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
-public class ITPC_Advanced extends Application {
+public class App extends Application {
 
 	public static void main(String[] args) {
 		launch(args);	
