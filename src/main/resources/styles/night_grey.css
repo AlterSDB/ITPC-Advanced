@@ -6,58 +6,59 @@
 
 /*				 MAIN SECTION			 */
 .root {
-	-fx-background-color:  linear-gradient(#424853 65%, #35383E);
-	-fx-text-fill:         white;
-	-fx-focus-color:       rgba(0,0,0,0.2);
-	-fx-accent:            grey;
-	-fx-focus-color:       transparent;
+	-fx-background-color: linear-gradient(#424853 65%, #35383E);
+	-fx-text-fill: white;
+	-fx-focus-color: rgba(0,0,0,0.2);
+	-fx-accent: grey;
+	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
+
 .button {
 	-fx-background-radius: 10;
-	-fx-border-width:      1px;
-	-fx-border-radius:     10;
-	-fx-text-fill:         white;
-	-fx-border-color:      lightgray;
-	-fx-background-color:  transparent;
+	-fx-border-width: 1px;
+	-fx-border-radius: 10;
+	-fx-text-fill: white;
+	-fx-border-color: lightgray;
+	-fx-background-color: transparent;
 }
 
 .button:hover {
 	-fx-background-color: transparent;
-	
+
 }
 
 .button:focused {
 	-fx-border-color: orange;
 	-fx-background-color: transparent;
-	
+
 }
 
 .button:pressed {
 	-fx-background-color: linear-gradient(transparent 50%, #7a7a7a);
-	-fx-scale-shape:      true;
-	-fx-scale-x:          0.98;
-	-fx-scale-y:          -fx-scale-x;
+	-fx-scale-shape: true;
+	-fx-scale-x: 0.98;
+	-fx-scale-y: -fx-scale-x;
 }
 
 .text-area{
-	-fx-padding:          		1,1,1,1;
-	-fx-border-color:     		lightgray;
-	-fx-border-width:     		1;
-	-fx-border-radius:    		5;
-	-fx-text-fill:        		white;
-	-fx-background-color: 		#424853;
-	-fx-control-inner-background: 	#424853;
+	-fx-padding: 1,1,1,1;
+	-fx-border-color: lightgray;
+	-fx-border-width: 1;
+	-fx-border-radius: 5;
+	-fx-text-fill: white;
+	-fx-background-color: #424853;
+	-fx-control-inner-background: #424853;
 }
 
 .text-field{
-	-fx-padding:          1,1,1,1;
-	-fx-border-color:     lightgray;
-	-fx-border-width:     1;
-	-fx-border-radius:    5;
+	-fx-padding: 1,1,1,1;
+	-fx-border-color: lightgray;
+	-fx-border-width: 1;
+	-fx-border-radius: 5;
 	-fx-background-color: transparent;
-	-fx-text-fill:        white;
+	-fx-text-fill: white;
 }
 
 /*				 TABLE SECTION			 */
@@ -68,9 +69,9 @@
 }
 
 .table-view .column-header .label {
-	-fx-text-fill:   lightgray;
+	-fx-text-fill: lightgray;
 	-fx-font-weight: bold;
-	-fx-alignment:   CENTER;
+	-fx-alignment: CENTER;
 }
 
 .placeholder .label {
@@ -79,52 +80,58 @@
 }
 
 .table-view .cell{
-	-fx-cell-size:         35;
-	-fx-alignment:         center;
-	-fx-background-color:  transparent;
-	-fx-border-color:      transparent;
-	-fx-text-fill:         #7789a5;
-	-fx-alignment:         CENTER;
+	-fx-cell-size: 35;
+	-fx-alignment: center;
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+	-fx-text-fill: #7789a5;
+	-fx-alignment: CENTER;
 	-fx-background-radius: 0;
 }
 
 .table-row-cell:selected .table-cell {
-	-fx-background-color:  #464b54;
-	-fx-border-radius:     6;
+	-fx-background-color: #464b54;
+	-fx-border-radius: 6;
 	-fx-background-radius: 10;
-	-fx-text-fill:         white;
+	-fx-text-fill: white;
 }
 
 .table-view {
-	-fx-background-color:  transparent;
+	-fx-background-color: transparent;
 	-fx-background-radius: 45;
-	-fx-border-color:     lightgray;
-	-fx-border-radius:     6;
+	-fx-border-color: lightgray;
+	-fx-border-radius: 6;
 }
 
 #rect {
-	-fx-fill:         linear-gradient(transparent 6.8%, #282b30 6.9%);
-	-fx-arc-height:   40;
-	-fx-arc-width:    40;
-	-fx-stroke:       #d87941;
+	-fx-fill: linear-gradient(transparent 6.8%, #282b30 6.9%);
+	-fx-arc-height: 40;
+	-fx-arc-width: 40;
+	-fx-stroke: #d87941;
 	-fx-stroke-width: 2px;
 }
 
 /*				 CHART SECTION			 */
+
+  .chart-series-line.series0 {
+      -fx-stroke: chocolate;
+      -fx-stroke-width: 3px;
+  }
+
 .chart-plot-background {
 	-fx-background-color: transparent;
-	-fx-stroke:           #00FF00;
+	-fx-stroke: #00FF00;
 }
 
 .chart-legend {
 	-fx-background-color: transparent;
-	-fx-padding:          20px;
+	-fx-padding: 20px;
 }
 
 .chart-horizontal-grid-lines,
 .chart-vertical-grid-lines {
 	-fx-stroke-dash-array: none;
-	-fx-opacity:           0.25;
+	-fx-opacity: 0.25;
 }
 
 .chart,
@@ -142,4 +149,3 @@
 #logo {
 	-fx-background-image:url('/images/biglogo.png');
 }
-

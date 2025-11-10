@@ -19,46 +19,42 @@ public class DataProcessor {
 	public static void calculate(DataFile dataFile) {
 		dataFile.setFileId(fileCounter.getAndIncrement());
 
-		if (dataFile.getValues().size() < 20) {
-			dataFile.setTargetTemperature(0);
-			dataFile.setChartData(FXCollections.observableArrayList());
-			dataFile.setMaxTemps(new ArrayList<Double>());
-			dataFile.setMinTemps(new ArrayList<Double>());
-			dataFile.setAverageMax(0.0);
-			dataFile.setAverageMin(0.0);
-			dataFile.setRelativeMax(0.0);
-			dataFile.setRelativeMin(0.0);
-			dataFile.setChartBounds(new double[] { 0.0, 10.0 });
-
-			return;
-		}
-
 		int target = findTargetValue(dataFile.getValues());
-		ArrayList<Double> clearValues = removeParasiticValues(dataFile.getValues());
-		dataFile.setProcessedValues(new ArrayList<Double>(clearValues));
-		ObservableList<XYChart.Data<Number,Number>> chartData = getChartData(dataFile);
-		List<Double> sortedValues = new ArrayList<Double>(dataFile.getProcessedValues());
-		Collections.sort(sortedValues);
 		List<Double> maxTemps = new ArrayList<Double>();
 		List<Double> minTemps = new ArrayList<Double>();
+		double averageMax = 0.0;
+		double averageMin = 0.0;
+		double relativeMax = 0.0;
+		double relativeMin = 0.0;
+		double[] chartBounds = new double[]{0, 10};
 
-		for (int i = 0; i < 10; i++) {
-			maxTemps.add(sortedValues.get(sortedValues.size() - 1 - i));
-			minTemps.add(minTemps.size() - i, sortedValues.get(i));
+		if (dataFile.getValues().size() > 20) {
+			target = findTargetValue(dataFile.getValues());
+			ArrayList<Double> clearValues = removeParasiticValues(dataFile.getValues());
+			dataFile.setProcessedValues(new ArrayList<Double>(clearValues));
+			List<Double> sortedValues = new ArrayList<Double>(dataFile.getProcessedValues());
+			Collections.sort(sortedValues);
+
+			for (int i = 0; i < 10; i++) {
+				maxTemps.add(sortedValues.get(sortedValues.size() - 1 - i));
+				minTemps.add(minTemps.size() - i, sortedValues.get(i));
+			}
+
+			averageMax = findAverage(maxTemps);
+			averageMin = findAverage(minTemps);
+			relativeMax = findRelative(target, averageMax);
+			relativeMin = findRelative(target, averageMin);
+			chartBounds = findChartBounds(sortedValues);
 		}
 
-		double averageMax = findAverage(maxTemps);
-		double averageMin = findAverage(minTemps);
-		double[] chartBounds = findChartBounds(sortedValues);
-
 		dataFile.setTargetTemperature(target);
-		dataFile.setChartData(chartData);
+		dataFile.setChartData(getChartData(dataFile));
 		dataFile.setMaxTemps(maxTemps);
 		dataFile.setMinTemps(minTemps);
 		dataFile.setAverageMax(averageMax);
 		dataFile.setAverageMin(averageMin);
-		dataFile.setRelativeMax(findRelative(target, averageMax));
-		dataFile.setRelativeMin(findRelative(target, averageMin));
+		dataFile.setRelativeMax(relativeMax);
+		dataFile.setRelativeMin(relativeMin);
 		dataFile.setChartBounds(chartBounds);
 
 		return;

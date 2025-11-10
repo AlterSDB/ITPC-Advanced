@@ -169,7 +169,7 @@
 				<version>${launch4j.version}</version>
 				<executions>
 					<execution>
-						<id>l4j-clui</id>
+						<id>l4j-cli</id>
 						<phase>package</phase>
 						<goals>
 							<goal>launch4j</goal>
