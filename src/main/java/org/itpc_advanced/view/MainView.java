@@ -6,7 +6,6 @@ import java.util.List;
 
 import javafx.scene.chart.AreaChart;
 import org.itpc_advanced.model.DataFile;
-import org.itpc_advanced.service.KeyboardControlsManager;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.service.TextFormatterFactory;
@@ -201,7 +200,6 @@ public class MainView {
 
 	public void setStage(Stage stage) {
 		currentStage = stage;
-		setupKeyboardNavigation();
 	}
 
 	public void setViewModel(MainViewModel viewModel) {
@@ -283,23 +281,6 @@ public class MainView {
 		LocalTextBinder.bindText(timeStepText.textProperty(), "df.timestep");
 		LocalTextBinder.bindText(pointsCountText.textProperty(), "df.points.count");
 		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");
-	}
-
-	private void setupKeyboardNavigation() {
-		List<Node> focusableElements = new ArrayList<>();
-		focusableElements.add(settingsBtn);
-		focusableElements.add(tableView);
-		focusableElements.add(scanBtn);
-		focusableElements.add(calculateBtn);
-		focusableElements.add(saveBtn);
-		focusableElements.add(copyResultBtn);
-		
-		new KeyboardControlsManager(currentStage, focusableElements);
-		
-		KeyCombination keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
-		currentStage.getScene().getAccelerators().put(keyCombination, () -> {
-			saveBtn.fire();
-		});
 	}
 
 	private void initLineChart() {
