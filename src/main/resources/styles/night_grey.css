@@ -134,6 +134,16 @@
 	-fx-opacity: 0.25;
 }
 
+.default-color0.chart-series-area-fill {
+    -fx-fill: linear-gradient(#0000ff 20%, #ff8c00 65%, #ff0000 100%);
+}
+
+/* Styling the chart series line (for the first series) */
+.default-color0.chart-series-line {
+    -fx-stroke: #4CAF50; /* Solid green line */
+    -fx-stroke-width: 2px;
+}
+
 .chart,
 .chart-title,
 .chart-legend-item,

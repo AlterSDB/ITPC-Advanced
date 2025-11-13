@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.chart.AreaChart;
 import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.KeyboardControlsManager;
 import org.itpc_advanced.service.LocalManager;
@@ -46,7 +47,7 @@ public class MainView {
     @FXML private Button settingsBtn;
     @FXML private Button saveBtn;
     @FXML private ImageView logoImageView;
-    @FXML private LineChart<Number, Number> lineChart;
+	@FXML private AreaChart<Number, Number> areaChart;
     @FXML private NumberAxis xAxis;
     @FXML private NumberAxis yAxis;
     @FXML private TextArea manualTextArea;
@@ -154,8 +155,8 @@ public class MainView {
 		return tempSetText;
 	}
 
-	public LineChart<Number, Number> getTempLineChart() {
-		return lineChart;
+	public AreaChart<Number, Number> getTempLineChart() {
+		return areaChart;
 	}
 
 	public NumberAxis getxAxis() {
@@ -275,7 +276,7 @@ public class MainView {
 		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
 		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
 		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
-		LocalTextBinder.bindText(lineChart.titleProperty(), "chart.label");
+		LocalTextBinder.bindText(areaChart.titleProperty(), "chart.label");
 		LocalTextBinder.bindText(tableColumn.textProperty(), "table.header");
 		LocalTextBinder.bindText(timeStampText.textProperty(), "df.timestamp");
 		LocalTextBinder.bindText(typeText.textProperty(), "df.tc.type");
@@ -304,11 +305,11 @@ public class MainView {
 	private void initLineChart() {
 		series = new XYChart.Series<Number, Number>();
 		series.setData(viewModel.getChartData());
-		lineChart.getData().add(series); 
-		lineChart.setCreateSymbols(false);
-		lineChart.setLegendVisible(false);
-		lineChart.setAnimated(false);
-		lineChart.setLegendSide(Side.LEFT);
+		areaChart.getData().add(series);
+		areaChart.setCreateSymbols(false);
+		areaChart.setLegendVisible(false);
+		areaChart.setAnimated(false);
+		areaChart.setLegendSide(Side.LEFT);
 
 		xAxis.setUpperBound(15);
 		xAxis.setMinorTickCount(2);
