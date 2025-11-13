@@ -45,7 +45,7 @@ public class SettingsViewModel {
 		}
 		settings.setShuffleValues(shuffleValuesProperty.getValue());
 		settings.setDemoMode(demoModeProperty.getValue());
-		// and save it in file
+		settings.saveToFile();
 	}
 
 	public void changeLanguage() {
