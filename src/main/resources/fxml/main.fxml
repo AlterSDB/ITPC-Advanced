@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.chart.AreaChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
@@ -18,46 +16,52 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="531.0" prefWidth="1001.0" styleClass="root" stylesheets="@../styles/night_grey.css" xmlns="http://javafx.com/javafx/21.0.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.itpc_advanced.view.MainView">
+<AnchorPane prefHeight="570.0" prefWidth="1009.0" styleClass="root" stylesheets="@../styles/night_grey.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.itpc_advanced.view.MainView">
    <children>
-  <AnchorPane layoutX="45.0" layoutY="29.0" minHeight="0.0" minWidth="0.0" prefHeight="425.0" prefWidth="380.0">
+  <AnchorPane layoutX="45.0" layoutY="30.0" minHeight="0.0" minWidth="0.0" prefHeight="480.0" prefWidth="380.0">
          <children>
-            <TableView fx:id="tableView" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="282.0" prefWidth="170.0">
+            <TableView fx:id="tableView" layoutX="10.0" layoutY="10.0" prefHeight="350.0" prefWidth="170.0">
                <columns>
-                  <TableColumn fx:id="tableColumn" editable="false" maxWidth="200.0" prefWidth="200.0" sortable="false" text="Файлы" />
+                  <TableColumn fx:id="tableColumn" editable="false" prefWidth="200.0" sortable="false" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <TextArea fx:id="manualTextArea" layoutX="200.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="339.0" prefWidth="170.0" promptText="Type values..." />
-            <Button fx:id="calculateBtn" layoutX="200.0" layoutY="360.0" maxHeight="50.0" minHeight="50.0" mnemonicParsing="false" onAction="#onCalculateBtnAction" prefHeight="50.0" prefWidth="111.0" text="Calculate">
+            <TextArea fx:id="manualTextArea" layoutX="200.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="350.0" prefWidth="170.0" />
+            <Button fx:id="calculateBtn" layoutX="200.0" layoutY="420.0" mnemonicParsing="false" onAction="#onCalculateBtnAction" prefHeight="50.0" prefWidth="111.0" text="Calculate">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="scanBtn" layoutX="10.0" layoutY="359.0" maxHeight="52.0" mnemonicParsing="false" onAction="#onScanBtnAction" prefHeight="52.0" prefWidth="181.0" text="Scan">
+            <Button fx:id="scanBtn" layoutX="10.0" layoutY="420.0" mnemonicParsing="false" onAction="#onScanBtnAction" prefHeight="50.0" prefWidth="181.0" text="Scan">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="saveBtn" layoutX="318.0" layoutY="360.0" mnemonicParsing="false" onAction="#onSaveBtnAction" prefHeight="50.0" prefWidth="52.0" text="Save" />
-            <GridPane layoutX="49.0" layoutY="296.0" prefHeight="52.0" prefWidth="92.0">
+            <Button fx:id="saveBtn" layoutX="318.0" layoutY="420.0" mnemonicParsing="false" onAction="#onSaveBtnAction" prefHeight="50.0" prefWidth="60.0" text="Save" />
+            <ImageView fx:id="logoImageView" disable="true" fitHeight="81.0" fitWidth="272.0" layoutX="-30.0" layoutY="450.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                  <Image url="@../images/biglogo.png" />
+               </image>
+            </ImageView>
+            <GridPane layoutX="10.0" layoutY="360.0" prefHeight="50.0" prefWidth="100.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="65.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="106.0" minWidth="10.0" prefWidth="105.0" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text fx:id="typeText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Type: " GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                  <Text fx:id="timeStampText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-                  <Text fx:id="timeStepText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Rec. rate: " GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                  <Text fx:id="pointsCountText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Pts count:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <Text fx:id="typeText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Type: " GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Text fx:id="timeStampText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                  <Text fx:id="timeStepText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Rec. rate: " GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <Text fx:id="pointsCountText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Pts count:" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  
                   <Text fx:id="typeValueText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="(type)" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                   <Text fx:id="timeStampValueText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="(time)" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
                   <Text fx:id="timeStepValueText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="(recrate)" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
@@ -87,7 +91,7 @@
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <Text fx:id="averageMaxText" fill="white" layoutX="30.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.max">
+                        <Text fx:id="averageMaxText" fill="white" layoutX="30.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="avg.max">
                            <font>
                               <Font size="10.0" />
                            </font>
@@ -101,7 +105,7 @@
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <Text fx:id="averageMinText" fill="white" layoutX="30.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.min">
+                        <Text fx:id="averageMinText" fill="white" layoutX="30.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="avg.min">
                            <font>
                               <Font size="10.0" />
                            </font>
@@ -115,7 +119,7 @@
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <Text fx:id="relativeMaxText" fill="white" layoutX="30.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.max-t°з">
+                        <Text fx:id="relativeMaxText" fill="white" layoutX="30.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="rel.max">
                            <font>
                               <Font size="10.0" />
                            </font>
@@ -129,7 +133,7 @@
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <Text fx:id="relativeMinText" fill="white" layoutX="30.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ср.min-t°з">
+                        <Text fx:id="relativeMinText" fill="white" layoutX="30.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="rel.min">
                            <font>
                               <Font size="10.0" />
                            </font>
@@ -142,7 +146,7 @@
                   <TextField fx:id="relativeMinField" editable="false" maxWidth="60.0" prefHeight="26.0" prefWidth="59.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
-            <Button fx:id="copyResultBtn" layoutX="327.0" layoutY="433.0" mnemonicParsing="false" onAction="#onCopyResultsBtnAction" prefHeight="75.0" prefWidth="250.0" text="Get Report Table" textOverrun="CLIP">
+            <Button fx:id="copyResultBtn" layoutX="327.0" layoutY="471.0" mnemonicParsing="false" onAction="#onCopyResultsBtnAction" prefHeight="75.0" prefWidth="250.0" text="Get Report Table" textOverrun="CLIP">
                <font>
                   <Font size="18.0" />
                </font>
@@ -166,12 +170,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text fx:id="linearOffsetText" fill="white" strokeType="OUTSIDE" strokeWidth="0.0" text="Лин.смещ. = " GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <Text fx:id="linearOffsetText" fill="white" strokeType="OUTSIDE" strokeWidth="0.0" text="Lin.offset = " GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <Text fx:id="tempSetText" fill="white" strokeType="OUTSIDE" strokeWidth="0.0" text="t°з              = " GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                  <Text fx:id="tempSetText" fill="white" strokeType="OUTSIDE" strokeWidth="0.0" text="Target = " GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -183,10 +187,5 @@
          </children>
       </AnchorPane>
       <Button fx:id="settingsBtn" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#onSettingsBtnAction" text="Settings" />
-      <ImageView fx:id="logoImageView" fitHeight="81.0" fitWidth="272.0" layoutX="14.0" layoutY="434.0" pickOnBounds="true" preserveRatio="true">
-        <image>
-            <Image url="@../images/biglogo.png" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>

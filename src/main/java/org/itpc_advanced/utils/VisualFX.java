@@ -109,38 +109,6 @@ public class VisualFX {
 		timeline.play();
 	}
 
-	public static void changeText2(StringProperty oldTextProperty, DoubleProperty newTextProperty) {
-		Timeline timeline = new Timeline();
-		String oldText = oldTextProperty.getValue() != null ? oldTextProperty.getValue().toString() : "";
-		String newText = newTextProperty.getValue().toString();
-		StringBuffer newTextBuffer = new StringBuffer();	
-		StringBuffer oldTextBuffer = new StringBuffer(oldText);
-		int duration = 0;
-		int step = 50;
-
-		for (int i = 0; i < oldTextBuffer.length() ; i++) {
-			timeline.getKeyFrames().add(new KeyFrame(
-				Duration.millis(duration), (event) -> {
-					oldTextBuffer.deleteCharAt(oldTextBuffer.length() - 1);
-					oldTextProperty.setValue(oldTextBuffer.toString());
-			}));
-			duration += step - 20;
-		}
-
-		for (int i = 0; i < newText.length() ; i++) {
-			timeline.getKeyFrames().add(new KeyFrame(
-				Duration.millis(duration),(event) -> {
-					if (newTextBuffer.length() < newText.length()) {
-						newTextBuffer.append(newText.charAt(newTextBuffer.length()));
-						oldTextProperty.setValue(newTextBuffer.toString());
-					}
-				}));
-			duration += step;
-		}
-		timeline.setCycleCount(1);
-		timeline.play();
-	}
-
 	public static void changeTextField(TextField field, String newText) {
 		if (field == null ||newText.isEmpty()) {
 			return;
@@ -182,7 +150,7 @@ public class VisualFX {
 		mask.setY(0);
 		element.getParent().setClip(mask);
 		TranslateTransition ts = new TranslateTransition(Duration.seconds(0.75), mask);
-		ts.setToX(550);
+		ts.setToX(580);
 		ts.play();
 	}
 

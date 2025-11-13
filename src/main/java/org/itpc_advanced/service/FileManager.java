@@ -6,17 +6,25 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.stage.FileChooser;
 
 public class FileManager {
 	
-	public static void readFile(String path) {
+	public static List<String> readFile(String path) {
+		List<String> lines = new ArrayList<String>();
 		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-			reader.readLine();
+			while (reader.ready()) {
+				lines.add(reader.readLine());
+			}
+			System.out.println("Successful read!");
 		} catch(IOException e) {
-			e.printStackTrace();
+			System.err.println("Error while reading file: " + e.getMessage());
 		}
+		
+		return lines;
 		
 	}
 	
@@ -27,7 +35,7 @@ public class FileManager {
 				System.out.println("Successful save!");
 
 			} catch(IOException e) {
-				System.err.println("File save error: " + e.getMessage());
+				System.err.println("Error while saving file: " + e.getMessage());
 
 			}
 		}
