@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.itpc_advanced.model.Settings;
 import org.itpc_advanced.service.LocalManager;
+import org.itpc_advanced.service.SettingsManager;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -20,6 +21,7 @@ public class SettingsViewModel {
 
 	public SettingsViewModel() {
 		settings = Settings.getInstance();
+		SettingsManager.initializeSettings(settings);
 		maxDeviationProperty.set(settings.getMaxDeviation().toString());
 		connTimeoutProperty.set(settings.getConnectionTimeout().toString());
 		shuffleValuesProperty.set(settings.isShuffleValues());
@@ -45,7 +47,7 @@ public class SettingsViewModel {
 		}
 		settings.setShuffleValues(shuffleValuesProperty.getValue());
 		settings.setDemoMode(demoModeProperty.getValue());
-		settings.saveToFile();
+		SettingsManager.saveToFile(settings);
 	}
 
 	public void changeLanguage() {
