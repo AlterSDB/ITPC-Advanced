@@ -63,6 +63,12 @@ public class SettingsManager {
 					System.out.println("variable " + name + " changed to " + value);
 					continue;
 				}
+				if (name.contains("language")) {
+					settings.setLanguage(value.replaceAll(" ", ""));
+					System.out.println(value + " - language now");
+					System.out.println("variable " + name + " changed to " + value);
+					continue;
+				}
 			}
 		} catch(IOException e) {
 			System.err.println("Error parsing settings file. Default settings was restored.");
@@ -83,7 +89,7 @@ public class SettingsManager {
 		    result.append("demoMode = " + settings.isDemoMode() + System.lineSeparator());
 		    result.append("maxDeviation = " + settings.getMaxDeviation() + System.lineSeparator());
 		    result.append("connectionTimeout = " + settings.getConnectionTimeout() + System.lineSeparator());
-		//    result.append("language = " + settings.getLanguage() + System.lineSeparator());
+		    result.append("language = " + settings.getLanguage() + System.lineSeparator());
 		    
 			return result.toString();
 	}
@@ -94,6 +100,7 @@ public class SettingsManager {
 		settings.setDemoMode(true);
 		settings.setMaxDeviation(50);
 		settings.setConnectionTimeout(5000);
+		settings.setLanguage("en");
 	}
 
 }

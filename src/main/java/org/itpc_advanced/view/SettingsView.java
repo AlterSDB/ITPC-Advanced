@@ -71,6 +71,7 @@ public class SettingsView {
 
 	public void setViewModel(SettingsViewModel viewModel) {
 		this.viewModel = viewModel;
+		selectPortMenuBtn.textProperty().bindBidirectional(this.viewModel.selectedPortProperty());
 		maxDeviationTextField.textProperty().bindBidirectional(this.viewModel.maxDeviationProperty());
 		connTimeoutTextField.textProperty().bindBidirectional(this.viewModel.timeoutProperty());
 		shuffleValuesCheckBox.selectedProperty().bindBidirectional(this.viewModel.shuffleValuesProperty());

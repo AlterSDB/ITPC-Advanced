@@ -17,20 +17,23 @@ public class SettingsViewModel {
 	private BooleanProperty demoModeProperty = new SimpleBooleanProperty();
 	private StringProperty maxDeviationProperty = new SimpleStringProperty();
 	private StringProperty connTimeoutProperty = new SimpleStringProperty();
-	private Settings settings;
+	private StringProperty selectedPortProperty = new SimpleStringProperty();
+	private Settings settings = Settings.getInstance();
+	private LocalManager localization = LocalManager.getInstance();
 
 	public SettingsViewModel() {
-		settings = Settings.getInstance();
 		SettingsManager.initializeSettings(settings);
 		maxDeviationProperty.set(settings.getMaxDeviation().toString());
 		connTimeoutProperty.set(settings.getConnectionTimeout().toString());
 		shuffleValuesProperty.set(settings.isShuffleValues());
 		demoModeProperty.set(settings.isDemoMode());
+		selectedPortProperty.set(settings.getPort());
 
 		shuffleValuesProperty.addListener((obs, oldVal, newVal) -> saveSettings());
 		connTimeoutProperty.addListener((obs, oldVal, newVal) -> saveSettings());
 		maxDeviationProperty.addListener((obs, oldVal, newVal) -> saveSettings());
 		demoModeProperty.addListener((obs, oldVal, newVal) -> saveSettings());
+		selectedPortProperty.addListener((obs, oldVal, newVal) -> saveSettings());
 	}
 
 	public void saveSettings() {
@@ -47,12 +50,11 @@ public class SettingsViewModel {
 		}
 		settings.setShuffleValues(shuffleValuesProperty.getValue());
 		settings.setDemoMode(demoModeProperty.getValue());
+		settings.setPort(selectedPortProperty.getValue());
 		SettingsManager.saveToFile(settings);
 	}
 
 	public void changeLanguage() {
-		LocalManager localization = LocalManager.getInstance();
-
 		if (localization.isEnglish()) {
 			localization.setLocale(new Locale("ru"));
 		} else {
@@ -78,6 +80,10 @@ public class SettingsViewModel {
 
 	public StringProperty timeoutProperty() {
 		return connTimeoutProperty;
+	}
+	
+	public StringProperty selectedPortProperty() {
+		return selectedPortProperty;
 	}
 
 	public void setTimeout(Integer timeout) {

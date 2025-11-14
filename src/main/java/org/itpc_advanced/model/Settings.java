@@ -7,6 +7,7 @@ public class Settings {
 	private Boolean demoMode = true;
 	private Integer maxDeviation = 50;
 	private Integer connectionTimeout = 5000;
+	private String language = "en";
 
 	private Settings() {
 
@@ -64,7 +65,11 @@ public class Settings {
 	}
 
 	public String getLanguage() {
-		return null;
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 }
