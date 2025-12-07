@@ -1,0 +1,53 @@
+package org.itpc_advanced.service;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+
+public class LocalManager {
+	private static LocalManager instance;
+	private final ObjectProperty<ResourceBundle> resources = new SimpleObjectProperty<>();
+	private final ObjectProperty<Locale> currentLocale = new SimpleObjectProperty<>();
+
+	private LocalManager() {
+		setLocale(Locale.ENGLISH);
+	}
+
+	public static LocalManager getInstance() {
+		if (instance == null) {
+			instance = new LocalManager();
+		}
+
+		return instance;
+	}
+
+	public void setLocale(Locale locale) {
+		ResourceBundle bundle = ResourceBundle.getBundle("local/lang", locale );
+		resources.set(bundle);
+		currentLocale.set(locale);
+	}
+
+	public String getString(String key) {
+		ResourceBundle bundle = resources.get();
+		if (bundle != null) {
+			try {
+				return bundle.getString(key);
+			} catch (Exception e) {
+				return "!" + key + "!";
+			}
+		}
+
+		return key;
+	}
+
+	public ObjectProperty<ResourceBundle> resourceBundleProperty() {
+		return resources;
+	}
+
+	public boolean isEnglish() {
+		return currentLocale.get().getLanguage().equals(Locale.ENGLISH.getLanguage());
+	}
+
+}
