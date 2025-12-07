@@ -32,7 +32,6 @@ public class App extends Application {
 		mainStage.setTitle("ITPC Advanced v" + properties.getProperty("version"));
 		mainStage.getIcons().add(new Image("/images/logo.png"));
 		mainStage.setScene(new Scene(root));
-		mainController.setStage(mainStage);
 		mainStage.setResizable(false);
 		mainStage.show();
 	}

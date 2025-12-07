@@ -1,8 +1,6 @@
 package org.itpc_advanced.view;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javafx.scene.chart.AreaChart;
 import org.itpc_advanced.model.DataFile;
@@ -16,10 +14,8 @@ import org.itpc_advanced.viewmodel.SettingsViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -31,21 +27,15 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MainView {
-
     @FXML private Button scanBtn;
     @FXML private Button copyResultBtn;
     @FXML private Button settingsBtn;
     @FXML private Button saveBtn;
-    @FXML private ImageView logoImageView;
 	@FXML private AreaChart<Number, Number> areaChart;
     @FXML private NumberAxis xAxis;
     @FXML private NumberAxis yAxis;
@@ -53,7 +43,6 @@ public class MainView {
     @FXML private Button calculateBtn;
 	@FXML private TableView<DataFile> tableView;
     @FXML private TableColumn<DataFile, String> tableColumn;
-    @FXML private Text tempText;
     @FXML private Text averageMaxText;
     @FXML private Text averageMinText;
     @FXML private Text relativeMaxText;
@@ -79,127 +68,36 @@ public class MainView {
 	private boolean updatingFromViewModel = false;
 	private MainViewModel viewModel;
 	private Stage settingsStage;
-	private Stage currentStage;
 	private Label label;
-
-	public TableView<DataFile> getTableView() {
-		return tableView;
-	}
-
-	public TableColumn<?, ?> getTableColumn() {
-		return tableColumn;
-	}
-
-	public Button getScanBtn() {
-		return scanBtn;
-	}
-
-	public Text getTempText() {
-		return tempText;
-	}
-
-	public Text getAverageMaxText() {
-		return averageMaxText;
-	}
-
-	public Text getAverageMinText() {
-		return averageMinText;
-	}
-
-	public Text getRelativeMaxText() {
-		return relativeMaxText;
-	}
-
-	public Text getRelativeMinText() {
-		return relativeMinText;
-	}
-
-	public TextField getAverageMaxField() {
-		return averageMaxField;
-	}
-
-	public TextField getAverageMinField() {
-		return averageMinField;
-	}
-
-	public TextField getRelativeMaxField() {
-		return relativeMaxField;
-	}
-
-	public TextField getRelativeMinField() {
-		return relativeMinField;
-	}
-
-	public ImageView getLogoImageView() {
-		return logoImageView;
-	}
-
-	public Button getCopyResultBtn() {
-		return copyResultBtn;
-	}
-
-	public Button getSettingsBtn() {
-		return settingsBtn;
-	}
-	
-	public Button getSaveBtn() {
-		return saveBtn;
-	}
-
-	public TextField getTempSetField() {
-		return tempSetField;
-	}
-
-	public Text getTempSetText() {
-		return tempSetText;
-	}
-
-	public AreaChart<Number, Number> getTempLineChart() {
-		return areaChart;
-	}
-
-	public NumberAxis getxAxis() {
-		return xAxis;
-	}
-
-	public NumberAxis getyAxis() {
-		return yAxis;
-	}
 
 	@FXML
 	void initialize() {
 		label = new Label();
 		tableView.setPlaceholder(label);
+		@SuppressWarnings("unchecked")
 		TableColumn<DataFile, Integer> tableColumn = (TableColumn<DataFile, Integer>) tableView.getColumns().get(0);
 	
 		localizeTextElements();
 	
 		tableColumn.setCellValueFactory(new PropertyValueFactory<>("fileId"));
-		tableColumn.setCellFactory((TableColumn<DataFile, Integer> column) -> {
-			TableCell<DataFile, Integer> tableCell = new TableCell<DataFile, Integer>() {
-				@Override
-				protected void updateItem(Integer fileId, boolean empty) {
-					super.updateItem(fileId, empty);
-					if (empty || fileId == null) {
-						setText(null);
-					} else {
-						String prefix = LocalManager.getInstance().getString("table.file.prefix");
-						setText(prefix + " " + fileId);
-					}
-				}
-			};
-			return tableCell;
-		});
+		tableColumn.setCellFactory((TableColumn<DataFile, Integer> column) -> new TableCell<DataFile, Integer>() {
+            @Override
+            protected void updateItem(Integer fileId, boolean empty) {
+                super.updateItem(fileId, empty);
+                if (empty || fileId == null) {
+                    setText(null);
+                } else {
+                    String prefix = LocalManager.getInstance().getString("table.file.prefix");
+                    setText(prefix + " " + fileId);
+                }
+            }
+        });
 	
 		LocalManager.getInstance().resourceBundleProperty().addListener((obs, oldVal, newVal) -> {
 			tableColumn.setVisible(false);
 			tableColumn.setVisible(true);
 		});
 	
-	}
-
-	public void setStage(Stage stage) {
-		currentStage = stage;
 	}
 
 	public void setViewModel(MainViewModel viewModel) {
@@ -247,7 +145,7 @@ public class MainView {
 			
 			settingsStage = new Stage();
 			settingsStage.setScene(scene);
-			settingsStage.initOwner((Stage)scanBtn.getScene().getWindow());
+			settingsStage.initOwner(scanBtn.getScene().getWindow());
 			settingsStage.initModality(Modality.WINDOW_MODAL);
 			settingsStage.setResizable(false);
 			settingsStage.setAlwaysOnTop(true);
@@ -284,7 +182,7 @@ public class MainView {
 	}
 
 	private void initLineChart() {
-		series = new XYChart.Series<Number, Number>();
+		series = new XYChart.Series<>();
 		series.setData(viewModel.getChartData());
 		areaChart.getData().add(series);
 		areaChart.setCreateSymbols(false);

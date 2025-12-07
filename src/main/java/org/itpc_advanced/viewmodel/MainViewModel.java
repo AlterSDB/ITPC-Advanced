@@ -31,8 +31,8 @@ import javafx.stage.FileChooser;
 public class MainViewModel {
 
 	private final ObservableList<DataFile> fileList = FXCollections.observableArrayList();   
-	private final ObjectProperty<DataFile> selectedDataFile = new SimpleObjectProperty<DataFile>();
-	private Settings settings = Settings.getInstance();
+	private final ObjectProperty<DataFile> selectedDataFile = new SimpleObjectProperty<>();
+	private final Settings settings = Settings.getInstance();
 
 	private final StringProperty averageMaxProperty = new SimpleStringProperty();
 	private final StringProperty averageMinProperty = new SimpleStringProperty();
@@ -42,9 +42,6 @@ public class MainViewModel {
 	private final StringProperty linearOffsetProperty = new SimpleStringProperty();
 
 	private final ObservableList<XYChart.Data<Number, Number>> chartData = FXCollections.observableArrayList();
-	private final StringProperty chartTitle = new SimpleStringProperty();
-	private final StringProperty xAxisLabel = new SimpleStringProperty();
-	private final StringProperty yAxisLabel = new SimpleStringProperty();
 	private final DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty();
 	private final DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty();
 
@@ -87,7 +84,7 @@ public class MainViewModel {
 					return;
 				}
 
-				int parsed = 0;
+				int parsed;
 
 				try {
 					parsed = Integer.parseInt(newValue);
@@ -168,52 +165,8 @@ public class MainViewModel {
 		return linearOffsetProperty;
 	}
 
-	public StringProperty chartTitleProperty() {
-		return chartTitle;
-	}
-
-	public StringProperty xAxisLabelProperty() {
-		return xAxisLabel;
-	}
-
-	public StringProperty yAxisLabelProperty() {
-		return yAxisLabel;
-	}
-
 	public ObservableList<XYChart.Data<Number, Number>> getChartData() {
 		return chartData;
-	}
-
-	public String getChartTitle() {
-		return chartTitle.get();
-	}
-
-	public String getxAxisLabel() {
-		return xAxisLabel.get();
-	}
-
-	public String getyAxisLabel() {
-		return yAxisLabel.get();
-	}
-
-	public void setChartTitle(String chartTitle) {
-		this.chartTitle.set(chartTitle);;
-	}
-
-	public void setxAxisLabel(String xAxisLabel) {
-		this.xAxisLabel.set(xAxisLabel);
-	}
-
-	public void setyAxisLabel(String yAxisLabel) {
-		this.yAxisLabel.set(yAxisLabel);
-	}
-
-	public void addDataPoint(Number x, Number y) {
-		chartData.add(new XYChart.Data<>(x, y));
-	}
-
-	public void clearData() {
-		chartData.clear();
 	}
 
 	public DoubleProperty yAxisLowerBoundProperty() {
@@ -239,7 +192,6 @@ public class MainViewModel {
 		yAxisUpperBoundProperty.set(selectedDataFile.get().getChartBounds()[1]);
 		chartData.clear();
 		chartData.setAll(selectedDataFile.get().getChartData());
-		
 		manualTextFieldProperty.set(ReportBuilder.getTextFromRawValues(selectedDataFile.get().getValues()));
 
 		updateFields();
@@ -257,10 +209,10 @@ public class MainViewModel {
 
 	public void updateInfo(){
 		if (selectedDataFile.get() != null) {
-			VisualFX.changeText(tcTypeProperty, LocalManager.getInstance().getString(selectedDataFile.get().getTcType().toString()));
+			VisualFX.changeText(tcTypeProperty, LocalManager.getInstance().getString(selectedDataFile.get().getTcType()));
 			VisualFX.changeText(timeStepProperty, selectedDataFile.get().getTimeStep().toString());
-			timeStampProperty.set(selectedDataFile.get().getTimeStamp().format(DateTimeFormatter.ISO_LOCAL_DATE).toString());
-			pointsCountProperty.set(new Integer(selectedDataFile.get().getValues().size()).toString());
+			timeStampProperty.set(selectedDataFile.get().getTimeStamp().format(DateTimeFormatter.ISO_LOCAL_DATE));
+			pointsCountProperty.set(Integer.valueOf(selectedDataFile.get().getValues().size()).toString());
 		}
 	}
 
@@ -317,16 +269,11 @@ public class MainViewModel {
 				return;
 			}
 
-			if (count < 30 && count >= 20) {
+			if (count >= 20) {
 				pointsCountText.setFill(Color.YELLOW);
 				return;
 			}
-
-			if (count < 20) {
 				pointsCountText.setFill(Color.CRIMSON);
-				return;
-			}
-
 		});
 	}
 
