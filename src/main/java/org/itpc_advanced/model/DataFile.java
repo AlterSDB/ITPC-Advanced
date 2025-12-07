@@ -11,7 +11,7 @@ import javafx.scene.chart.XYChart;
 
 public class DataFile {
 
-	private static int counter = 1;
+	static int counter = 1;
 
 	// Raw
 	private final String tcType;
@@ -20,10 +20,10 @@ public class DataFile {
 	private final List<Double> values;
 
 	// Derivatives
-	private List<Double> processedValues = new ArrayList<Double>();
-	private List<XYChart.Data<Number, Number>> chartData = new ArrayList<XYChart.Data<Number, Number>>();
-	private List<Double> maxTemps = new ArrayList<Double>();;
-	private List<Double> minTemps = new ArrayList<Double>();;
+	private List<Double> processedValues = new ArrayList<>();
+	private List<XYChart.Data<Number, Number>> chartData = new ArrayList<>();
+	private List<Double> maxTemps = new ArrayList<>();
+	private List<Double> minTemps = new ArrayList<>();
 	private Integer fileId = 0;
 	private Integer targetTemperature = 0;
 	private Integer linearOffset = 0;
@@ -44,7 +44,7 @@ public class DataFile {
 		this.tcType = "types.k";
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 0.0;
-		this.values = new ArrayList<Double>();
+		this.values = new ArrayList<>();
 		this.chartBounds = new double[]{0.0, 10.0};
 	}
 
@@ -53,10 +53,6 @@ public class DataFile {
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 15.0;
 		this.values = values;
-	}
-
-	public static int getCounter() {
-		return counter;
 	}
 
 	public static void resetCounter() {
@@ -189,7 +185,7 @@ public class DataFile {
 		if (linearOffset > 0) {
 			setChartBounds(DataProcessor.findChartBounds(processedValues));
 			setChartData(DataProcessor.getChartData(this));
-		};
+		}
 	}
 
 	public void setAverageMax(Double averageMax) {

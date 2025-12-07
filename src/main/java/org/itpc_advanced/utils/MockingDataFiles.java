@@ -7,9 +7,9 @@ import org.itpc_advanced.model.DataFile;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DataProcessor;
 
-public class MockyDataFiles {
+public class MockingDataFiles {
 
-	private static byte[][] rawDatas = new byte[][] {
+	private static final byte[][] rawDataset = new byte[][] {
 		new byte[] { 22, -125, 0, 0, 123, -1, -123, 5, 0, 1, 0, 1, 0, 0, 0, 0, 0, 2, 0, 73, 46, 67, 46, 69, 46, 67, 46, 71, 46, 69, 46, 60, 46, 68, 46, 72, 46, 70, 46, 70, 46, 72, 46, 74, 46, 72, 46, 66, 46, 70, 46, 72, 46, 77, 46, 74, 46, 72, 46, 72, 46, 72, 46, 74, 46, 77, 46, 74, 46, 70, 46, 70, 46, 70, 46, 70, 46, 70, 46, 74, 46, 77, 46, 70, 46, 74, 46, 76, 46, 76, 46, 76, 46, 76, 46, 72, 46, 72, 46, 74, 46, 72, 46, 74, 46, 74, 46, -35, 125, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -17, -11  },
 		new byte[] { 22, -125, 0, 0, 123, -1, -123, 5, 0, 1, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 27, 2, 27, 5, 27, 5, 27, 5, 27, 6, 27, 6, 27, 9, 27, 11, 27, 12, 27, 14, 27, 13, 27, 13, 27, 16, 27, 16, 27, 16, 27, 15, 27, 7, 27, -7, 26, -27, 26, -45, 26, -43, 26, -11, 26, 34, 27, 80, 27, 100, 27, 92, 27, 74, 27, 57, 27, 50, 27, 52, 27, 55, 27, 59, 27, 62, 27, 60, 27, 62, 27, 60, 27, 60, 27, 60, 27, 62, 27, 62, 27, 64, 27, 62, 27, 62, 27, 60, 27, 58, 27, 59, 27, 59, 27, 61, 27, 63, 27, 61, 27, 61, 27, 60, 27, 61, 27, 61, 27, 65, 27, 67, 27, 67, 27, -95, 17  },
 		new byte[] { 22, -125, 0, 0, 123, -1, -123, 5, 0, 1, 0, 1, 0, 0, 0, 0, 0, 2, 0, 47, 46, 44, 46, 44, 46, 35, 46, 44, 46, 40, 46, 42, 46, 41, 46, 39, 46, 41, 46, 47, 46, 40, 46, 43, 46, 42, 46, 40, 46, 44, 46, 38, 46, 42, 46, 43, 46, 43, 46, 39, 46, 43, 46, 38, 46, 43, 46, 34, 46, 41, 46, 44, 46, 46, 46, 44, 46, 37, 46, 43, 46, 46, 46, 33, 46, 39, 46, 46, 46, 43, 46, 41, 46, 38, 46, 43, 46, 41, 46, 41, 46, 41, 46, 26, 46, -35, 125, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -113, -11  },
@@ -26,15 +26,16 @@ public class MockyDataFiles {
 		ObservableList<DataFile> files  = FXCollections.observableArrayList();
 		DataProcessor.resetFilesCounter();	
 
-		for(byte[] rawData : rawDatas) {
-			DataFile df = DataParser.parseFromBytes(rawData);
-			DataProcessor.calculate(df);
-			files.add(df);
-
+		for(byte[] rawData : rawDataset) {
 			try {
+			DataFile df = DataParser.parseFromBytes(rawData);
+                if (df != null) {
+                    DataProcessor.calculate(df);
+                }
+                files.add(df);
 				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (InterruptedException | NullPointerException e) {
+				System.out.println(e.getMessage());
 			}
 		}
 

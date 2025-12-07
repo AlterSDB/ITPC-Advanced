@@ -42,20 +42,8 @@ public class LocalManager {
 		return key;
 	}
 
-	public ResourceBundle getResources() {
-		return resources.get();
-	}
-
-	public Locale getCurrentLocale() {
-		return currentLocale.get();
-	}
-
 	public ObjectProperty<ResourceBundle> resourceBundleProperty() {
 		return resources;
-	}
-
-	public ObjectProperty<Locale> currentLocaleProperty() {
-		return currentLocale;
 	}
 
 	public boolean isEnglish() {

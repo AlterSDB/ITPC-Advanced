@@ -22,8 +22,8 @@ public class ReportBuilder {
 	}
 
 	public static ClipboardContent getReport(DataFile df) {
-		StringBuffer casualText = new StringBuffer("");
-	    StringBuffer htmlText   = new StringBuffer("");
+		StringBuilder casualText = new StringBuilder();
+		StringBuilder htmlText   = new StringBuilder();
 	    String trStyle = "<tr style=\"height:22pt\">";
 	    String tdStyle = "<td style=\"border-left:solid #000000 1pt;"
 	    			   + "border-right:solid #000000 1pt; "
@@ -36,8 +36,8 @@ public class ReportBuilder {
 	    String divStyle = "<div dir=\"ltr\" style=\"margin-left:0pt;\" align=\"center\">";
 	    htmlText.append("<table><tbody>");
 
-	    ArrayList<Double> maxTemps = new ArrayList<Double>(df.getMaxTemps());
-	    ArrayList<Double> minTemps = new ArrayList<Double>(df.getMinTemps());
+	    ArrayList<Double> maxTemps = new ArrayList<>(df.getMaxTemps());
+	    ArrayList<Double> minTemps = new ArrayList<>(df.getMinTemps());
 
 		if (Settings.getInstance().isShuffleValues()) {
 			Collections.shuffle(maxTemps);
@@ -45,26 +45,26 @@ public class ReportBuilder {
 		}
 
 	    for (double value : maxTemps) {
-	    	casualText.append(value + " " + "\n");
-	    	htmlText.append(trStyle + tdStyle + divStyle + value + "</div></td></tr>");
+	    	casualText.append(value).append(" ").append("\n");
+	    	htmlText.append(trStyle).append(tdStyle).append(divStyle).append(value).append("</div></td></tr>");
 	    }
 
 	    for (double value : minTemps) {
-	    	casualText.append(value + " " + "\n");
-	    	htmlText.append(trStyle + tdStyle + divStyle + value + "</div></td></tr>");
+	    	casualText.append(value).append(" ").append("\n");
+	    	htmlText.append(trStyle).append(tdStyle).append(divStyle).append(value).append("</div></td></tr>");
 	    }
 
-	    casualText.append(df.getAverageMax() + " " + "\n");
-    	htmlText.append(trStyle + tdStyle + divStyle + df.getAverageMax() + "</div></td></tr>");
+	    casualText.append(df.getAverageMax()).append(" ").append("\n");
+    	htmlText.append(trStyle).append(tdStyle).append(divStyle).append(df.getAverageMax()).append("</div></td></tr>");
 
-    	casualText.append(df.getAverageMin() + " " + "\n");
-    	htmlText.append(trStyle + tdStyle + divStyle + df.getAverageMin() + "</div></td></tr>");
+    	casualText.append(df.getAverageMin()).append(" ").append("\n");
+    	htmlText.append(trStyle).append(tdStyle).append(divStyle).append(df.getAverageMin()).append("</div></td></tr>");
 
-    	casualText.append(df.getRelativeMax() + " " + "\n");
-    	htmlText.append(trStyle + tdStyle + divStyle + df.getRelativeMax() + "</div></td></tr>");
+    	casualText.append(df.getRelativeMax()).append(" ").append("\n");
+    	htmlText.append(trStyle).append(tdStyle).append(divStyle).append(df.getRelativeMax()).append("</div></td></tr>");
 
-    	casualText.append(df.getRelativeMin() + " " + "\n");
-    	htmlText.append(trStyle + tdStyle + divStyle + df.getRelativeMin() + "</div></td></tr>");
+    	casualText.append(df.getRelativeMin()).append(" ").append("\n");
+    	htmlText.append(trStyle).append(tdStyle).append(divStyle).append(df.getRelativeMin()).append("</div></td></tr>");
 
 	    htmlText.append("</tbody></table>");
 	    ClipboardContent content = new ClipboardContent();
@@ -79,11 +79,9 @@ public class ReportBuilder {
 			return "";
 		}
 
-		String result = values.toString()
-				.replaceAll("[\\[\\]]", "")
-				.replaceAll(",\\s+", "\n");
-		
-		return result;
+        return values.toString()
+                .replaceAll("[\\[\\]]", "")
+                .replaceAll(",\\s+", "\n");
 	}
 
 }

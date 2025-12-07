@@ -11,7 +11,7 @@ import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.FileManager;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.ReportBuilder;
-import org.itpc_advanced.utils.MockyDataFiles;
+import org.itpc_advanced.utils.MockingDataFiles;
 import org.itpc_advanced.utils.VisualFX;
 
 import javafx.beans.property.DoubleProperty;
@@ -134,7 +134,7 @@ public class MainViewModel {
 		fileList.clear();
 	
 		if (settings.isDemoMode()) {
-			fileList.addAll(MockyDataFiles.mock());
+			fileList.addAll(MockingDataFiles.mock());
 		} else {
 			fileList.addAll(DeviceScanner.readDataFiles());
 		}

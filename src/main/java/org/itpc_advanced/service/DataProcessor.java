@@ -20,8 +20,8 @@ public class DataProcessor {
 		dataFile.setFileId(fileCounter.getAndIncrement());
 
 		int target = findTargetValue(dataFile.getValues());
-		List<Double> maxTemps = new ArrayList<Double>();
-		List<Double> minTemps = new ArrayList<Double>();
+		List<Double> maxTemps = new ArrayList<>();
+		List<Double> minTemps = new ArrayList<>();
 		double averageMax = 0.0;
 		double averageMin = 0.0;
 		double relativeMax = 0.0;
@@ -31,8 +31,8 @@ public class DataProcessor {
 		if (dataFile.getValues().size() > 20) {
 			target = findTargetValue(dataFile.getValues());
 			ArrayList<Double> clearValues = removeParasiticValues(dataFile.getValues());
-			dataFile.setProcessedValues(new ArrayList<Double>(clearValues));
-			List<Double> sortedValues = new ArrayList<Double>(dataFile.getProcessedValues());
+			dataFile.setProcessedValues(new ArrayList<>(clearValues));
+			List<Double> sortedValues = new ArrayList<>(dataFile.getProcessedValues());
 			Collections.sort(sortedValues);
 
 			for (int i = 0; i < 10; i++) {
@@ -56,8 +56,6 @@ public class DataProcessor {
 		dataFile.setRelativeMax(relativeMax);
 		dataFile.setRelativeMin(relativeMin);
 		dataFile.setChartBounds(chartBounds);
-
-		return;
 	}
 
 	public static double findRelative(double target, double average) {
@@ -79,7 +77,7 @@ public class DataProcessor {
 		double time = 0.0;
 
 		for (int i = 0; i < df.getProcessedValues().size(); i++){
-			chartData.add(new XYChart.Data<Number, Number>(time, df.getProcessedValues().get(i)));
+			chartData.add(new XYChart.Data<>(time, df.getProcessedValues().get(i)));
 			time += df.getTimeStep() / 60;
 		}
 
@@ -140,8 +138,8 @@ public class DataProcessor {
 			return (ArrayList<Double>) values;
 		}
 
-		ArrayList<Double> resultValues = new ArrayList<Double>(values);
-		ArrayList<Double> sortedValues = new ArrayList<Double>(values);
+		ArrayList<Double> resultValues = new ArrayList<>(values);
+		ArrayList<Double> sortedValues = new ArrayList<>(values);
 		Collections.sort(sortedValues);
 
 		double middleValue = sortedValues.get( (sortedValues.size()/2) );
@@ -166,7 +164,7 @@ public class DataProcessor {
 	}
 
 	public static List<Double> setLinearOffset(List<Double> values, Integer linearOffset) {
-		List<Double> result = new ArrayList<Double>(values);
+		List<Double> result = new ArrayList<>(values);
 		for (int i = 0; i < values.size(); i++) {
 			result.set(i, values.get(i) + linearOffset);
 		}

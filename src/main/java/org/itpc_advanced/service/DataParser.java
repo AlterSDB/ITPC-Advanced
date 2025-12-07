@@ -17,7 +17,7 @@ public class DataParser {
 	
 	public static DataFile parseFromText(String rawData) {
 		
-		List<Double> values = new ArrayList<Double>();
+		List<Double> values = new ArrayList<>();
 		
 		try {
 			if (rawData == null || rawData.trim().isEmpty()) {
@@ -31,8 +31,8 @@ public class DataParser {
 			for (String token : tokens) {
 				token = token.trim();
 				if (!token.isEmpty()) {
-					Integer value = Integer.parseInt(token);
-					values.add(new Double((double)value / 10));
+					int value = Integer.parseInt(token);
+					values.add((double) value / 10);
 				}
 			}
 
@@ -69,14 +69,14 @@ public class DataParser {
 			LocalDateTime timeStamp = LocalDateTime.of(LocalDateTime.now().getYear(), day, month, hours, minutes);
 
 			String tcType = TC_TYPES[valueOf(buffer.get(), buffer.get()) - 1];
-			List<Double> values = new ArrayList<Double>();
+			List<Double> values = new ArrayList<>();
 
 			while (buffer.remaining() > 2) {
 				Integer value = valueOf(buffer.get(), buffer.get());
 				if (value.equals(STOP_BYTES)) {
 					break;
 				}
-				values.add(new Double((double)value / 10));
+				values.add((double) value / 10);
 			}
 
 		return new DataFile(tcType, timeStamp, timeStep, values);

@@ -8,8 +8,6 @@ import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.service.TextFormatterFactory;
 import org.itpc_advanced.viewmodel.SettingsViewModel;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -52,12 +50,7 @@ public class SettingsView {
 		}
 
 		for (MenuItem item : selectPortMenuBtn.getItems()) {
-			item.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					selectPortMenuBtn.setText(item.getText());
-				}
-			});
+			item.setOnAction(event -> selectPortMenuBtn.setText(item.getText()));
 		}
 
 		closeBtn.setOnAction((event) -> closeWindow());

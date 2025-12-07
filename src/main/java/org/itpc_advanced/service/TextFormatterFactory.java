@@ -28,7 +28,7 @@ public class TextFormatterFactory {
 				return change;
 			}
 
-			if (!newText.matches("-?\\d{0," + maxDigits + "}")) {
+			if (!newText.matches("-?\\d*" + maxDigits + "}")) {
 				return null;
 			}
 

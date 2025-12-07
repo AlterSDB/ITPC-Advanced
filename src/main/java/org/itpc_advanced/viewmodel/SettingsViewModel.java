@@ -13,13 +13,13 @@ import javafx.beans.property.StringProperty;
 
 public class SettingsViewModel {
 
-	private BooleanProperty shuffleValuesProperty = new SimpleBooleanProperty();
-	private BooleanProperty demoModeProperty = new SimpleBooleanProperty();
-	private StringProperty maxDeviationProperty = new SimpleStringProperty();
-	private StringProperty connTimeoutProperty = new SimpleStringProperty();
-	private StringProperty selectedPortProperty = new SimpleStringProperty();
-	private Settings settings = Settings.getInstance();
-	private LocalManager localization = LocalManager.getInstance();
+	private final BooleanProperty shuffleValuesProperty = new SimpleBooleanProperty();
+	private final BooleanProperty demoModeProperty = new SimpleBooleanProperty();
+	private final StringProperty maxDeviationProperty = new SimpleStringProperty();
+	private final StringProperty connTimeoutProperty = new SimpleStringProperty();
+	private final StringProperty selectedPortProperty = new SimpleStringProperty();
+	private final Settings settings = Settings.getInstance();
+	private final LocalManager localization = LocalManager.getInstance();
 
 	public SettingsViewModel() {
 		SettingsManager.initializeSettings(settings);
@@ -37,13 +37,13 @@ public class SettingsViewModel {
 	}
 
 	public void saveSettings() {
-		if (maxDeviationProperty.getValue().equals("")) {
+		if (maxDeviationProperty.getValue().isEmpty()) {
 			settings.setMaxDeviation(0);
 		} else {
 			settings.setMaxDeviation(Integer.parseInt(maxDeviationProperty.getValue()));
 		}
 
-		if (connTimeoutProperty.getValue().equals("")) {
+		if (connTimeoutProperty.getValue().isEmpty()) {
 			settings.setConnectionTimeout(0);
 		} else {
 			settings.setConnectionTimeout(Integer.parseInt(connTimeoutProperty.getValue()));
@@ -66,16 +66,8 @@ public class SettingsViewModel {
 		return shuffleValuesProperty;
 	}
 
-	public void setShuffleValues(Boolean shuffleValues) {
-		this.shuffleValuesProperty.set(shuffleValues);
-	}
-
 	public StringProperty maxDeviationProperty() {
 		return maxDeviationProperty;
-	}
-
-	public void setMaxDeviation(Integer maxDeviation) {
-		this.maxDeviationProperty.set(maxDeviation.toString());
 	}
 
 	public StringProperty timeoutProperty() {
@@ -86,16 +78,8 @@ public class SettingsViewModel {
 		return selectedPortProperty;
 	}
 
-	public void setTimeout(Integer timeout) {
-		this.connTimeoutProperty.set(timeout.toString());
-	}
-
 	public BooleanProperty demoModeProperty() {
 		return demoModeProperty;
-	}
-
-	public void setDemoMode(Boolean demoMode) {
-		this.demoModeProperty.set(demoMode);
 	}
 
 }
