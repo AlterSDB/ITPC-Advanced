@@ -6,38 +6,36 @@ import java.util.List;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DeviceScanner;
 
-public class TemperatureStatsDatabase {
+public class RecordsDatabase {
+	
+	private final List<TemperatureRecord> records = new ArrayList<>();
 	
 	
-	private final List<TemperatureStats> tempStatsList = new ArrayList<>();
-	private TemperatureStats selectedStats = new TemperatureStats();
-	
-	
-	public TemperatureStatsDatabase() {
+	public RecordsDatabase() {
 		
 	}
 	
-	public TemperatureStatsDatabase(List<TemperatureStats> stats) {
-		this.tempStatsList.addAll(stats);
+	public RecordsDatabase(List<TemperatureRecord> records) {
+		this.records.addAll(records);
 	}
 	
-	public void putStats(TemperatureStats stats) {
-		if (stats != null) {
-			tempStatsList.add(stats);
+	
+	public void addRecord(TemperatureRecord record) {
+		if (record != null) {
+			records.add(record);
 		}
 	}
 	
-	public void clearStats() {
-		tempStatsList.clear();
-		TemperatureRecord.resetCounter(); 
+	public void clearRecords() {
+		records.clear();
 	}
 	
-	public TemperatureStats getStats(int n) {
+	public TemperatureRecord getRecord(int n) {
 		try {
 			if ( n < 1 || n > 8) {
 				throw new NumberFormatException();
 			}
-			return tempStatsList.get(n);
+			return records.get(n);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -45,21 +43,12 @@ public class TemperatureStatsDatabase {
 		}
 	}
 	
-	public List<TemperatureStats> getStatsList() {
-		return tempStatsList;
+	public List<TemperatureRecord> getRecords() {
+		return records;
 	}
 
-	public TemperatureStats getSelectedStats() {
-		return selectedStats;
-	}
-	
-	public void setSelectedStats(TemperatureStats selectedStats) {
-		this.selectedStats = selectedStats;
-		this.selectedStats = new TemperatureStats(selectedStats);
-	}
-	
-	public void demoScanFromDevice() {
-		this.clearStats();
+	public void demoGetRecordsFromDevice() {
+		this.clearRecords();
 		
 		List<TemperatureRecord> records = new ArrayList<>();
 		records.add(DataParser.parseFromBytes(new byte[]{
@@ -88,16 +77,16 @@ public class TemperatureStatsDatabase {
 		}));
 		
 		for (TemperatureRecord record : records) {
-			this.putStats(new TemperatureStats(record));
+			this.addRecord(record);
 		}
 		
 	}
 
-	public void scanFromDevice() {
-		this.clearStats();
+	public void getRecordsFromDevice() {
+		this.clearRecords();
 		List<TemperatureRecord> records = DeviceScanner.readTemperatureRecords();
 		for (TemperatureRecord record : records) {
-			this.putStats(new TemperatureStats(record));
+			this.addRecord(record);
 		}
 	}
 

@@ -1,6 +1,7 @@
 package org.itpc_advanced.view;
 
 
+import org.itpc_advanced.model.TemperatureRecord;
 import org.itpc_advanced.model.TemperatureStats;
 import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.viewmodel.MainViewModel;
@@ -18,10 +19,10 @@ import javafx.scene.text.Text;
 public class InputController {
 
     @FXML
-    private TableView<TemperatureStats> table;
+    private TableView<TemperatureRecord> table;
 
     @FXML
-    private TableColumn<TemperatureStats, Number> column;
+    private TableColumn<TemperatureRecord, Number> column;
 
     @FXML
     private TextArea manualInputTextArea;
@@ -92,7 +93,7 @@ public class InputController {
 			System.out.println("Item updated");
 			viewModel.updateSelectedItem(newVal);
 		});
-		table.setItems(viewModel.temperatureStatsList());
+		table.setItems(viewModel.getRecords());
 		
 		bindTextElements();  
 		bindLocalizedElements();

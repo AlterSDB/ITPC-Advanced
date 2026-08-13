@@ -6,49 +6,38 @@ import java.util.List;
 
 public class TemperatureRecord {
 
-	private final String tcType;
-	private final LocalDateTime timeStamp;
-	private final Double timeStep;
-	private final List<Double> points;
-	private final Integer pointsCount;
-	private final Integer id;
-	private static int counter = 1;
+	private String tcType;
+	private LocalDateTime timeStamp;
+	private double timeStep;
+	private List<Double> points;
+	private int id;
+	private TemperatureStats stats;
 	
 	
-	public TemperatureRecord(String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> points) {
-		this.id = counter++;
+	public TemperatureRecord(int id, String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> points) {
+		this.id = id;
 		this.tcType = tcType;
 		this.timeStamp = timeStamp;
 		this.timeStep = timeStep;
 		this.points = points;
-		this.pointsCount = points.size();
+		this.stats = new TemperatureStats(this.points, this.timeStep);
 	}
 
 	public TemperatureRecord() {
-		this.id = counter++;
-		this.tcType = "types.k";
+		this.id = 0;
+		this.tcType = "types.unknown";
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 0.0;
 		this.points = new ArrayList<Double>();
-		this.pointsCount = 0;
 	}
 
 	public TemperatureRecord(List<Double> points) {
-		this.id = counter++;
-		if (Math.random() > 0.5) {
-			this.tcType = "types.l";
-		} else {
-			if (Math.random() > 0.5) {
-				this.tcType = "types.k";
-			} else {
-				this.tcType = "types.b";
-			}
-		}
-		
+		this.id = 0;
+		this.tcType = "types.unknown";		
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 15.0;
 		this.points = points;
-		this.pointsCount = points.size();
+		this.stats =new TemperatureStats(this.points, this.timeStep);
 	}
 
 	public List<Double> getPoints() {
@@ -68,15 +57,15 @@ public class TemperatureRecord {
 	}
 
 	public Integer getPointsCount() {
-		return pointsCount;
+		return points.size();
 	}
 
 	public Integer getId() {
 		return id;
 	}
-	
-	public static void resetCounter() {
-		counter = 1;
+
+	public TemperatureStats getStats() {
+		return stats;
 	}
 
 }

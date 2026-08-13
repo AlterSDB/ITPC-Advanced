@@ -9,29 +9,29 @@ import javafx.scene.chart.XYChart;
 import org.itpc_advanced.service.DataProcessor;
 
 public class TemperatureStats {
-
-	private TemperatureRecord rawTemperatureRecord;
 	
-	private Double targetTemperature;
-	private Double linearOffset;
+	private double targetTemperature;
+	private double linearOffset;
 	
+	private List<Double> filteredPoints = new ArrayList<>();
 	private List<Double> minTemperaturePoints = new ArrayList<>();
 	private List<Double> maxTemperaturePoints = new ArrayList<>();
-	private List<Double> filteredPoints = new ArrayList<>();
+	
+	private double averageMin;
+	private double averageMax;
+	private double relativeMin;
+	private double relativeMax;
+	
 	private List<XYChart.Data<Number, Number>> chartData = new ArrayList<>();
-	
-	private Double averageMin;
-	private Double averageMax;
-	private Double relativeMin;
-	private Double relativeMax;
 	private double[] chartBounds;
+	private double yAxisLowerBound;
+	private double yAxisUpperBound;
 	
 
 
-	public TemperatureStats(TemperatureRecord rawTemperatureRecord) {
-		this.rawTemperatureRecord = rawTemperatureRecord;
+	public TemperatureStats(List<Double> points, double timeStep) {
 
-		filteredPoints = DataProcessor.removeParasiticValues(rawTemperatureRecord.getPoints());
+		filteredPoints = DataProcessor.removeParasiticValues(points);
 		
 		List<Double> sortedTermperaturePoints = new ArrayList<Double>(filteredPoints);
 		Collections.sort(sortedTermperaturePoints);
@@ -52,61 +52,29 @@ public class TemperatureStats {
 			relativeMax = 0.0;
 		}
 		
-		chartData = DataProcessor.getChartData(rawTemperatureRecord.getPoints(), rawTemperatureRecord.getTimeStep());
+		chartData = DataProcessor.getChartData(points, timeStep);		
 		chartBounds = DataProcessor.findChartBounds(sortedTermperaturePoints);
+		yAxisLowerBound = chartBounds[0];
+		yAxisUpperBound = chartBounds[1];
 		
 		setLinearOffset(0.0);
 	}
 	
-	public TemperatureStats() {
-		this.rawTemperatureRecord = null;
-	}
 	
 	public TemperatureStats(TemperatureStats stats) {
-		this.averageMax = stats.getAverageMax();
-		this.averageMin = stats.getAverageMin();
-		this.chartBounds = stats.getChartBounds();
-		this.chartData = stats.getChartData();
-		this.filteredPoints = stats.getFilteredPoints();
+		this.targetTemperature = stats.getTargetTemperature();
 		this.linearOffset = stats.getLinearOffset();
+		this.filteredPoints = stats.getFilteredPoints();
 		this.maxTemperaturePoints = stats.getMaxTemperaturePoints();
 		this.minTemperaturePoints = stats.getMinTemperaturePoints();
-		this.rawTemperatureRecord = stats.getRawTemperatureRecord();
+		this.averageMax = stats.getAverageMax();
+		this.averageMin = stats.getAverageMin();
 		this.relativeMax = stats.getRelativeMax();
 		this.relativeMin = stats.getRelativeMin();
-		this.targetTemperature = stats.getTargetTemperature();
-		
-	}
-
-	public void setRawTemperatureRecord(TemperatureRecord rawTemperatureRecord) {
-		this.rawTemperatureRecord = rawTemperatureRecord;
-
-		filteredPoints = DataProcessor.removeParasiticValues(rawTemperatureRecord.getPoints());
-		
-		List<Double> sortedTermperaturePoints = new ArrayList<Double>(getFilteredPoints());
-		Collections.sort(sortedTermperaturePoints);
-		getMinTemperaturePoints().addAll(sortedTermperaturePoints.subList(0, 10));
-		Collections.reverse(sortedTermperaturePoints);
-		getMaxTemperaturePoints().addAll(sortedTermperaturePoints.subList(0, 10));
-		
-		targetTemperature = (double) DataProcessor.findTargetValue(sortedTermperaturePoints);
-		 
-		
-		averageMin = DataProcessor.findAverage(getMinTemperaturePoints());
-		averageMax = DataProcessor.findAverage(getMaxTemperaturePoints());
-		
-		relativeMin = DataProcessor.findRelative(getTargetTemperature(), getAverageMin());
-		relativeMax = DataProcessor.findRelative(getTargetTemperature(), getAverageMax());
-		
-		chartData = DataProcessor.getChartData(rawTemperatureRecord.getPoints(), rawTemperatureRecord.getTimeStep());
-		chartBounds = DataProcessor.findChartBounds(sortedTermperaturePoints);
-		
-		setLinearOffset(0.0);
-	}
-
-	
-	public TemperatureRecord getRawTemperatureRecord() {
-		return rawTemperatureRecord;
+		this.chartData = stats.getChartData();
+		this.chartBounds = stats.getChartBounds();
+		this.yAxisLowerBound = stats.getyAxisLowerBound();
+		this.yAxisUpperBound = stats.getyAxisUpperBound();
 	}
 
 	
@@ -129,11 +97,6 @@ public class TemperatureStats {
 		this.linearOffset = linearOffset;
 	}
 	
-	public Integer getId() {
-		return this.rawTemperatureRecord.getId();
-	}
-	
-
 	
 	public List<Double> getMinTemperaturePoints() {
 		return minTemperaturePoints;
@@ -144,6 +107,7 @@ public class TemperatureStats {
 		this.minTemperaturePoints = minTemperaturePoints;
 	}
 
+	
 	public List<Double> getMaxTemperaturePoints() {
 		return maxTemperaturePoints;
 	}
@@ -174,6 +138,7 @@ public class TemperatureStats {
 	}
 
 
+	@Deprecated
 	public double[] getChartBounds() {
 		return chartBounds;
 	}
@@ -181,6 +146,16 @@ public class TemperatureStats {
 
 	public List<Double> getFilteredPoints() {
 		return filteredPoints;
+	}
+
+
+	public double getyAxisLowerBound() {
+		return yAxisLowerBound;
+	}
+
+
+	public double getyAxisUpperBound() {
+		return yAxisUpperBound;
 	}
 
 }

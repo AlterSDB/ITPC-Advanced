@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DataParser {
 
-	private static final String[] TC_TYPES = {"types.l", "types.k", "types.b", "types.s"};
+	private static final String[] TC_TYPES = {"types.l", "types.k", "types.b", "types.s", "types.unknown"};
 	private static final Double[] TIME_STEPS = {0.5, 1.0, 2.0, 5.0, 15.0, 30.0, 60.0};
 	private static final Integer  OFFSET = 7;
 	private static final Integer  STOP_BYTES = valueOf((byte)-35, (byte)125); 
@@ -54,7 +54,7 @@ public class DataParser {
 			}
 
 			if (rawData[OFFSET + 1] == -1 && rawData[OFFSET + 2] == -1 ) {
-				System.out.println("Note: DataFile is empty.");
+				System.out.println("DataFile is empty.");
 				return new TemperatureRecord();
 			}
 
@@ -79,7 +79,7 @@ public class DataParser {
 				values.add(new Double((double)value / 10));
 			}
 
-		return new TemperatureRecord(tcType, timeStamp, timeStep, values);
+		return new TemperatureRecord((int)Math.random(), tcType, timeStamp, timeStep, values);
 		} catch(Exception e) {
 			System.out.println("Error parsing data: " + e.getMessage());
 		}

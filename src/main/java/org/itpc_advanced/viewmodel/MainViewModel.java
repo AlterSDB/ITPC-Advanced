@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import org.itpc_advanced.model.TemperatureRecord;
 import org.itpc_advanced.model.TemperatureStats;
-import org.itpc_advanced.model.TemperatureStatsDatabase;
+import org.itpc_advanced.model.RecordsDatabase;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.LocalManager;
@@ -27,40 +27,39 @@ import javafx.scene.chart.XYChart;
 public class MainViewModel {
 
 	// inputs
-	private StringProperty typeValueProperty = new SimpleStringProperty();
-	private StringProperty timeStampValueProperty = new SimpleStringProperty();
-	private StringProperty timeStepValueProperty = new SimpleStringProperty();
-	private StringProperty pointsCountValueProperty = new SimpleStringProperty();
+	private StringProperty typeProperty = new SimpleStringProperty();
+	private StringProperty timeStampProperty = new SimpleStringProperty();
+	private StringProperty timeStepProperty = new SimpleStringProperty();
+	private StringProperty pointsCountProperty = new SimpleStringProperty();
 	
 	// outputs
-	private StringProperty averageMaxValueProperty = new SimpleStringProperty();
-	private StringProperty averageMinValueProperty = new SimpleStringProperty();
-	private StringProperty relativeMaxValueProperty = new SimpleStringProperty();
-	private StringProperty relativeMinValueProperty = new SimpleStringProperty();
+	private StringProperty averageMaxProperty = new SimpleStringProperty();
+	private StringProperty averageMinProperty = new SimpleStringProperty();
+	private StringProperty relativeMaxProperty = new SimpleStringProperty();
+	private StringProperty relativeMinProperty = new SimpleStringProperty();
 	
 	// offsets
-	private StringProperty linearOffsetValueProperty = new SimpleStringProperty();
-	private StringProperty tempSetValueProperty = new SimpleStringProperty();
+	private StringProperty linearOffsetProperty = new SimpleStringProperty();
+	private StringProperty targetTemperatureProperty = new SimpleStringProperty();
 	
-	private final ObservableList<XYChart.Data<Number, Number>> chartData = FXCollections.observableArrayList();
-	private final DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty(0.0);
-	private final DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty(10.0);
+	private ObservableList<XYChart.Data<Number, Number>> chartData = FXCollections.observableArrayList();
+	private DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty(0.0);
+	private DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty(10.0);
 	
-	private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+	private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 	private StringProperty manualInputProperty = new SimpleStringProperty();
 	
-	private TemperatureStatsDatabase statsDatabase;
-	private ObjectProperty<TemperatureStats> selectedStatsProperty = new SimpleObjectProperty<TemperatureStats>();
-	private ObservableList<TemperatureStats> statsList = FXCollections.observableArrayList();
+	private RecordsDatabase recordsDatabase;
+	private ObjectProperty<TemperatureRecord> selectedRecordProperty = new SimpleObjectProperty<TemperatureRecord>();
+	private ObservableList<TemperatureRecord> records = FXCollections.observableArrayList();
 	
 
-	public MainViewModel(TemperatureStatsDatabase statsDatabase){
+	public MainViewModel(RecordsDatabase recordsDatabase){
 		
-		this.statsDatabase = statsDatabase;
+		this.recordsDatabase = recordsDatabase;
 		
-		selectedStatsProperty.addListener((obs, oldValue, newValue) -> {
-			manualInputProperty.set(ReportBuilder.getTextFromRawValues(newValue.getRawTemperatureRecord().getPoints()));
-			statsDatabase.setSelectedStats(newValue);
+		selectedRecordProperty.addListener((obs, oldValue, newValue) -> {
+			System.out.println("selected new record");
 			updateInterface();
 		});
 		
@@ -69,10 +68,10 @@ public class MainViewModel {
 	
 	public void scanFromDevice() {
 		System.out.println("scan pressed: adding records...");
-		statsList.clear();
+		getRecords().clear();
 	//	statsDatabase.scanFromDevice();
-		statsDatabase.demoScanFromDevice();
-		statsList.addAll(statsDatabase.getStatsList());
+		recordsDatabase.demoGetRecordsFromDevice();
+		getRecords().addAll(recordsDatabase.getRecords());
 		updateInterface();
 	}
 	
@@ -102,50 +101,49 @@ public class MainViewModel {
 
 
 	private void updateInterface() {
-		if (selectedStatsProperty.getValue() == null) {
+		if (selectedRecordProperty.getValue() == null) {
 			System.out.println("selectedStats is null");
 			return;
 		}
 
-		TemperatureRecord tempRecord = selectedStatsProperty.getValue().getRawTemperatureRecord();
+		TemperatureRecord tempRecord = selectedRecordProperty.getValue();
 		
 		if (tempRecord == null) {
 			System.out.println("TempRecord is null");
 			return;
 		}
 		
-		LocalTextBinder.bindText(typeValueProperty, tempRecord.getTcType());
-		timeStampValueProperty.set(tempRecord.getTimeStamp().format(dateTimeFormatter));
-		timeStepValueProperty.set(tempRecord.getTimeStep().toString());
-		pointsCountValueProperty.set(tempRecord.getPointsCount().toString());
+		LocalTextBinder.bindText(typeProperty, tempRecord.getTcType());
+		timeStampProperty.set(tempRecord.getTimeStamp().format(dateTimeFormatter));
+		timeStepProperty.set(tempRecord.getTimeStep().toString());
+		pointsCountProperty.set(tempRecord.getPointsCount().toString());
 
-		TemperatureStats tempStats = statsDatabase.getSelectedStats();
+		TemperatureStats tempStats = tempRecord.getStats();
 		
-		averageMaxValueProperty.set(tempStats.getAverageMax().toString());
-		averageMinValueProperty.set(tempStats.getAverageMin().toString());
-		relativeMaxValueProperty.set(tempStats.getRelativeMax().toString());
-		relativeMinValueProperty.set(tempStats.getRelativeMin().toString());
+		averageMaxProperty.set(tempStats.getAverageMax().toString());
+		averageMinProperty.set(tempStats.getAverageMin().toString());
+		relativeMaxProperty.set(tempStats.getRelativeMax().toString());
+		relativeMinProperty.set(tempStats.getRelativeMin().toString());
 		
-		linearOffsetValueProperty.set(tempStats.getLinearOffset().toString());
-		tempSetValueProperty.set(tempStats.getTargetTemperature().toString());
+		linearOffsetProperty.set(tempStats.getLinearOffset().toString());
+		targetTemperatureProperty.set(tempStats.getTargetTemperature().toString());
 		
 		chartData.clear();
 		chartData.addAll(tempStats.getChartData());
-		yAxisLowerBoundProperty.set(tempStats.getChartBounds()[0]);
-		yAxisUpperBoundProperty.set(tempStats.getChartBounds()[1]);
+		yAxisLowerBoundProperty.set(tempStats.getyAxisLowerBound());
+		yAxisUpperBoundProperty.set(tempStats.getyAxisUpperBound());
 
 	}
 
 	
 	public void calculateFromManualInput() {
 	String text = manualInputProperty.getValue();
-	statsDatabase.getSelectedStats().setRawTemperatureRecord(DataParser.parseFromText(text));
-	selectedStatsProperty.set(statsDatabase.getSelectedStats());
+
 	updateInterface();		
 	}
 
-	public void updateSelectedItem(TemperatureStats temperatureStats) {
-		selectedStatsProperty.set(temperatureStats);
+	public void updateSelectedItem(TemperatureRecord temperatureRecord) {
+		selectedRecordProperty.set(temperatureRecord);
 	}
 
 	public void saveSelectedToFile() {
@@ -164,51 +162,47 @@ public class MainViewModel {
 	}
 
 	public void getReport() {
-		ReportBuilder.buildReport(statsDatabase.getSelectedStats());
+		ReportBuilder.buildReport(selectedRecordProperty.getValue());
 	}
 	
 	public StringProperty typeValueProperty() {
-		return typeValueProperty;
+		return typeProperty;
 	}
 	
 	public StringProperty timeStampValueProperty() {
-		return timeStampValueProperty;
+		return timeStampProperty;
 	}
 	
 	public StringProperty timeStepValueProperty() {
-		return timeStepValueProperty;
+		return timeStepProperty;
 	}
 	
 	public StringProperty pointsCountValueProperty() {
-		return pointsCountValueProperty;
+		return pointsCountProperty;
 	}
 
 	public StringProperty averageMaxValueProperty() {
-		return averageMaxValueProperty;
+		return averageMaxProperty;
 	}
 	
 	public StringProperty averageMinValueProperty() {
-		return averageMinValueProperty;
+		return averageMinProperty;
 	}
 
 	public StringProperty relativeMaxValueProperty() {
-		return relativeMaxValueProperty;
+		return relativeMaxProperty;
 	}
 	
 	public StringProperty relativeMinValueProperty() {
-		return relativeMinValueProperty;
+		return relativeMinProperty;
 	}
 	
 	public StringProperty linearOffsetValueProperty() {
-		return linearOffsetValueProperty;
+		return linearOffsetProperty;
 	}
 	
 	public StringProperty tempSetValueProperty() {
-		return tempSetValueProperty;
-	}
-
-	public ObservableList<TemperatureStats> temperatureStatsList() {
-		return statsList;
+		return targetTemperatureProperty;
 	}
 
 	public ObservableList<XYChart.Data<Number, Number>> getChartData() {
@@ -226,5 +220,10 @@ public class MainViewModel {
 	public StringProperty manualInputProperty() {
 		return manualInputProperty;
 	}
+
+	public ObservableList<TemperatureRecord> getRecords() {
+		return records;
+	}
+
 
 }
