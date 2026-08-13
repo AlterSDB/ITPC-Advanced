@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TemperatureFileRecord {
+public class TemperatureRecord {
 
 	// Raw data
 	private final String tcType;
@@ -14,7 +14,7 @@ public class TemperatureFileRecord {
 	private final Integer pointsCount;
 
 
-	public TemperatureFileRecord(String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> points) {
+	public TemperatureRecord(String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> points) {
 		this.tcType = tcType;
 		this.timeStamp = timeStamp;
 		this.timeStep = timeStep;
@@ -22,7 +22,7 @@ public class TemperatureFileRecord {
 		this.pointsCount = points.size();
 	}
 
-	public TemperatureFileRecord() {
+	public TemperatureRecord() {
 		this.tcType = "types.k";
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 0.0;
@@ -30,7 +30,7 @@ public class TemperatureFileRecord {
 		this.pointsCount = 0;
 	}
 
-	public TemperatureFileRecord(List<Double> points) {
+	public TemperatureRecord(List<Double> points) {
 		if (Math.random() > 0.5) {
 			this.tcType = "types.l";
 		} else {

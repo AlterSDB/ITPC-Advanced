@@ -9,7 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
-import org.itpc_advanced.model.TemperatureFileRecord;
+import org.itpc_advanced.model.TemperatureRecord;
 import org.itpc_advanced.model.Settings;
 
 public class DataProcessor {

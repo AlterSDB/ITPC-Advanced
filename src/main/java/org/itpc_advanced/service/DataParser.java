@@ -1,6 +1,6 @@
 package org.itpc_advanced.service;
 
-import org.itpc_advanced.model.TemperatureFileRecord;
+import org.itpc_advanced.newmodel.TemperatureRecord;
 
 import java.time.LocalDateTime;
 import java.nio.ByteBuffer;
@@ -15,13 +15,13 @@ public class DataParser {
 	private static final Integer  STOP_BYTES = valueOf((byte)-35, (byte)125); 
 	
 	
-	public static TemperatureFileRecord parseFromText(String rawData) {
+	public static TemperatureRecord parseFromText(String rawData) {
 		
 		List<Double> values = new ArrayList<Double>();
 		
 		try {
 			if (rawData == null || rawData.trim().isEmpty()) {
-				return new TemperatureFileRecord();
+				return new TemperatureRecord();
 			}
 			String cleanData = rawData.replaceAll("[.,]", "");
 			cleanData = cleanData.replaceAll("[^\\d\\s]", "");
@@ -36,15 +36,15 @@ public class DataParser {
 				}
 			}
 
-			return new TemperatureFileRecord(values);
+			return new TemperatureRecord(values);
 
 		} catch(Exception e) {
 			System.out.println("Error parsing data: " + e.getMessage());
 		}
-			return new TemperatureFileRecord();
+			return new TemperatureRecord();
 		}
 
-	public static TemperatureFileRecord parseFromBytes(byte[] rawData) {
+	public static TemperatureRecord parseFromBytes(byte[] rawData) {
 		try {
 			if (rawData == null || 
 					rawData.length < 2 || 
@@ -55,7 +55,7 @@ public class DataParser {
 
 			if (rawData[OFFSET + 1] == -1 && rawData[OFFSET + 2] == -1 ) {
 				System.out.println("Note: DataFile is empty.");
-				return new TemperatureFileRecord();
+				return new TemperatureRecord();
 			}
 
 			ByteBuffer buffer = ByteBuffer.wrap(rawData);		
@@ -79,7 +79,7 @@ public class DataParser {
 				values.add(new Double((double)value / 10));
 			}
 
-		return new TemperatureFileRecord(tcType, timeStamp, timeStep, values);
+		return new TemperatureRecord(tcType, timeStamp, timeStep, values);
 		} catch(Exception e) {
 			System.out.println("Error parsing data: " + e.getMessage());
 		}

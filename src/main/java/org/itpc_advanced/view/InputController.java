@@ -85,7 +85,7 @@ public class InputController {
     void initialize() {
     //	tableColumn.setCellValueFactory(cellData -> cellData.getValue().getFileId());
 	//	table.setItems(viewModel.getFileList());
-    	column.setCellValueFactory(new PropertyValueFactory<>("tcType"));
+    	column.setCellValueFactory(new PropertyValueFactory<>("id"));
     	Label label = new Label();
 		table.setPlaceholder(label);
 		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");		

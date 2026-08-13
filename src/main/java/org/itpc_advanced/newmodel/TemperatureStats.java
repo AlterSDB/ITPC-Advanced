@@ -10,7 +10,7 @@ import org.itpc_advanced.service.DataProcessor;
 
 public class TemperatureStats {
 
-	private final TemperatureRecord rawTemperatureRecord;
+	private TemperatureRecord rawTemperatureRecord;
 	
 	private Double targetTemperature;
 	private Double linearOffset;
@@ -29,6 +29,36 @@ public class TemperatureStats {
 
 
 	public TemperatureStats(TemperatureRecord rawTemperatureRecord) {
+		this.rawTemperatureRecord = rawTemperatureRecord;
+
+		filteredPoints = DataProcessor.removeParasiticValues(rawTemperatureRecord.getPoints());
+		
+		List<Double> sortedTermperaturePoints = new ArrayList<Double>(getFilteredPoints());
+		Collections.sort(sortedTermperaturePoints);
+		getMinTemperaturePoints().addAll(sortedTermperaturePoints.subList(0, 10));
+		Collections.reverse(sortedTermperaturePoints);
+		getMaxTemperaturePoints().addAll(sortedTermperaturePoints.subList(0, 10));
+		
+		targetTemperature = (double) DataProcessor.findTargetValue(sortedTermperaturePoints);
+		 
+		
+		averageMin = DataProcessor.findAverage(getMinTemperaturePoints());
+		averageMax = DataProcessor.findAverage(getMaxTemperaturePoints());
+		
+		relativeMin = DataProcessor.findRelative(getTargetTemperature(), getAverageMin());
+		relativeMax = DataProcessor.findRelative(getTargetTemperature(), getAverageMax());
+		
+		chartData = DataProcessor.getChartData(rawTemperatureRecord.getPoints(), rawTemperatureRecord.getTimeStep());
+		chartBounds = DataProcessor.findChartBounds(sortedTermperaturePoints);
+		
+		setLinearOffset(0.0);
+	}
+	
+	public TemperatureStats() {
+		this.rawTemperatureRecord = null;
+	}
+	
+	public void setRawTemperatureRecord(TemperatureRecord rawTemperatureRecord) {
 		this.rawTemperatureRecord = rawTemperatureRecord;
 
 		filteredPoints = DataProcessor.removeParasiticValues(rawTemperatureRecord.getPoints());

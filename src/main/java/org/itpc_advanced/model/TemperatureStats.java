@@ -10,7 +10,7 @@ import org.itpc_advanced.service.DataProcessor;
 
 public class TemperatureStats {
 
-	private final TemperatureFileRecord rawTemperatureRecord;
+	private final TemperatureRecord rawTemperatureRecord;
 	
 	private Double targetTemperature;
 	private Double linearOffset;
@@ -28,7 +28,7 @@ public class TemperatureStats {
 	
 
 
-	public TemperatureStats(TemperatureFileRecord rawTemperatureRecord) {
+	public TemperatureStats(TemperatureRecord rawTemperatureRecord) {
 		this.rawTemperatureRecord = rawTemperatureRecord;
 
 		filteredPoints = DataProcessor.removeParasiticValues(rawTemperatureRecord.getPoints());
@@ -55,7 +55,7 @@ public class TemperatureStats {
 	}
 
 	
-	public TemperatureFileRecord getRawTemperatureRecord() {
+	public TemperatureRecord getRawTemperatureRecord() {
 		return rawTemperatureRecord;
 	}
 

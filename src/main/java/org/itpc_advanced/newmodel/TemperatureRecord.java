@@ -12,9 +12,12 @@ public class TemperatureRecord {
 	private final Double timeStep;
 	private final List<Double> points;
 	private final Integer pointsCount;
-
-
+	private final Integer id;
+	private static int counter = 1;
+	
+	
 	public TemperatureRecord(String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> points) {
+		this.id = counter++;
 		this.tcType = tcType;
 		this.timeStamp = timeStamp;
 		this.timeStep = timeStep;
@@ -23,6 +26,7 @@ public class TemperatureRecord {
 	}
 
 	public TemperatureRecord() {
+		this.id = counter++;
 		this.tcType = "types.k";
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 0.0;
@@ -31,6 +35,7 @@ public class TemperatureRecord {
 	}
 
 	public TemperatureRecord(List<Double> points) {
+		this.id = counter++;
 		if (Math.random() > 0.5) {
 			this.tcType = "types.l";
 		} else {
@@ -65,6 +70,14 @@ public class TemperatureRecord {
 
 	public Integer getPointsCount() {
 		return pointsCount;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+	
+	public void resetCounter() {
+		this.counter = 1;
 	}
 
 }

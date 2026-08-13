@@ -28,7 +28,7 @@ public class TemperatureStatsRepository {
 				12.3, 14.2, 12.2, 12.3, 14.2,12.2, 12.3, 14.2, 12.2, 12.3, 
 				14.2, 12.2, 12.3, 14.2, 12.2, 12.3, 14.2}
 		));
-		temperatureStatsList.add(new TemperatureStats(new TemperatureFileRecord(getRandomValues())));
+		temperatureStatsList.add(new TemperatureStats(new TemperatureRecord(getRandomValues())));
 		
 	}	
 	

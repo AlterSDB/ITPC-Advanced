@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.itpc_advanced.model.TemperatureFileRecord;
+import org.itpc_advanced.model.TemperatureRecord;
 import org.itpc_advanced.model.Settings;
 
 import javafx.scene.input.Clipboard;
@@ -12,7 +12,7 @@ import javafx.scene.input.ClipboardContent;
 
 public class ReportBuilder {
 
-	public static void buildReport(TemperatureFileRecord df) {
+	public static void buildReport(TemperatureRecord df) {
 		if (df == null) {
 			return;
 		}
@@ -21,7 +21,7 @@ public class ReportBuilder {
 		clipboard.setContent(getReport(df));
 	}
 
-	public static ClipboardContent getReport(TemperatureFileRecord df) {
+	public static ClipboardContent getReport(TemperatureRecord df) {
 		StringBuffer casualText = new StringBuffer("");
 	    StringBuffer htmlText   = new StringBuffer("");
 	    String trStyle = "<tr style=\"height:22pt\">";

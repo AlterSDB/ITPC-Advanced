@@ -3,7 +3,7 @@ package org.itpc_advanced.utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import org.itpc_advanced.model.TemperatureFileRecord;
+import org.itpc_advanced.model.TemperatureRecord;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DataProcessor;
 
@@ -22,12 +22,12 @@ public class MockyDataFiles {
 		new byte[] {22, -125, 0, 0, 123, -1, -123, 5, 0, 1, 0, 1, 0, 0, 0, 0, 0, 2, 0, -86, 18, -83, 18, -88, 18, -89, 18, -94, 18, -96, 18, -96, 18, -97, 18, -97, 18, -96, 18, -94, 18, -96, 18, -97, 18, -99, 18, -99, 18, -96, 18, -98, 18, -99, 18, -99, 18, -99, 18, -101, 18, -102, 18, -101, 18, -99, 18, -99, 18, -96, 18, -98, 18, -98, 18, -100, 18, -100, 18, -99, 18, -98, 18, -98, 18, -99, 18, -35, 125, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -74, -42},
 	};
 
-	public static ObservableList<TemperatureFileRecord> mock() {
-		ObservableList<TemperatureFileRecord> files  = FXCollections.observableArrayList();
+	public static ObservableList<TemperatureRecord> mock() {
+		ObservableList<TemperatureRecord> files  = FXCollections.observableArrayList();
 		DataProcessor.resetFilesCounter();	
 
 		for(byte[] rawData : rawDatas) {
-			TemperatureFileRecord df = DataParser.parseFromBytes(rawData);
+			TemperatureRecord df = DataParser.parseFromBytes(rawData);
 			DataProcessor.calculate(df);
 			files.add(df);
 

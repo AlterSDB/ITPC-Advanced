@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 import org.itpc_advanced.model.ComPort;
-import org.itpc_advanced.model.TemperatureFileRecord; 
+import org.itpc_advanced.model.TemperatureRecord; 
 import org.itpc_advanced.model.Request;
 import org.itpc_advanced.model.Settings;
 
@@ -24,8 +24,8 @@ public class DeviceScanner {
 	private static volatile State currentState = State.WAITING_FOR_DEVICE;
 	private static volatile int filesCounter = 1;
 
-	public static ObservableList<TemperatureFileRecord> readDataFiles() {
-		ObservableList<TemperatureFileRecord> files  = FXCollections.observableArrayList();
+	public static ObservableList<TemperatureRecord> readDataFiles() {
+		ObservableList<TemperatureRecord> files  = FXCollections.observableArrayList();
 		currentState = State.WAITING_FOR_DEVICE;
 		filesCounter = 1;
 		buffer.reset();
@@ -63,7 +63,7 @@ public class DeviceScanner {
 						    case RECEIVING_FILES: {
 								// Received file chunk
 						    	System.out.println("FILE: " + Arrays.toString(buffer.toByteArray()));
-								TemperatureFileRecord df = DataParser.parseFromBytes(buffer.toByteArray());
+								TemperatureRecord df = DataParser.parseFromBytes(buffer.toByteArray());
 								DataProcessor.calculate(df);
 								files.add(df);
 								buffer.reset();

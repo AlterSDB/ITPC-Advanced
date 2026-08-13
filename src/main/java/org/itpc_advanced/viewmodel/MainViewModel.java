@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-import org.itpc_advanced.model.TemperatureStats;
+import org.itpc_advanced.newmodel.TemperatureStats;
 import org.itpc_advanced.model.TemperatureStatsRepository;
 import org.itpc_advanced.newmodel.RecordsDatabase;
 import org.itpc_advanced.newmodel.TemperatureRecord;
@@ -61,7 +61,15 @@ public class MainViewModel {
 
 	public MainViewModel(RecordsDatabase recordsDatabase){
 		
-		this.recordsDatabase = recordsDatabase;		
+		this.recordsDatabase = recordsDatabase;
+		
+		selectedRecordProperty.addListener((obs, oldValue, newValue) -> {
+			System.out.println("selectedRecordFile is updated");
+			manualInputProperty.set(ReportBuilder.getTextFromRawValues(newValue.getPoints()));
+			recordsDatabase.getStats().setRawTemperatureRecord(newValue);
+			updateElements();
+		});
+		
 		
 	}
 	
@@ -91,30 +99,34 @@ public class MainViewModel {
 
 
 	private void updateElements() {
-		TemperatureRecord tempStats = selectedRecordProperty.getValue();
+		TemperatureRecord tempRecord = selectedRecordProperty.getValue();
 		
-		if (tempStats == null) {
+		if (tempRecord == null) {
 			return;
 		}
 		
-		LocalTextBinder.bindText(typeValueProperty, tempStats.getTcType());
-		timeStampValueProperty.set(tempStats.getTimeStamp().format(dateTimeFormatter));
-		timeStepValueProperty.set(tempStats.getTimeStep().toString());
-		pointsCountValueProperty.set(tempStats.getPointsCount().toString());
+		LocalTextBinder.bindText(typeValueProperty, tempRecord.getTcType());
+		timeStampValueProperty.set(tempRecord.getTimeStamp().format(dateTimeFormatter));
+		timeStepValueProperty.set(tempRecord.getTimeStep().toString());
+		pointsCountValueProperty.set(tempRecord.getPointsCount().toString());
+		//manualInputProperty.set(ReportBuilder.getTextFromRawValues(tempRecord.getPoints()));
 		
-	//	averageMaxValueProperty.set(tempStats.getAverageMax().toString());
-	//	averageMinValueProperty.set(tempStats.getAverageMin().toString());
-	//	relativeMaxValueProperty.set(tempStats.getRelativeMax().toString());
-	//	relativeMinValueProperty.set(tempStats.getRelativeMin().toString());
+		TemperatureStats tempStats = recordsDatabase.getStats();
+	
 		
-	//	linearOffsetValueProperty.set(tempStats.getLinearOffset().toString());
-	//	tempSetValueProperty.set(tempStats.getTargetTemperature().toString());
+		averageMaxValueProperty.set(tempStats.getAverageMax().toString());
+		averageMinValueProperty.set(tempStats.getAverageMin().toString());
+		relativeMaxValueProperty.set(tempStats.getRelativeMax().toString());
+		relativeMinValueProperty.set(tempStats.getRelativeMin().toString());
 		
-	//	chartData.set(selectedTemperatureStats.getValue().getChartData());
-	//	chartData.clear();
-	//	chartData.addAll(tempStats.getChartData());
-	//	yAxisLowerBoundProperty.set(tempStats.getChartBounds()[1]);
-	//	yAxisUpperBoundProperty.set(tempStats.getChartBounds()[0]);
+		linearOffsetValueProperty.set(tempStats.getLinearOffset().toString());
+		tempSetValueProperty.set(tempStats.getTargetTemperature().toString());
+		
+	//	chartData.set(tempStats.getChartData());
+		chartData.clear();
+		chartData.addAll(tempStats.getChartData());
+	yAxisLowerBoundProperty.set(tempStats.getChartBounds()[1]);
+	yAxisUpperBoundProperty.set(tempStats.getChartBounds()[0]);
 		
 	//	manualInputProperty.set(ReportBuilder.getTextFromRawValues(tempStats.getFilteredPoints()));		
 		
@@ -131,6 +143,8 @@ public class MainViewModel {
 	public void calculateManual() {
 	System.out.println("Calculating from manual field");
 	String text = manualInputProperty.getValue();
+	recordsDatabase.getStats().setRawTemperatureRecord(DataParser.parseFromText(text));
+	updateElements();
 	//System.out.println(text);
 	//DataProcessor.
 	
@@ -180,7 +194,8 @@ public class MainViewModel {
 	public void scanFromDevice() {
 		System.out.println("scan pressed: add record");
 		recordsDatabase.addRecords();
-		recordsList.addAll(recordsDatabase.getAllRecords());
+		recordsList.clear();
+		recordsList.addAll(recordsDatabase.getRecords());
 		updateElements();
 		
 	//	temperatureStatsRepository.addStatsFile();
