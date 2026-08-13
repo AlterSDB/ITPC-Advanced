@@ -9,9 +9,9 @@ import org.itpc_advanced.service.DataProcessor;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
-public class DataFile {
+public class deprecatedDataFile {
 
-	static int counter = 1;
+	private static int counter = 1;
 
 	// Raw
 	private final String tcType;
@@ -20,43 +20,49 @@ public class DataFile {
 	private final List<Double> values;
 
 	// Derivatives
-	private List<Double> processedValues = new ArrayList<>();
-	private List<XYChart.Data<Number, Number>> chartData = new ArrayList<>();
-	private List<Double> maxTemps = new ArrayList<>();
-	private List<Double> minTemps = new ArrayList<>();
+	private List<Double> processedValues = new ArrayList<Double>();
+	private List<XYChart.Data<Number, Number>> chartData = new ArrayList<XYChart.Data<Number, Number>>();
+	private List<Double> maxTemps = new ArrayList<Double>();;
+	private List<Double> minTemps = new ArrayList<Double>();;
 	private Integer fileId = 0;
 	private Integer targetTemperature = 0;
 	private Integer linearOffset = 0;
+	private Integer pointsCount = 0;
 	private Double averageMax = 0.0;
 	private Double averageMin = 0.0;
 	private Double relativeMax = 0.0;
 	private Double relativeMin = 0.0;
 	private double[] chartBounds = new double[]{0.0, 10.0};
 
-	public DataFile(String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> values) {
+	public deprecatedDataFile(String tcType, LocalDateTime timeStamp, Double timeStep, List<Double> values) {
 		this.tcType = tcType;
 		this.timeStamp = timeStamp;
 		this.timeStep = timeStep;
 		this.values = values;
+		this.pointsCount = values.size();
 	}
 
-	public DataFile() {
+	public deprecatedDataFile() {
 		this.tcType = "types.k";
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 0.0;
-		this.values = new ArrayList<>();
+		this.values = new ArrayList<Double>();
 		this.chartBounds = new double[]{0.0, 10.0};
 	}
 
-	public DataFile(List<Double> values) {
+	public deprecatedDataFile(List<Double> values) {
 		this.tcType = "types.k";
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 15.0;
 		this.values = values;
 	}
 
+	public static int getCounter() {
+		return deprecatedDataFile.counter;
+	}
+
 	public static void resetCounter() {
-		DataFile.counter = 1;
+		deprecatedDataFile.counter = 1;
 	}
 
 	public Integer getFileId() {
@@ -185,7 +191,7 @@ public class DataFile {
 		if (linearOffset > 0) {
 			setChartBounds(DataProcessor.findChartBounds(processedValues));
 			setChartData(DataProcessor.getChartData(this));
-		}
+		};
 	}
 
 	public void setAverageMax(Double averageMax) {
@@ -210,6 +216,11 @@ public class DataFile {
 
 	public void setMinTemps(List<Double> minTemps) {
 		this.minTemps = minTemps;
+	}
+
+	public Integer getPointsCount() {
+		// TODO Auto-generated method stub
+		return pointsCount;
 	}
 
 }

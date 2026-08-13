@@ -9,10 +9,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
@@ -75,7 +79,7 @@ public class VisualFX {
 
 	public static void changeText(StringProperty textProperty, String newText) {
 		Timeline timeline = new Timeline();
-		String oldText = textProperty.getValue() != null ? textProperty.getValue() : "";
+		String oldText = textProperty.getValue() != null ? textProperty.getValue().toString() : "";
 		StringBuffer newTextBuffer = new StringBuffer();	
 		StringBuffer oldTextBuffer = new StringBuffer(oldText);
 		int duration = 0;
@@ -111,7 +115,7 @@ public class VisualFX {
 		}
 
 		Timeline timeline = new Timeline();
-		String oldText = field.getText() != null ? field.getText() : " ";
+		String oldText = field != null && field.getText() != null ? field.getText() : " ";
 		StringBuffer newTextBuffer = new StringBuffer();	
 		StringBuffer oldTextBuffer = new StringBuffer(oldText);
 		int duration = 0;
@@ -161,9 +165,10 @@ public class VisualFX {
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.play();
 
-		return timeline;
+		return (Animation)timeline;
 	}
 
+	@SuppressWarnings("serial")
 	public static List<Animation> addSpinnerAnimation(Circle circle, int speed, int length, int startAngle, int targetRadius) {
 		Arc fillerArc = new Arc(circle.getCenterX(), circle.getCenterY(), targetRadius, targetRadius, startAngle, 0.0);
 		fillerArc.setType(ArcType.ROUND);
@@ -194,11 +199,12 @@ public class VisualFX {
 		rotationAnimation.setCycleCount(Animation.INDEFINITE);
 		rotationAnimation.play();
 		birthAnimation.play();
+		List<Animation> animations = new ArrayList<Animation>() {{
+			add(rotationAnimation);
+			add(birthAnimation);
+		}};
 
-        return new ArrayList<Animation>() {{
-            add(rotationAnimation);
-            add(birthAnimation);
-        }};
+		return animations;
 	}
 
 	public static void hideSpinnerAnimation(Circle circle) {
@@ -213,24 +219,30 @@ public class VisualFX {
 			new KeyValue(circle.radiusProperty(), 0.0)
 		));
 		timeline.setCycleCount(0);
-		timeline.setOnFinished(event -> {
-            circle.setVisible(false);
-            circle.setClip(null);
-        });
+		timeline.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				circle.setVisible(false);
+				circle.setClip(null);
+			}
+		});
 
 		timeline.play();
 	}
 
 	public static Button setButtonAnimation(Button button) {   // Undone
-		button.setOnMouseEntered(actionEvent -> {
-            Timeline animation = new Timeline(
-            new KeyFrame(Duration.seconds(0),
-            new KeyValue(button.translateXProperty(), 1))
-            );
-            animation.setCycleCount(0);
-            animation.setAutoReverse(true);
-            animation.play();
-        });
+		button.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle (MouseEvent actionEvent) {
+				Timeline animation = new Timeline(
+				new KeyFrame(Duration.seconds(0),
+				new KeyValue(button.translateXProperty(), 1))
+				);
+				animation.setCycleCount(0);
+				animation.setAutoReverse(true);
+				animation.play();
+			}
+		});
 
 		return button;
 	}

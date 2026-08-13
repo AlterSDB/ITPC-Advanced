@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="279.0" prefWidth="248.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.itpc_advanced.view.InputController">
+   <children>
+      <TableView fx:id="table" layoutX="55.0" layoutY="40.0" prefHeight="350.0" prefWidth="170.0">
+         <columns>
+            <TableColumn fx:id="column" editable="false" prefWidth="200.0" sortable="false" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <TextArea fx:id="manualInputTextArea" layoutX="245.0" layoutY="40.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="350.0" prefWidth="170.0" />
+      <Button fx:id="calculateBtn" layoutX="245.0" layoutY="450.0" mnemonicParsing="false" onAction="#onCalculateBtnAction" prefHeight="50.0" prefWidth="111.0" text="Calculate">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="scanBtn" layoutX="55.0" layoutY="450.0" mnemonicParsing="false" onAction="#onScanBtnAction" prefHeight="50.0" prefWidth="181.0" text="Scan">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Button fx:id="saveBtn" layoutX="363.0" layoutY="450.0" mnemonicParsing="false" onAction="#onSaveBtnAction" prefHeight="50.0" prefWidth="60.0" text="Save" />
+      <GridPane layoutX="55.0" layoutY="390.0" prefHeight="50.0" prefWidth="100.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text fx:id="typeText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Type: " GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Text fx:id="timeStampText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+            <Text fx:id="timeStepText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Rec. rate: " GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Text fx:id="pointsCountText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Pts count:" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            
+                  <Text fx:id="typeValueText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="(type)" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Text fx:id="timeStampValueText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="(time)" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+            <Text fx:id="timeStepValueText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="(recrate)" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Text fx:id="pointsCountValueText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="(pts.count)" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

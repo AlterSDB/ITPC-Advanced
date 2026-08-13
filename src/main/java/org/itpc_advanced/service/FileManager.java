@@ -14,7 +14,7 @@ import javafx.stage.FileChooser;
 public class FileManager {
 	
 	public static List<String> readFile(String path) throws IOException {
-		List<String> lines = new ArrayList<>();
+		List<String> lines = new ArrayList<String>();
 		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
 			while (reader.ready()) {
 				lines.add(reader.readLine());
@@ -43,7 +43,7 @@ public class FileManager {
 	
 	public static void saveFile(String path, String data) {
 		if (data != null) {
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(path)))) {
 				writer.write(data);
 				System.out.println("Successful save!");
 

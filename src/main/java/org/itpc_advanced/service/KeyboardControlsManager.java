@@ -108,4 +108,14 @@ public class KeyboardControlsManager {
 		}
 		
 	}
+	
+	public Node getCurrentFocusedElement() {
+		if (currentIndex >= 0 && currentIndex <= focusableElements.size()) {
+			return focusableElements.get(currentIndex);
+		}
+		return null;
+	}
+
+
+
 }
