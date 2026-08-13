@@ -66,7 +66,7 @@ public class InputController {
 	
     @FXML
     void onCalculateBtnAction(ActionEvent event) {
-    	viewModel.calculate();
+    	viewModel.calculateManual();
     }
 
     @FXML
@@ -114,6 +114,7 @@ public class InputController {
 		timeStampValueText.textProperty().bind(viewModel.timeStampValueProperty());
 		timeStepValueText.textProperty().bind(viewModel.timeStepValueProperty());
 		pointsCountValueText.textProperty().bind(viewModel.pointsCountValueProperty());		
+		manualInputTextArea.textProperty().bindBidirectional(viewModel.manualInputProperty());
 	}	
 
 }

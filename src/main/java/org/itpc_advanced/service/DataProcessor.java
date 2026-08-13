@@ -14,9 +14,9 @@ import org.itpc_advanced.model.Settings;
 
 public class DataProcessor {
 
-	private static final AtomicInteger fileCounter = new AtomicInteger(1);
+//	private static final AtomicInteger fileCounter = new AtomicInteger(1);
 
-	public static void calculate(TemperatureFileRecord dataFile) {
+ /*	public static void calculate(TemperatureFileRecord dataFile) {
 		dataFile.setFileId(fileCounter.getAndIncrement());
 
 		int target = findTargetValue(dataFile.getPoints());
@@ -58,7 +58,7 @@ public class DataProcessor {
 		dataFile.setChartBounds(chartBounds);
 
 		return;
-	}
+	} */
 
 	public static double findRelative(double target, double average) {
 		return ( (average * 10) - (target * 10) ) / 10;
@@ -74,15 +74,16 @@ public class DataProcessor {
 		return Math.ceil(average * 10) / 10;
 	}
 
-	public static ObservableList<XYChart.Data<Number,Number>> getChartData(TemperatureFileRecord df) {
-		ObservableList<XYChart.Data<Number,Number>> chartData = FXCollections.observableArrayList();
+	
+	public static List<XYChart.Data<Number, Number>> getChartData(List<Double> points, double timeStep) {
+		List<XYChart.Data<Number, Number>> chartData = new ArrayList<>();
 		double time = 0.0;
-
-		for (int i = 0; i < df.getProcessedValues().size(); i++){
-			chartData.add(new XYChart.Data<Number, Number>(time, df.getProcessedValues().get(i)));
-			time += df.getTimeStep() / 60;
+		
+		for(int i = 0; i < points.size() - 1; i++) {
+			chartData.add(new XYChart.Data<Number, Number>(time, points.get(i)));
+			time += timeStep / 60;
 		}
-
+		 
 		return chartData;
 	}
 
@@ -161,9 +162,9 @@ public class DataProcessor {
 		return resultValues;
 	}
 
-	public static void resetFilesCounter() {
-		fileCounter.set(1);
-	}
+	//public static void resetFilesCounter() {
+//		fileCounter.set(1);
+//	}
 
 	public static List<Double> setLinearOffset(List<Double> values, Integer linearOffset) {
 		List<Double> result = new ArrayList<Double>(values);

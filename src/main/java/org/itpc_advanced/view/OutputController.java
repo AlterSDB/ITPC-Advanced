@@ -5,8 +5,10 @@ import org.itpc_advanced.viewmodel.MainViewModel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -44,7 +46,7 @@ public class OutputController {
     private Button copyResultBtn;
 
     @FXML
-    private AreaChart<?, ?> areaChart;
+    private AreaChart<Number, Number> areaChart;
 
     @FXML
     private NumberAxis xAxis;
@@ -66,6 +68,8 @@ public class OutputController {
 
 	private MainViewModel viewModel;
 	
+	private XYChart.Series<Number, Number> series;
+	
 	public OutputController(MainViewModel viewModel) {
     	this.viewModel = viewModel;
     }
@@ -74,12 +78,33 @@ public class OutputController {
     void initialize() {
     	bindTextElements();
     	bindLocalizedElements();
+    	initLineChart();
     }
     
 	@FXML
     void onCopyResultsBtnAction(ActionEvent event) {
     	viewModel.getReport();
     }
+	
+	private void initLineChart() {
+		series = new XYChart.Series<Number, Number>();
+		series.setData(viewModel.getChartData());
+		areaChart.getData().add(series);
+ 
+		areaChart.setCreateSymbols(false);
+		areaChart.setLegendVisible(false);
+		areaChart.setAnimated(false);
+		areaChart.setLegendSide(Side.LEFT);
+
+		xAxis.setUpperBound(15);
+		xAxis.setMinorTickCount(2);
+		yAxis.setAutoRanging(true);
+		yAxis.setTickUnit(1);
+		yAxis.setMinorTickCount(0);
+		//yAxis.lowerBoundProperty().bind(viewModel.yAxisLowerBoundProperty());
+		//yAxis.upperBoundProperty().bind(viewModel.yAxisUpperBoundProperty());
+		
+	}
     
     private void bindLocalizedElements() {
     	LocalTextBinder.bindText(tempSetText.textProperty(), "field.set.target");

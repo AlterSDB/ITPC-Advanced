@@ -35,7 +35,7 @@ public class TemperatureStatsRepository {
 	private List<Double> getRandomValues() {
 		List<Double> values = new ArrayList<Double>();
 		for (int i = 0; i < (Math.random() * 80) + 30; i++) {
-			values.add(Math.random() * 1000);
+			values.add(Math.random() * 100);
 		}
 		return values;
 	}
