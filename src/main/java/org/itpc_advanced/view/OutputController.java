@@ -65,9 +65,9 @@ public class OutputController {
 
     @FXML
     private TextField linearOffsetField;
+    
 
 	private MainViewModel viewModel;
-	
 	private XYChart.Series<Number, Number> series;
 	
 	public OutputController(MainViewModel viewModel) {
@@ -98,11 +98,11 @@ public class OutputController {
 
 		xAxis.setUpperBound(15);
 		xAxis.setMinorTickCount(2);
-		yAxis.setAutoRanging(true);
+		yAxis.setAutoRanging(false);
 		yAxis.setTickUnit(1);
 		yAxis.setMinorTickCount(0);
-		//yAxis.lowerBoundProperty().bind(viewModel.yAxisLowerBoundProperty());
-		//yAxis.upperBoundProperty().bind(viewModel.yAxisUpperBoundProperty());
+		yAxis.lowerBoundProperty().bind(viewModel.yAxisLowerBoundProperty());
+		yAxis.upperBoundProperty().bind(viewModel.yAxisUpperBoundProperty());
 		
 	}
     

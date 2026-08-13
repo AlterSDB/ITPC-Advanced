@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.itpc_advanced.model.TemperatureRecord;
-import org.itpc_advanced.model.Settings;
+import org.itpc_advanced.model.TemperatureStats;
 
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
 public class ReportBuilder {
 
-	public static void buildReport(TemperatureRecord df) {
+	public static void buildReport(TemperatureStats df) {
 		if (df == null) {
 			return;
 		}
@@ -21,7 +20,7 @@ public class ReportBuilder {
 		clipboard.setContent(getReport(df));
 	}
 
-	public static ClipboardContent getReport(TemperatureRecord df) {
+	public static ClipboardContent getReport(TemperatureStats df) {
 		StringBuffer casualText = new StringBuffer("");
 	    StringBuffer htmlText   = new StringBuffer("");
 	    String trStyle = "<tr style=\"height:22pt\">";
@@ -36,10 +35,10 @@ public class ReportBuilder {
 	    String divStyle = "<div dir=\"ltr\" style=\"margin-left:0pt;\" align=\"center\">";
 	    htmlText.append("<table><tbody>");
 
-	    ArrayList<Double> maxTemps = new ArrayList<Double>(df.getMaxTemps());
-	    ArrayList<Double> minTemps = new ArrayList<Double>(df.getMinTemps());
+	    ArrayList<Double> maxTemps = new ArrayList<Double>(df.getMaxTemperaturePoints());
+	    ArrayList<Double> minTemps = new ArrayList<Double>(df.getMinTemperaturePoints());
 
-		if (Settings.getInstance().isShuffleValues()) {
+		if ( true/*Settings.getInstance().isShuffleValues()*/ ) {
 			Collections.shuffle(maxTemps);
 			Collections.shuffle(minTemps);
 		}

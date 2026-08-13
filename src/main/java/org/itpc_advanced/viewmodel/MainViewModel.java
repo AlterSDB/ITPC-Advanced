@@ -1,22 +1,21 @@
 package org.itpc_advanced.viewmodel;
 
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
-import org.itpc_advanced.newmodel.TemperatureStats;
-import org.itpc_advanced.model.TemperatureStatsRepository;
-import org.itpc_advanced.newmodel.RecordsDatabase;
-import org.itpc_advanced.newmodel.TemperatureRecord;
+import org.itpc_advanced.model.TemperatureRecord;
+import org.itpc_advanced.model.TemperatureStats;
+import org.itpc_advanced.model.TemperatureStatsDatabase;
 import org.itpc_advanced.service.DataParser;
+import org.itpc_advanced.service.DeviceScanner;
 import org.itpc_advanced.service.LocalManager;
 import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.service.ReportBuilder;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,10 +26,6 @@ import javafx.scene.chart.XYChart;
 
 public class MainViewModel {
 
-	//private RecordsDatabase temperatureStatsRepository;
-	//private ObservableList<TemperatureStats> temperatureStatsList = FXCollections.observableArrayList();
-	//private ObjectProperty<TemperatureStats> selectedTemperatureStatsProperty = new SimpleObjectProperty<TemperatureStats>();
-	
 	// inputs
 	private StringProperty typeValueProperty = new SimpleStringProperty();
 	private StringProperty timeStampValueProperty = new SimpleStringProperty();
@@ -48,29 +43,37 @@ public class MainViewModel {
 	private StringProperty tempSetValueProperty = new SimpleStringProperty();
 	
 	private final ObservableList<XYChart.Data<Number, Number>> chartData = FXCollections.observableArrayList();
-	private final DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty();
-	private final DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty();
+	private final DoubleProperty yAxisLowerBoundProperty = new SimpleDoubleProperty(0.0);
+	private final DoubleProperty yAxisUpperBoundProperty = new SimpleDoubleProperty(10.0);
 	
 	private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 	private StringProperty manualInputProperty = new SimpleStringProperty();
 	
-	private RecordsDatabase recordsDatabase;
-	private ObjectProperty<TemperatureRecord> selectedRecordProperty = new SimpleObjectProperty<TemperatureRecord>();
-	private ObservableList<TemperatureRecord> recordsList = FXCollections.observableArrayList();
+	private TemperatureStatsDatabase statsDatabase;
+	private ObjectProperty<TemperatureStats> selectedStatsProperty = new SimpleObjectProperty<TemperatureStats>();
+	private ObservableList<TemperatureStats> statsList = FXCollections.observableArrayList();
 	
 
-	public MainViewModel(RecordsDatabase recordsDatabase){
+	public MainViewModel(TemperatureStatsDatabase statsDatabase){
 		
-		this.recordsDatabase = recordsDatabase;
+		this.statsDatabase = statsDatabase;
 		
-		selectedRecordProperty.addListener((obs, oldValue, newValue) -> {
-			System.out.println("selectedRecordFile is updated");
-			manualInputProperty.set(ReportBuilder.getTextFromRawValues(newValue.getPoints()));
-			recordsDatabase.getStats().setRawTemperatureRecord(newValue);
-			updateElements();
+		selectedStatsProperty.addListener((obs, oldValue, newValue) -> {
+			manualInputProperty.set(ReportBuilder.getTextFromRawValues(newValue.getRawTemperatureRecord().getPoints()));
+			statsDatabase.setSelectedStats(newValue);
+			updateInterface();
 		});
 		
 		
+	}
+	
+	public void scanFromDevice() {
+		System.out.println("scan pressed: adding records...");
+		statsList.clear();
+	//	statsDatabase.scanFromDevice();
+		statsDatabase.demoScanFromDevice();
+		statsList.addAll(statsDatabase.getStatsList());
+		updateInterface();
 	}
 	
 	
@@ -98,10 +101,16 @@ public class MainViewModel {
 		}
 
 
-	private void updateElements() {
-		TemperatureRecord tempRecord = selectedRecordProperty.getValue();
+	private void updateInterface() {
+		if (selectedStatsProperty.getValue() == null) {
+			System.out.println("selectedStats is null");
+			return;
+		}
+
+		TemperatureRecord tempRecord = selectedStatsProperty.getValue().getRawTemperatureRecord();
 		
 		if (tempRecord == null) {
+			System.out.println("TempRecord is null");
 			return;
 		}
 		
@@ -109,10 +118,8 @@ public class MainViewModel {
 		timeStampValueProperty.set(tempRecord.getTimeStamp().format(dateTimeFormatter));
 		timeStepValueProperty.set(tempRecord.getTimeStep().toString());
 		pointsCountValueProperty.set(tempRecord.getPointsCount().toString());
-		//manualInputProperty.set(ReportBuilder.getTextFromRawValues(tempRecord.getPoints()));
-		
-		TemperatureStats tempStats = recordsDatabase.getStats();
-	
+
+		TemperatureStats tempStats = statsDatabase.getSelectedStats();
 		
 		averageMaxValueProperty.set(tempStats.getAverageMax().toString());
 		averageMinValueProperty.set(tempStats.getAverageMin().toString());
@@ -122,38 +129,42 @@ public class MainViewModel {
 		linearOffsetValueProperty.set(tempStats.getLinearOffset().toString());
 		tempSetValueProperty.set(tempStats.getTargetTemperature().toString());
 		
-	//	chartData.set(tempStats.getChartData());
 		chartData.clear();
 		chartData.addAll(tempStats.getChartData());
-	yAxisLowerBoundProperty.set(tempStats.getChartBounds()[1]);
-	yAxisUpperBoundProperty.set(tempStats.getChartBounds()[0]);
-		
-	//	manualInputProperty.set(ReportBuilder.getTextFromRawValues(tempStats.getFilteredPoints()));		
-		
+		yAxisLowerBoundProperty.set(tempStats.getChartBounds()[0]);
+		yAxisUpperBoundProperty.set(tempStats.getChartBounds()[1]);
 
 	}
 
-	public void calculateManual(String text) {
-	//	selectedTemperatureStatsProperty.set(DataParser.parseFromText(text));
-	//	DataProcessor.calculate(selectedDataFile.get());
-	//	updateAttributes();
-		
-	}
 	
-	public void calculateManual() {
-	System.out.println("Calculating from manual field");
+	public void calculateFromManualInput() {
 	String text = manualInputProperty.getValue();
-	recordsDatabase.getStats().setRawTemperatureRecord(DataParser.parseFromText(text));
-	updateElements();
-	//System.out.println(text);
-	//DataProcessor.
-	
-	//selectedTemperatureStatsProperty.set(DataParser.parseFromText(text));
-		
+	statsDatabase.getSelectedStats().setRawTemperatureRecord(DataParser.parseFromText(text));
+	selectedStatsProperty.set(statsDatabase.getSelectedStats());
+	updateInterface();		
 	}
 
-	public void readDataFiles() {
+	public void updateSelectedItem(TemperatureStats temperatureStats) {
+		selectedStatsProperty.set(temperatureStats);
+	}
+
+	public void saveSelectedToFile() {
+		System.out.println("save pressed");
+		LocalManager localManager = LocalManager.getInstance();
 		
+		if(localManager.isEnglish()) { 
+			localManager.setLocale(new Locale("ru", "RU"));	
+		} else {
+			localManager.setLocale(Locale.ENGLISH);
+		}
+	}
+	
+	public void openSettingsWindow() {
+		System.out.println("Settings btn pressed");
+	}
+
+	public void getReport() {
+		ReportBuilder.buildReport(statsDatabase.getSelectedStats());
 	}
 	
 	public StringProperty typeValueProperty() {
@@ -170,45 +181,6 @@ public class MainViewModel {
 	
 	public StringProperty pointsCountValueProperty() {
 		return pointsCountValueProperty;
-	}
-
-	public void updateSelectedItem(TemperatureRecord temperatureRecord) {
-		selectedRecordProperty.set(temperatureRecord);
-	}
-
-	public void calculate() {
-		System.out.println("Calculate pressed");
-	}
-
-	public void saveToFile() {
-		System.out.println("save pressed");
-		LocalManager localManager = LocalManager.getInstance();
-		
-		if(localManager.isEnglish()) { 
-			localManager.setLocale(new Locale("ru", "RU"));	
-		} else {
-			localManager.setLocale(Locale.ENGLISH);
-		}
-	}
-
-	public void scanFromDevice() {
-		System.out.println("scan pressed: add record");
-		recordsDatabase.addRecords();
-		recordsList.clear();
-		recordsList.addAll(recordsDatabase.getRecords());
-		updateElements();
-		
-	//	temperatureStatsRepository.addStatsFile();
-	//	recordsList.clear();
-	//	recordsList.addAll(temperatureStatsRepository.getTemperatureStatsList());
-	}
-	
-	public void openSettingsWindow() {
-		System.out.println("Settings btn pressed");
-	}
-
-	public void getReport() {
-		System.out.println("copyResults pressed");
 	}
 
 	public StringProperty averageMaxValueProperty() {
@@ -235,8 +207,8 @@ public class MainViewModel {
 		return tempSetValueProperty;
 	}
 
-	public ObservableList<TemperatureRecord> temperatureStatsList() {
-		return recordsList;
+	public ObservableList<TemperatureStats> temperatureStatsList() {
+		return statsList;
 	}
 
 	public ObservableList<XYChart.Data<Number, Number>> getChartData() {

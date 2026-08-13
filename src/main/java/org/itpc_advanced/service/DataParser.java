@@ -1,6 +1,6 @@
 package org.itpc_advanced.service;
 
-import org.itpc_advanced.newmodel.TemperatureRecord;
+import org.itpc_advanced.model.TemperatureRecord;
 
 import java.time.LocalDateTime;
 import java.nio.ByteBuffer;

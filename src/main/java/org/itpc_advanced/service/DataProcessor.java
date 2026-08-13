@@ -3,14 +3,8 @@ package org.itpc_advanced.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
-import org.itpc_advanced.model.TemperatureRecord;
-import org.itpc_advanced.model.Settings;
 
 public class DataProcessor {
 
@@ -148,7 +142,7 @@ public class DataProcessor {
 		double middleValue = sortedValues.get( (sortedValues.size()/2) );
 		double minValue = sortedValues.get(0);
 		double maxValue = sortedValues.get(sortedValues.size() - 1);
-		double maxDeviation = Settings.getInstance().getMaxDeviation();
+		double maxDeviation = 50;
 		double currentMaxDeviation = Math.max(maxValue - middleValue, middleValue - minValue);	
 
 		if (currentMaxDeviation > maxDeviation) {

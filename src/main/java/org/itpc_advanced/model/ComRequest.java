@@ -1,7 +1,12 @@
-package org.itpc_advanced.newmodel;
+package org.itpc_advanced.model;
 
 public enum ComRequest {
 
+	// RX
+	DEVICE_SYNC(new byte[] {22, 4, 0, 0, -6, -1, -128, 7, 119, -1}),
+	DEVICE_SYNC_SHIFT(new byte[] {-1, 22, 4, 0, 0, -6, -1, -128, 7, 119}),
+	CONNECTION_CONFIRM(new byte[] {22, 6, 0, 0, -8, -1, -123, -48, 5, 4, -96, -2}),
+	
 	// TX
 	TO_CONNECT(new byte[] {22, 3, -1, 0, -4, -2, 0, -2, -1}), 
 	FILE_1(new byte[] {22, 6, -1, 0, -7, -2, 33, 0, -38, -128, -125, -2}), 
@@ -11,12 +16,7 @@ public enum ComRequest {
 	FILE_5(new byte[] {22, 6, -1, 0, -7, -2, 33, 0, -22, -128, 115, -2}),
 	FILE_6(new byte[] {22, 6, -1, 0, -7, -2, 33, 0, -18, -128, 111, -2}),
 	FILE_7(new byte[] {22, 6, -1, 0, -7, -2, 33, 0, -14, -128, 107, -2}),
-	FILE_8(new byte[] {22, 6, -1, 0, -7, -2, 33, 0, -10, -128, 103, -2}),
-
-	// RX
-	DEVICE_SYNC(new byte[] {22, 4, 0, 0, -6, -1, -128, 7, 119, -1}),
-	DEVICE_SYNC_SHIFT(new byte[] {-1, 22, 4, 0, 0, -6, -1, -128, 7, 119}),
-	CONNECTION_CONFIRM(new byte[] {22, 6, 0, 0, -8, -1, -123, -48, 5, 4, -96, -2});
+	FILE_8(new byte[] {22, 6, -1, 0, -7, -2, 33, 0, -10, -128, 103, -2});
 
 	private final byte[] bytes;
 

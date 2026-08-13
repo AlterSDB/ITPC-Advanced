@@ -2,7 +2,6 @@ package org.itpc_advanced.view;
 
 
 import org.itpc_advanced.model.TemperatureStats;
-import org.itpc_advanced.newmodel.TemperatureRecord;
 import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
@@ -19,10 +18,10 @@ import javafx.scene.text.Text;
 public class InputController {
 
     @FXML
-    private TableView<TemperatureRecord> table;
+    private TableView<TemperatureStats> table;
 
     @FXML
-    private TableColumn<TemperatureRecord, Number> column;
+    private TableColumn<TemperatureStats, Number> column;
 
     @FXML
     private TextArea manualInputTextArea;
@@ -68,12 +67,12 @@ public class InputController {
 	
     @FXML
     void onCalculateBtnAction(ActionEvent event) {
-    	viewModel.calculateManual();
+    	viewModel.calculateFromManualInput();
     }
 
     @FXML
     void onSaveBtnAction(ActionEvent event) {
-    	viewModel.saveToFile();
+    	viewModel.saveSelectedToFile();
     }
 
     @FXML
@@ -83,11 +82,11 @@ public class InputController {
     
     @FXML
     void initialize() {
-    //	tableColumn.setCellValueFactory(cellData -> cellData.getValue().getFileId());
-	//	table.setItems(viewModel.getFileList());
     	column.setCellValueFactory(new PropertyValueFactory<>("id"));
+    	
     	Label label = new Label();
 		table.setPlaceholder(label);
+		
 		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");		
 		table.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
 			System.out.println("Item updated");
