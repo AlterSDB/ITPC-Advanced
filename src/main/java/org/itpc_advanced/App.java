@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.util.Properties;
 
-import org.itpc_advanced.model.TemperatureStatsRepository;
+import org.itpc_advanced.newmodel.RecordsDatabase;
 import org.itpc_advanced.view.InputController;
 import org.itpc_advanced.view.LayoutController;
 import org.itpc_advanced.view.OutputController;
@@ -24,7 +24,7 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage mainStage) throws Exception {
-		MainViewModel viewModel = new MainViewModel(new TemperatureStatsRepository());
+		MainViewModel viewModel = new MainViewModel(new RecordsDatabase());
 		
 		FXMLLoader loaderLayout = new FXMLLoader(getClass().getResource("/fxml/layout.fxml"));	
 		FXMLLoader loaderInput = new FXMLLoader(getClass().getResource("/fxml/input.fxml"));	

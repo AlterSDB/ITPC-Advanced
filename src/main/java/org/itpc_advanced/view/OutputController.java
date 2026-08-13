@@ -125,8 +125,8 @@ public class OutputController {
     	averageMinField.textProperty().bind(viewModel.averageMinValueProperty());
     	relativeMaxField.textProperty().bind(viewModel.relativeMaxValueProperty());
     	relativeMinField.textProperty().bind(viewModel.relativeMinValueProperty());   
-    	linearOffsetField.textProperty().bind(viewModel.linearOffsetValueProperty());
-    	tempSetField.textProperty().bind(viewModel.tempSetValueProperty());
+    	linearOffsetField.textProperty().bindBidirectional(viewModel.linearOffsetValueProperty());
+    	tempSetField.textProperty().bindBidirectional(viewModel.tempSetValueProperty());
 		
 	}
 

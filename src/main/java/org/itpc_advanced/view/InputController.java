@@ -2,6 +2,7 @@ package org.itpc_advanced.view;
 
 
 import org.itpc_advanced.model.TemperatureStats;
+import org.itpc_advanced.newmodel.TemperatureRecord;
 import org.itpc_advanced.service.LocalTextBinder;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
@@ -12,15 +13,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
 public class InputController {
 
     @FXML
-    private TableView<TemperatureStats> table;
+    private TableView<TemperatureRecord> table;
 
     @FXML
-    private TableColumn<TemperatureStats, Number> column;
+    private TableColumn<TemperatureRecord, Number> column;
 
     @FXML
     private TextArea manualInputTextArea;
@@ -83,7 +85,7 @@ public class InputController {
     void initialize() {
     //	tableColumn.setCellValueFactory(cellData -> cellData.getValue().getFileId());
 	//	table.setItems(viewModel.getFileList());
-    //	column.setCellValueFactory(new PropertyValueFactory<>("fileId"));
+    	column.setCellValueFactory(new PropertyValueFactory<>("tcType"));
     	Label label = new Label();
 		table.setPlaceholder(label);
 		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");		
@@ -105,8 +107,6 @@ public class InputController {
 		LocalTextBinder.bindText(typeText.textProperty(), "df.tc.type");
 		LocalTextBinder.bindText(timeStepText.textProperty(), "df.timestep");
 		LocalTextBinder.bindText(pointsCountText.textProperty(), "df.points.count");
-		
-	//	LocalTextBinder.bindText(typeValueText.textProperty(), "types.k");
 	}
 
 	private void bindTextElements() {
