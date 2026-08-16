@@ -1,6 +1,6 @@
 package org.itpc_advanced.view;
 
-import org.itpc_advanced.service.LocalTextBinder;
+import org.itpc_advanced.service.Localizator;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
 import javafx.event.ActionEvent;
@@ -107,26 +107,26 @@ public class OutputController {
 	}
     
     private void bindLocalizedElements() {
-    	LocalTextBinder.bindText(tempSetText.textProperty(), "field.set.target");
-		LocalTextBinder.bindText(linearOffsetText.textProperty(), "field.linear.offset");
-		LocalTextBinder.bindText(averageMaxText.textProperty(), "field.average.max");
-		LocalTextBinder.bindText(averageMinText.textProperty(), "field.average.min");
-		LocalTextBinder.bindText(relativeMaxText.textProperty(), "field.relative.max");
-		LocalTextBinder.bindText(relativeMinText.textProperty(), "field.relative.min");
-		LocalTextBinder.bindText(copyResultBtn.textProperty(), "button.get.report");
-		LocalTextBinder.bindText(xAxis.labelProperty(), "chart.x.axis");
-		LocalTextBinder.bindText(yAxis.labelProperty(), "chart.y.axis");
-		LocalTextBinder.bindText(areaChart.titleProperty(), "chart.label");
+    	Localizator.bindText(tempSetText.textProperty(), "field.set.target");
+		Localizator.bindText(linearOffsetText.textProperty(), "field.linear.offset");
+		Localizator.bindText(averageMaxText.textProperty(), "field.average.max");
+		Localizator.bindText(averageMinText.textProperty(), "field.average.min");
+		Localizator.bindText(relativeMaxText.textProperty(), "field.relative.max");
+		Localizator.bindText(relativeMinText.textProperty(), "field.relative.min");
+		Localizator.bindText(copyResultBtn.textProperty(), "button.get.report");
+		Localizator.bindText(xAxis.labelProperty(), "chart.x.axis");
+		Localizator.bindText(yAxis.labelProperty(), "chart.y.axis");
+		Localizator.bindText(areaChart.titleProperty(), "chart.label");
 		
 	}
     
     private void bindTextElements() {   	
-    	averageMaxField.textProperty().bind(viewModel.averageMaxValueProperty());
-    	averageMinField.textProperty().bind(viewModel.averageMinValueProperty());
-    	relativeMaxField.textProperty().bind(viewModel.relativeMaxValueProperty());
-    	relativeMinField.textProperty().bind(viewModel.relativeMinValueProperty());   
-    	linearOffsetField.textProperty().bindBidirectional(viewModel.linearOffsetValueProperty());
-    	tempSetField.textProperty().bindBidirectional(viewModel.tempSetValueProperty());
+    	averageMaxField.textProperty().bind(viewModel.averageMaxProperty());
+    	averageMinField.textProperty().bind(viewModel.averageMinProperty());
+    	relativeMaxField.textProperty().bind(viewModel.relativeMaxProperty());
+    	relativeMinField.textProperty().bind(viewModel.relativeMinProperty());   
+    	linearOffsetField.textProperty().bindBidirectional(viewModel.linearOffsetProperty());
+    	tempSetField.textProperty().bindBidirectional(viewModel.tempSetProperty());
 		
 	}
 

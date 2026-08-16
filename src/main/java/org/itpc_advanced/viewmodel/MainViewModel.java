@@ -10,8 +10,8 @@ import org.itpc_advanced.model.TemperatureStats;
 import org.itpc_advanced.model.RecordsDatabase;
 import org.itpc_advanced.service.DataParser;
 import org.itpc_advanced.service.DeviceScanner;
-import org.itpc_advanced.service.LocalManager;
-import org.itpc_advanced.service.LocalTextBinder;
+import org.itpc_advanced.service.LocalizationManager;
+import org.itpc_advanced.service.Localizator;
 import org.itpc_advanced.service.ReportBuilder;
 
 import javafx.beans.property.DoubleProperty;
@@ -58,9 +58,20 @@ public class MainViewModel {
 		
 		this.recordsDatabase = recordsDatabase;
 		
-		selectedRecordProperty.addListener((obs, oldValue, newValue) -> {
+		selectedRecordProperty.addListener((obs, oldRecord, newRecord) -> {
 			System.out.println("selected new record");
+			manualInputProperty.set(ReportBuilder.getTextFromRawValues(newRecord.getPoints()));
 			updateInterface();
+		});
+		
+		linearOffsetProperty.addListener((obs, oldOffset, newOffset) -> {
+			System.out.println("new linear offset");
+			// добавить дебаунсер и пересчет всех точек (ред. существующий статс)
+		});
+		
+		targetTemperatureProperty.addListener((obs, oldTarget, newTarget) -> {
+			System.out.println("new target temperature");
+			// добавить проверку на только числа + символ точки, дебаунсер и пересчет только относительных макс и мин (ред. существующий статс)
 		});
 		
 		
@@ -113,12 +124,13 @@ public class MainViewModel {
 			return;
 		}
 		
-		LocalTextBinder.bindText(typeProperty, tempRecord.getTcType());
+		Localizator.bindText(typeProperty, tempRecord.getTcType());
 		timeStampProperty.set(tempRecord.getTimeStamp().format(dateTimeFormatter));
 		timeStepProperty.set(tempRecord.getTimeStep().toString());
 		pointsCountProperty.set(tempRecord.getPointsCount().toString());
 
 		TemperatureStats tempStats = tempRecord.getStats();
+		if (tempStats != null) {
 		
 		averageMaxProperty.set(tempStats.getAverageMax().toString());
 		averageMinProperty.set(tempStats.getAverageMin().toString());
@@ -132,14 +144,28 @@ public class MainViewModel {
 		chartData.addAll(tempStats.getChartData());
 		yAxisLowerBoundProperty.set(tempStats.getyAxisLowerBound());
 		yAxisUpperBoundProperty.set(tempStats.getyAxisUpperBound());
+		
+		} else {
+			System.out.println("The file is empty");
+			String zero = "0.0";
+			averageMaxProperty.set(zero);
+			averageMinProperty.set(zero);
+			relativeMaxProperty.set(zero);
+			relativeMinProperty.set(zero);
+			linearOffsetProperty.set(zero);
+			targetTemperatureProperty.set(zero);
+			chartData.clear();
+			yAxisLowerBoundProperty.set(0.0);
+			yAxisUpperBoundProperty.set(10.0);
+		}
 
 	}
 
 	
 	public void calculateFromManualInput() {
-	String text = manualInputProperty.getValue();
-
-	updateInterface();		
+		String text = manualInputProperty.getValue();
+		selectedRecordProperty.setValue(DataParser.parseFromText(text));
+		updateInterface();		
 	}
 
 	public void updateSelectedItem(TemperatureRecord temperatureRecord) {
@@ -148,7 +174,7 @@ public class MainViewModel {
 
 	public void saveSelectedToFile() {
 		System.out.println("save pressed");
-		LocalManager localManager = LocalManager.getInstance();
+		LocalizationManager localManager = LocalizationManager.getInstance();
 		
 		if(localManager.isEnglish()) { 
 			localManager.setLocale(new Locale("ru", "RU"));	
@@ -165,43 +191,43 @@ public class MainViewModel {
 		ReportBuilder.buildReport(selectedRecordProperty.getValue());
 	}
 	
-	public StringProperty typeValueProperty() {
+	public StringProperty typeProperty() {
 		return typeProperty;
 	}
 	
-	public StringProperty timeStampValueProperty() {
+	public StringProperty timeStampProperty() {
 		return timeStampProperty;
 	}
 	
-	public StringProperty timeStepValueProperty() {
+	public StringProperty timeStepProperty() {
 		return timeStepProperty;
 	}
 	
-	public StringProperty pointsCountValueProperty() {
+	public StringProperty pointsCountProperty() {
 		return pointsCountProperty;
 	}
 
-	public StringProperty averageMaxValueProperty() {
+	public StringProperty averageMaxProperty() {
 		return averageMaxProperty;
 	}
 	
-	public StringProperty averageMinValueProperty() {
+	public StringProperty averageMinProperty() {
 		return averageMinProperty;
 	}
 
-	public StringProperty relativeMaxValueProperty() {
+	public StringProperty relativeMaxProperty() {
 		return relativeMaxProperty;
 	}
 	
-	public StringProperty relativeMinValueProperty() {
+	public StringProperty relativeMinProperty() {
 		return relativeMinProperty;
 	}
 	
-	public StringProperty linearOffsetValueProperty() {
+	public StringProperty linearOffsetProperty() {
 		return linearOffsetProperty;
 	}
 	
-	public StringProperty tempSetValueProperty() {
+	public StringProperty tempSetProperty() {
 		return targetTemperatureProperty;
 	}
 

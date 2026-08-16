@@ -5,12 +5,12 @@ import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 
-public class LocalTextBinder {
+public class Localizator {
 
 	public static void bindText(ObjectProperty<String> text, String key) {
 		StringBinding binding = Bindings.createStringBinding(
-				() -> LocalManager.getInstance().getString(key), 
-				LocalManager.getInstance().resourceBundleProperty());
+				() -> LocalizationManager.getInstance().getString(key), 
+				LocalizationManager.getInstance().resourceBundleProperty());
 		if (text != null) {
 			text.bind(binding);
 		}
@@ -18,8 +18,8 @@ public class LocalTextBinder {
 
 	public static void bindText(StringProperty text, String key) {
 		StringBinding binding = Bindings.createStringBinding(
-				() -> LocalManager.getInstance().getString(key), 
-				LocalManager.getInstance().resourceBundleProperty());
+				() -> LocalizationManager.getInstance().getString(key), 
+				LocalizationManager.getInstance().resourceBundleProperty());
 		if (text != null) {
 			text.bind(binding);
 		}

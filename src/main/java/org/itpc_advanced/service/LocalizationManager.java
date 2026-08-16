@@ -6,18 +6,18 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class LocalManager {
-	private static LocalManager instance;
+public class LocalizationManager {
+	private static LocalizationManager instance;
 	private final ObjectProperty<ResourceBundle> resources = new SimpleObjectProperty<>();
 	private final ObjectProperty<Locale> currentLocale = new SimpleObjectProperty<>();
 
-	private LocalManager() {
+	private LocalizationManager() {
 		setLocale(Locale.ENGLISH);
 	}
 
-	public static LocalManager getInstance() {
+	public static LocalizationManager getInstance() {
 		if (instance == null) {
-			instance = new LocalManager();
+			instance = new LocalizationManager();
 		}
 
 		return instance;

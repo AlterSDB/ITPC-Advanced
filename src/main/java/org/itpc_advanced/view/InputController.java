@@ -3,7 +3,7 @@ package org.itpc_advanced.view;
 
 import org.itpc_advanced.model.TemperatureRecord;
 import org.itpc_advanced.model.TemperatureStats;
-import org.itpc_advanced.service.LocalTextBinder;
+import org.itpc_advanced.service.Localizator;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
 import javafx.event.ActionEvent;
@@ -88,10 +88,10 @@ public class InputController {
     	Label label = new Label();
 		table.setPlaceholder(label);
 		
-		LocalTextBinder.bindText(label.textProperty(), "table.placeholder");		
-		table.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+		Localizator.bindText(label.textProperty(), "table.placeholder");		
+		table.getSelectionModel().selectedItemProperty().addListener((obs, oldItem, newItem) -> {
 			System.out.println("Item updated");
-			viewModel.updateSelectedItem(newVal);
+			viewModel.updateSelectedItem(newItem);
 		});
 		table.setItems(viewModel.getRecords());
 		
@@ -100,20 +100,20 @@ public class InputController {
     }
 
 	private void bindLocalizedElements() {
-		LocalTextBinder.bindText(scanBtn.textProperty(), "button.scan");
-		LocalTextBinder.bindText(saveBtn.textProperty(), "button.save");
-		LocalTextBinder.bindText(calculateBtn.textProperty(), "button.calculate");
-		LocalTextBinder.bindText(timeStampText.textProperty(), "df.timestamp");
-		LocalTextBinder.bindText(typeText.textProperty(), "df.tc.type");
-		LocalTextBinder.bindText(timeStepText.textProperty(), "df.timestep");
-		LocalTextBinder.bindText(pointsCountText.textProperty(), "df.points.count");
+		Localizator.bindText(scanBtn.textProperty(), "button.scan");
+		Localizator.bindText(saveBtn.textProperty(), "button.save");
+		Localizator.bindText(calculateBtn.textProperty(), "button.calculate");
+		Localizator.bindText(timeStampText.textProperty(), "df.timestamp");
+		Localizator.bindText(typeText.textProperty(), "df.tc.type");
+		Localizator.bindText(timeStepText.textProperty(), "df.timestep");
+		Localizator.bindText(pointsCountText.textProperty(), "df.points.count");
 	}
 
 	private void bindTextElements() {
-		typeValueText.textProperty().bind(viewModel.typeValueProperty());
-		timeStampValueText.textProperty().bind(viewModel.timeStampValueProperty());
-		timeStepValueText.textProperty().bind(viewModel.timeStepValueProperty());
-		pointsCountValueText.textProperty().bind(viewModel.pointsCountValueProperty());		
+		typeValueText.textProperty().bind(viewModel.typeProperty());
+		timeStampValueText.textProperty().bind(viewModel.timeStampProperty());
+		timeStepValueText.textProperty().bind(viewModel.timeStepProperty());
+		pointsCountValueText.textProperty().bind(viewModel.pointsCountProperty());		
 		manualInputTextArea.textProperty().bindBidirectional(viewModel.manualInputProperty());
 	}	
 

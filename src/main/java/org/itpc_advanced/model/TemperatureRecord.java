@@ -37,7 +37,7 @@ public class TemperatureRecord {
 		this.timeStamp = LocalDateTime.now();
 		this.timeStep = 15.0;
 		this.points = points;
-		this.stats =new TemperatureStats(this.points, this.timeStep);
+		this.stats = new TemperatureStats(this.points, this.timeStep);
 	}
 
 	public List<Double> getPoints() {

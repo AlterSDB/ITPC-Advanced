@@ -35,6 +35,12 @@ public class TemperatureStats {
 		
 		List<Double> sortedTermperaturePoints = new ArrayList<Double>(filteredPoints);
 		Collections.sort(sortedTermperaturePoints);
+		chartBounds = DataProcessor.findChartBounds(sortedTermperaturePoints);
+		chartData = DataProcessor.getChartData(points, timeStep);		
+		yAxisLowerBound = chartBounds[0];
+		yAxisUpperBound = chartBounds[1];
+		
+		setLinearOffset(0.0);
 		if (sortedTermperaturePoints.size() > 20) {
 			minTemperaturePoints.addAll(sortedTermperaturePoints.subList(0, 10));
 			Collections.reverse(sortedTermperaturePoints);
@@ -51,13 +57,6 @@ public class TemperatureStats {
 			relativeMin = 0.0;
 			relativeMax = 0.0;
 		}
-		
-		chartData = DataProcessor.getChartData(points, timeStep);		
-		chartBounds = DataProcessor.findChartBounds(sortedTermperaturePoints);
-		yAxisLowerBound = chartBounds[0];
-		yAxisUpperBound = chartBounds[1];
-		
-		setLinearOffset(0.0);
 	}
 	
 	
@@ -75,6 +74,23 @@ public class TemperatureStats {
 		this.chartBounds = stats.getChartBounds();
 		this.yAxisLowerBound = stats.getyAxisLowerBound();
 		this.yAxisUpperBound = stats.getyAxisUpperBound();
+	}
+	
+	
+	@Override 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Target: " + this.targetTemperature + "\n");
+		sb.append("Linear Offset: " + this.linearOffset + "\n");
+		sb.append("Avg Max: " + this.averageMax + "\n");
+		sb.append("Avg Min: " + this.averageMin + "\n");
+		sb.append("Rel Max: " + this.relativeMax + "\n");
+		sb.append("Rel Min: " + this.relativeMin + "\n");
+		sb.append("Lower Bound: " + this.yAxisLowerBound + "\n");
+		sb.append("Upper Bound: " + this.yAxisUpperBound + "\n");
+		
+		return sb.toString();
+		
 	}
 
 	

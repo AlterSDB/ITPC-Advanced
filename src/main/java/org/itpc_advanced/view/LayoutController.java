@@ -1,6 +1,6 @@
 package org.itpc_advanced.view;
 
-import org.itpc_advanced.service.LocalTextBinder;
+import org.itpc_advanced.service.Localizator;
 import org.itpc_advanced.viewmodel.MainViewModel;
 
 import javafx.event.ActionEvent;
@@ -24,7 +24,7 @@ public class LayoutController {
     
     @FXML
     void initialize() {
-		LocalTextBinder.bindText(settingsBtn.textProperty(), "button.settings");
+		Localizator.bindText(settingsBtn.textProperty(), "button.settings");
 		
     }
 
